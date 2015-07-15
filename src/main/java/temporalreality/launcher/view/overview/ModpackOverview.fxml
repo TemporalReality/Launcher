@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane maxWidth="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="temporalreality.launcher.view.overview.ModpackOverviewController">
+   <children>
+      <SplitPane dividerPositions="0.29797979797979796" prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <items>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+               <children>
+                  <TableView fx:id="modpackTable" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                    <columns>
+                      <TableColumn fx:id="nameColumn" editable="false" prefWidth="233.0" text="Modpacks" />
+                    </columns>
+                  </TableView>
+               </children>
+            </AnchorPane>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+               <children>
+                  <ScrollPane prefHeight="553.0" prefWidth="556.0" AnchorPane.topAnchor="0.0">
+                    <content>
+                      <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="550.0" prefWidth="550.0">
+                           <children>
+                              <HBox alignment="TOP_CENTER" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="200.0" prefWidth="556.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="-6.0" AnchorPane.topAnchor="15.0">
+                                 <children>
+                                    <ImageView fx:id="image" fitHeight="200.0" fitWidth="420.0" pickOnBounds="true" preserveRatio="true" />
+                                 </children>
+                              </HBox>
+                              <Label fx:id="mcLabel" layoutX="-1.0" layoutY="225.0" text="Minecraft:" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="275.0">
+                                 <font>
+                                    <Font size="16.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="mcVer" layoutX="25.0" layoutY="285.0" text="Label" AnchorPane.leftAnchor="95.0" AnchorPane.topAnchor="275.0">
+                                 <font>
+                                    <Font size="16.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="forgeLabel" layoutX="25.0" layoutY="235.0" text="Forge:" AnchorPane.leftAnchor="200.0" AnchorPane.topAnchor="275.0">
+                                 <font>
+                                    <Font size="16.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="forgeVer" layoutX="210.0" layoutY="285.0" text="Label" AnchorPane.leftAnchor="255.0" AnchorPane.topAnchor="275.0">
+                                 <font>
+                                    <Font size="16.0" />
+                                 </font>
+                              </Label>
+                              <Text fx:id="description" lineSpacing="4.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque eu diam scelerisque, sagittis quam sit amet, cursus tellus. Aenean leo metus, posuere non odio maximus, euismod dignissim quam. Donec tristique mauris quis ex blandit ornare. Aliquam in mi quis felis volutpat fringilla. Etiam sagittis feugiat est non pharetra. Integer eu ex nulla. Donec dictum cursus aliquam. Ut dapibus augue accumsan venenatis maximus. Praesent porttitor, odio at convallis sodales, magna orci porttitor libero, eget mollis nisl nulla sit amet arcu. Suspendisse non lorem volutpat, viverra sapien vel, finibus velit. Ut tincidunt ligula enim, tempus euismod nisl fringilla viverra. Aliquam erat volutpat." wrappingWidth="525.6829261779785" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="300.0">
+                                 <font>
+                                    <Font size="14.0" />
+                                 </font>
+                              </Text>
+                              <Label fx:id="authorsLabel" layoutX="14.0" layoutY="259.0" text="Author(s):" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="250.0">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="authors" layoutX="25.0" layoutY="260.0" text="Label" AnchorPane.leftAnchor="100.0" AnchorPane.topAnchor="250.0">
+                                 <font>
+                                    <Font size="18.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="name" layoutX="14.0" layoutY="228.0" text="Modpack Name" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="220.0">
+                                 <font>
+                                    <Font size="24.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </AnchorPane>
+                    </content>
+                  </ScrollPane>
+                  <ToolBar layoutY="559.0" prefHeight="40.0" prefWidth="556.0" AnchorPane.bottomAnchor="0.0">
+                    <items>
+                      <Button fx:id="download" defaultButton="true" mnemonicParsing="false" onAction="#downloadPressed" text="Download" />
+                        <MenuButton fx:id="version" mnemonicParsing="false" text="Version" />
+                        <Button fx:id="launch" disable="true" mnemonicParsing="false" onAction="#launchPressed" text="Launch" />
+                        <Button fx:id="delete" disable="true" mnemonicParsing="false" onAction="#deletePressed" text="Delete" />
+                    </items>
+                  </ToolBar>
+               </children>
+            </AnchorPane>
+        </items>
+      </SplitPane>
+   </children>
+</AnchorPane>

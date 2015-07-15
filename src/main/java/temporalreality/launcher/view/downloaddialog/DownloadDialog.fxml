@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="temporalreality.launcher.view.downloaddialog.DownloadDialogController">
+   <children>
+      <ProgressBar fx:id="progressBar" layoutX="25.0" layoutY="90.0" maxHeight="-Infinity" minHeight="-Infinity" prefWidth="200.0" progress="0.0" AnchorPane.leftAnchor="25.0" AnchorPane.rightAnchor="25.0" />
+      <Label fx:id="downloadingLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="25.0" layoutY="37.0" text="Downloading" textAlignment="CENTER" AnchorPane.leftAnchor="25.0" AnchorPane.rightAnchor="25.0">
+         <font>
+            <Font size="24.0" />
+         </font>
+      </Label>
+      <Label fx:id="currentItemLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="25.0" layoutY="131.0" text="Label" AnchorPane.leftAnchor="25.0" AnchorPane.rightAnchor="25.0">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Label>
+      <Button layoutY="173.0" mnemonicParsing="false" onAction="#cancelPressed" text="Cancel" AnchorPane.bottomAnchor="15.0" AnchorPane.leftAnchor="15.0" />
+   </children>
+</AnchorPane>
