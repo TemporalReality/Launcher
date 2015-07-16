@@ -3,11 +3,14 @@ package temporalreality.launcher.util;
 import javafx.concurrent.Task;
 import javafx.concurrent.WorkerStateEvent;
 import javafx.event.EventHandler;
+import javafx.scene.control.Alert;
 import net.shadowfacts.shadowlib.util.FileUtils;
 import temporalreality.launcher.TRLauncher;
 import temporalreality.launcher.model.Mod;
 import temporalreality.launcher.model.Modpack;
+import temporalreality.launcher.model.Version;
 import temporalreality.launcher.view.downloaddialog.DownloadDialogController;
+import temporalreality.launcher.view.overview.ModpackOverviewController;
 import uk.co.rx14.jmclaunchlib.MCInstance;
 import uk.co.rx14.jmclaunchlib.util.NullSupplier;
 
@@ -70,17 +73,17 @@ public class ModpackUtils {
 		return getPackDir(modpack).exists();
 	}
 
-	public static void download(Modpack modpack,  Runnable successHandler) throws IOException {
+	public static void download(Modpack modpack,  Runnable successHandler, ModpackOverviewController controller) throws IOException {
 		makeModpacksDir();
 
-		if (!isModpackInstalled(modpack)) {
+		if (!isModpackInstalled(modpack) || canUpgrade(modpack)) {
 			Task downloadTask = new Task<Void>() {
 				@Override
 				protected Void call() throws Exception {
 					int taskCount = modpack.getSelectedVersion().mods.size() + 5;
 
 //					Create modpack dir
-					if (!isCancelled()) {
+					if (!getPackDir(modpack).exists() && !isCancelled()) {
 						System.out.println("Creating dir for " + modpack.getName());
 						updateMessage("Creating modpack directory");
 						updateProgress(1, taskCount);
@@ -130,8 +133,6 @@ public class ModpackUtils {
 						}
 					}
 
-//					TODO: Download the mods
-
 //					Create version file
 					if (!isCancelled()) {
 						System.out.println("Creating version.txt file for " + modpack.getName());
@@ -146,12 +147,11 @@ public class ModpackUtils {
 						PrintWriter writer = new PrintWriter("modpacks/" + modpack.getName() + "/version.txt");
 						writer.println(modpack.getSelectedVersion().version);
 						writer.close();
-//						Writer writer = new BufferedWriter(new OutputStreamWriter(new FileOutputStream("modpacks/" + modpack.getName() + "/version.txt"), "utf-8"));
-//						writer.write(modpack.getSelectedVersion().version);
 					}
 
 //					Cancel and undo all changes
 					if (isCancelled()) {
+						FileUtils.deleteFolder(new File("modpacks/" + modpack.getName() + "/"));
 					}
 
 					succeeded();
@@ -167,10 +167,10 @@ public class ModpackUtils {
 				}
 			};
 
-			DownloadDialogController controller = TRLauncher.getLauncher().showDownloadDialog(modpack);
-			controller.getProgressBar().progressProperty().bind(downloadTask.progressProperty());
-			controller.getCurrentItemLabel().textProperty().bind(downloadTask.messageProperty());
-			controller.setTask(downloadTask);
+			DownloadDialogController dialog = TRLauncher.getLauncher().showDownloadDialog(modpack);
+			dialog.getProgressBar().progressProperty().bind(downloadTask.progressProperty());
+			dialog.getCurrentItemLabel().textProperty().bind(downloadTask.messageProperty());
+			dialog.setTask(downloadTask);
 			new Thread(downloadTask).start();
 
 		} else {
@@ -178,8 +178,24 @@ public class ModpackUtils {
 		}
 	}
 
+	public static boolean canUpgrade(Modpack modpack, Version version) {
+		Version saved = null;
+		try {
+			String versionFile = Files.readAllLines(Paths.get("modpacks/" + modpack.getName() + "/version.txt")).get(0);
+
+			if (versionFile != null) {
+				for (Version v : modpack.getVersions()) {
+					if (v.version.equals(versionFile)) {
+						saved = v;
+					}
+				}
+			}
+		} catch (IOException ignored) {}
+
+		return modpack.getSelectedVersion().equals(saved);
+	}
+
 	public static void launch(Modpack modpack) {
-//		MCInstance instance = MCInstance.createForge()
 		if (isModpackInstalled(modpack)) {
 			MCInstance instance = MCInstance.createForge(
 					modpack.getSelectedVersion().mcVersion,

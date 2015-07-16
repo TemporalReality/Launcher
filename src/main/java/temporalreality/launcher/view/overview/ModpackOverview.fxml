@@ -77,7 +77,7 @@
                   <ToolBar layoutY="559.0" prefHeight="40.0" prefWidth="556.0" AnchorPane.bottomAnchor="0.0">
                     <items>
                       <Button fx:id="download" defaultButton="true" mnemonicParsing="false" onAction="#downloadPressed" text="Download" />
-                        <MenuButton fx:id="version" mnemonicParsing="false" text="Version" />
+                        <MenuButton fx:id="version" mnemonicParsing="false" onAction="#versionSelected" text="Version" />
                         <Button fx:id="launch" disable="true" mnemonicParsing="false" onAction="#launchPressed" text="Launch" />
                         <Button fx:id="delete" disable="true" mnemonicParsing="false" onAction="#deletePressed" text="Delete" />
                     </items>

@@ -11,6 +11,7 @@ import temporalreality.launcher.control.VersionMenuItem;
 import temporalreality.launcher.model.Modpack;
 import temporalreality.launcher.model.Version;
 import temporalreality.launcher.util.ModpackUtils;
+import temporalreality.launcher.util.VersionUtils;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -93,7 +94,7 @@ public class ModpackOverviewController {
 	private void downloadPressed() {
 		try {
 			Modpack active = modpackTable.getSelectionModel().getSelectedItem();
-			ModpackUtils.download(active, () -> updateButtons(active));
+			ModpackUtils.download(active, () -> updateButtons(active), this);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
@@ -118,6 +119,11 @@ public class ModpackOverviewController {
 			Modpack active = modpackTable.getSelectionModel().getSelectedItem();
 			ModpackUtils.delete(active, () -> updateButtons(active));
 		}
+	}
+
+	@FXML
+	private void versionSelected() {
+//		updateButtons(modpackTable.getSelectionModel().getSelectedItem());
 	}
 
 	private void setSelectedVersion(Version v) {
@@ -164,7 +170,11 @@ public class ModpackOverviewController {
 	private void updateButtons(Modpack modpack) {
 		if (modpack != null) {
 			if (ModpackUtils.isModpackInstalled(modpack)) {
-				download.setDisable(true);
+//				if (ModpackUtils.canUpgrade(modpack, VersionUtils.getVersionFromString(modpack, version.getText()))) {
+//					download.setDisable(false);
+//				} else {
+					download.setDisable(true);
+//				}
 				launch.setDisable(false);
 				delete.setDisable(false);
 				version.setDisable(false);
