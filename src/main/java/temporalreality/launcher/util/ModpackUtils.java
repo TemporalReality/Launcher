@@ -201,6 +201,12 @@ public class ModpackUtils {
 
 	public static void launch(Modpack modpack) {
 		if (isModpackInstalled(modpack)) {
+
+			File caches = new File("caches/");
+			if (!caches.exists()) {
+				caches.mkdirs();
+			}
+
 			MCInstance instance = MCInstance.createForge(
 					modpack.getSelectedVersion().mcVersion,
 					modpack.getSelectedVersion().forgeVersion,
