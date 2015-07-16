@@ -1,4 +1,5 @@
-run/
+run/*
+!/run/basically-basic.json
 
 # gradle
 /.gradle

@@ -33,7 +33,7 @@ public class ModpackUtils {
 //			modpacks.add(Modpack.get(new URL(s)));
 //		}
 		System.out.println("Loading modpacks from local file");
-		modpacks.add(Modpack.get(new File("example2.json")));
+		modpacks.add(Modpack.get(new File("basically-basic.json")));
 	}
 
 	private static String getModpackData(String urlString) throws Exception{

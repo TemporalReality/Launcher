@@ -1,0 +1,102 @@
+{
+	"name": "basically-basic",
+	"displayName": "Basically Basic",
+	"author": "Temporal Reality Team",
+	"description": "Basically Basic is an extremely simple modpack created to be an introduction mods.",
+	"logoUrl": "https://avatars1.githubusercontent.com/u/13340500?v=3&s=200",
+	"versions": [
+		{
+			"version": "1.0.0",
+			"changelogUrl": "http://pastebin.com/raw.php?i=nJ4ZK06r",
+			"mcVersion": "1.7.10",
+			"forgeVersion": "1.7.10-10.13.4.1481-1.7.10",
+			"overrideUrl": "https://www.dropbox.com/s/a2fppad1t9407zs/BasicallyBasic1.0.zip?dl=1",
+			"mods": [
+				{
+					"name": "Waila",
+					"url": "http://www.curse.com/mc-mods/Minecraft/waila",
+					"authors": ["ProfMobius"],
+					"downloadUrl": "http://addons.curse.cursecdn.com/files/2230/518/Waila-1.5.10_1.7.10.jar",
+					"fileName": "Waila-1.5.10_1.7.10.jar"
+				},
+				{
+					"name": "ElecCore | DimensionAPI",
+					"url": "http://www.curse.com/mc-mods/Minecraft/227391-eleccore-dimensionapi",
+					"authors": ["Elec332"],
+					"downloadUrl": "http://addons.curse.cursecdn.com/files/2246/769/ElecCore-1.7.10-1.4.92.jar",
+					"fileName": "ElecCore-1.7.10-1.4.92.jar"
+				},
+				{
+					"name": "ExtrabiomesXL",
+					"url": "http://www.curse.com/mc-mods/Minecraft/extrabiomesxl",
+					"authors": ["Annysia", "acmfan", "allaryin", "bspkrs", "crafteverywhere", "Forstride", "Frantisek_Markov", "gwydion0971", "JLBShecky", "JulioCL", "Keuterio", "MrFibre", "panam4ik", "scottkillen", "Vexatos", "Zenth_"],
+					"downloadUrl": "http://addons.curse.cursecdn.com/files/2235/261/extrabiomesxl_1.7.10-3.16.2.jar",
+					"fileName": "extrabiomesxl_1.7.10-3.16.2.jar"
+				},
+				{
+					"name": "BiblioCraft",
+					"url": "http://www.curse.com/mc-mods/Minecraft/228027-bibliocraft",
+					"authors": ["JDSinclair"],
+					"downloadUrl": "http://addons.curse.cursecdn.com/files/2235/545/BiblioCraft[v1.10.4][MC1.7.10].jar",
+					"fileName": "BiblioCraft[v1.10.4][MC1.7.10].jar"
+				},
+				{
+					"name": "BiblioWoods ExtraBiomesXL Edition",
+					"url": "http://www.curse.com/mc-mods/Minecraft/228365-bibliocraft-bibliowoods-extrabiomesxl-edition",
+					"authors": ["JDSinclair"],
+					"downloadUrl": "http://addons.curse.cursecdn.com/files/2229/579/BiblioWoods[ExtraBiomesXL][v1.4].jar",
+					"fileName": "BiblioWoods[ExtraBiomesXL][v1.4].jar"
+				},
+				{
+					"name": "Inventory Tweaks",
+					"url": "http://www.curse.com/mc-mods/Minecraft/223094-inventory-tweaks",
+					"authors": ["Kobata"],
+					"downloadUrl": "http://addons.curse.cursecdn.com/files/2232/22/InventoryTweaks-1.59-176.jar",
+					"fileName": "InventoryTweaks-1.59-176.jar"
+				},
+				{
+					"name": "CodeChickenCore",
+					"url": "http://www.curse.com/mc-mods/Minecraft/222213-codechickencore",
+					"authors": ["chicken_bones"],
+					"downloadUrl": "http://addons.curse.cursecdn.com/files/2237/942/CodeChickenCore-1.8-1.0.5.36-universal.jar",
+					"fileName": "CodeChickenCore-1.8-1.0.5.36-universal.jar"
+				},
+				{
+					"name": "NotEnoughItems",
+					"url": "http://www.curse.com/mc-mods/Minecraft/222211-notenoughitems",
+					"authors": ["chicken_bones"],
+					"downloadUrl": "http://addons.curse.cursecdn.com/files/2237/941/NotEnoughItems-1.8-1.0.5.104-universal.jar",
+					"fileName": "NotEnoughItems-1.8-1.0.5.104-universal.jar"
+				},
+				{
+					"name": "Project Red - Base",
+					"url": "http://www.curse.com/mc-mods/Minecraft/228702-project-red-base",
+					"authors": ["Mr_TJP"],
+					"downloadUrl": "http://addons.curse.cursecdn.com/files/2245/925/ProjectRed-1.7.10-4.7.0pre5.89-Base.jar",
+					"fileName": "ProjectRed-1.7.10-4.7.0pre5.89-Base.jar"
+				},
+				{
+					"name": "Project Red - Integration",
+					"url": "http://www.curse.com/mc-mods/Minecraft/229045-project-red-integration",
+					"authors": ["Mr_TJP"],
+					"downloadUrl": "http://addons.curse.cursecdn.com/files/2245/928/ProjectRed-1.7.10-4.7.0pre5.89-Integration.jar",
+					"fileName": "ProjectRed-1.7.10-4.7.0pre5.89-Integration.jar"
+				},
+				{
+					"name": "Storage Drawers",
+					"url": "http://www.curse.com/mc-mods/Minecraft/223852-storage-drawers",
+					"authors": ["jaquadro"],
+					"downloadUrl": "http://addons.curse.cursecdn.com/files/2246/687/StorageDrawers-1.7.10-1.5.12.jar",
+					"fileName": "StorageDrawers-1.7.10-1.5.12.jar"
+				},
+				{
+					"name": "Crafting Table IV",
+					"url": "http://www.curse.com/mc-mods/Minecraft/231840-craftingtable-iv",
+					"authors": ["Elec332"],
+					"downloadUrl": "http://minecraft.curseforge.com/mc-mods/231840-craftingtable-iv/files/2243913/download",
+					"fileName": "CraftingTableIV-1.7.10-1.1Beta.43.jar"
+				}
+			]
+		}
+	]
+}
