@@ -175,6 +175,10 @@ public class ModpackUtils {
 
 		} else {
 //			TODO: Show alert window
+			Alert alert = new Alert(Alert.AlertType.ERROR);
+			alert.initOwner(TRLauncher.getLauncher().getPrimaryStage());
+			alert.setTitle("Modpack Already Installed");
+			alert.setHeaderText(modpack.getDisplayName() + " is already installed.");
 		}
 	}
 
