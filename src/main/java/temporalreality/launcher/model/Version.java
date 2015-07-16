@@ -18,4 +18,17 @@ public class Version {
 		mods.add(mod);
 	}
 
+	@Override
+	public boolean equals(Object obj) {
+		if (obj instanceof Version) {
+			Version other = (Version)obj;
+			return version.equals(other.version) &&
+					changelogUrl.equals(other.changelogUrl) &&
+					mcVersion.equals(other.mcVersion) &&
+					forgeVersion.equals(other.forgeVersion) &&
+					overrideUrl.equals(other.overrideUrl) &&
+					mods.equals(other.mods);
+		}
+		return false;
+	}
 }
