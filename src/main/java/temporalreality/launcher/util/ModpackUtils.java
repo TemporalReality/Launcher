@@ -1,10 +1,11 @@
 package temporalreality.launcher.util;
 
 import javafx.concurrent.Task;
-import javafx.concurrent.WorkerStateEvent;
-import javafx.event.EventHandler;
 import javafx.scene.control.Alert;
+import net.shadowfacts.shadowlib.log.LogLevel;
+import net.shadowfacts.shadowlib.log.Logger;
 import net.shadowfacts.shadowlib.util.FileUtils;
+import net.shadowfacts.shadowlib.util.StreamRedirect;
 import temporalreality.launcher.TRLauncher;
 import temporalreality.launcher.model.Mod;
 import temporalreality.launcher.model.Modpack;
@@ -211,6 +212,10 @@ public class ModpackUtils {
 			MCInstance.LaunchSpec spec = instance.getOfflineLaunchSpec("ShadowfactsDev");
 
 			Process process = spec.run(Paths.get("/usr/bin/java"));
+			StreamRedirect output = new StreamRedirect(process.getInputStream(), new Logger("MC", true), LogLevel.INFO);
+			StreamRedirect error = new StreamRedirect(process.getErrorStream(), new Logger("MC", true), LogLevel.ERROR);
+			output.start();
+			error.start();
 		}
 	}
 
