@@ -51,22 +51,22 @@
 					"name": "Inventory Tweaks",
 					"url": "http://www.curse.com/mc-mods/Minecraft/223094-inventory-tweaks",
 					"authors": ["Kobata"],
-					"downloadUrl": "http://addons.curse.cursecdn.com/files/2232/22/InventoryTweaks-1.59-176.jar",
-					"fileName": "InventoryTweaks-1.59-176.jar"
+					"downloadUrl": "http://addons.curse.cursecdn.com/files/2210/792/InventoryTweaks-1.59-dev-152.jar",
+					"fileName": "InventoryTweaks-1.59-dev-152.jar"
 				},
 				{
 					"name": "CodeChickenCore",
 					"url": "http://www.curse.com/mc-mods/Minecraft/222213-codechickencore",
 					"authors": ["chicken_bones"],
-					"downloadUrl": "http://addons.curse.cursecdn.com/files/2237/942/CodeChickenCore-1.8-1.0.5.36-universal.jar",
-					"fileName": "CodeChickenCore-1.8-1.0.5.36-universal.jar"
+					"downloadUrl": "http://addons.curse.cursecdn.com/files/2237/939/CodeChickenCore-1.7.10-1.0.6.43-universal.jar",
+					"fileName": "CodeChickenCore-1.7.10-1.0.6.43-universal.jar"
 				},
 				{
 					"name": "NotEnoughItems",
 					"url": "http://www.curse.com/mc-mods/Minecraft/222211-notenoughitems",
 					"authors": ["chicken_bones"],
-					"downloadUrl": "http://addons.curse.cursecdn.com/files/2237/941/NotEnoughItems-1.8-1.0.5.104-universal.jar",
-					"fileName": "NotEnoughItems-1.8-1.0.5.104-universal.jar"
+					"downloadUrl": "http://addons.curse.cursecdn.com/files/2237/940/NotEnoughItems-1.7.10-1.0.4.107-universal.jar",
+					"fileName": "NotEnoughItems-1.7.10-1.0.4.107-universal.jar"
 				},
 				{
 					"name": "Project Red - Base",
