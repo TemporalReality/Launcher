@@ -30,6 +30,15 @@ jar {
 	}
 }
 
+sourceSets {
+    main {
+        resources {
+            srcDirs += "src/main/java"
+            exclude '**/*.java'
+        }
+    }
+}
+
 task fatJar(type: Jar) {
 	configurations.fatJar.each { dep -> 
 		from (project.zipTree(dep)) {
