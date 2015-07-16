@@ -39,3 +39,5 @@ sourceSets {
 if (System.getenv().BUILD_NUMER != null) {
 	version += "-build-" + System.getenv().BUILD_NUMER
 }
+
+tasks.build.dependsOn shadowJar
