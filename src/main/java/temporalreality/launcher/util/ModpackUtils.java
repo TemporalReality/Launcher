@@ -174,7 +174,6 @@ public class ModpackUtils {
 			new Thread(downloadTask).start();
 
 		} else {
-//			TODO: Show alert window
 			Alert alert = new Alert(Alert.AlertType.ERROR);
 			alert.initOwner(TRLauncher.getLauncher().getPrimaryStage());
 			alert.setTitle("Modpack Already Installed");
@@ -182,7 +181,7 @@ public class ModpackUtils {
 		}
 	}
 
-	public static boolean canUpgrade(Modpack modpack, Version version) {
+	public static boolean canUpgrade(Modpack modpack) {
 		Version saved = null;
 		try {
 			String versionFile = Files.readAllLines(Paths.get("modpacks/" + modpack.getName() + "/version.txt")).get(0);
