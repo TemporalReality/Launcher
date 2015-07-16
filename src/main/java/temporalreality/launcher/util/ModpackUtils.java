@@ -152,8 +152,6 @@ public class ModpackUtils {
 
 //					Cancel and undo all changes
 					if (isCancelled()) {
-						boolean deletedModpacks = new File("modpacks/" + modpack.getName() + "/").delete();
-						boolean deletedTemp = new File("temp/").delete();
 					}
 
 					succeeded();
