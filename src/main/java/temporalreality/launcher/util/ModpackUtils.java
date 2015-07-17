@@ -207,11 +207,6 @@ public class ModpackUtils {
 	public static void launch(Modpack modpack) {
 		if (isModpackInstalled(modpack)) {
 
-			File caches = new File("caches/");
-			if (!caches.exists()) {
-				caches.mkdirs();
-			}
-
 			LoginDialogController controller = TRLauncher.getLauncher().showLoginDialog();
 
 			if (controller.isLoggedIn()) {
