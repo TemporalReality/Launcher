@@ -12,9 +12,13 @@ import javafx.stage.Stage;
 import temporalreality.launcher.util.ModpackUtils;
 import temporalreality.launcher.model.Modpack;
 import temporalreality.launcher.view.downloaddialog.DownloadDialogController;
+import temporalreality.launcher.view.login.LoginDialogController;
 import temporalreality.launcher.view.overview.ModpackOverviewController;
+import uk.co.rx14.jmclaunchlib.auth.Credentials;
+import uk.co.rx14.jmclaunchlib.util.NullSupplier;
 
 import java.io.IOException;
+import java.util.function.Supplier;
 
 /**
  * @author shadowfacts
@@ -108,6 +112,34 @@ public class TRLauncher extends Application {
 			}
 
 			return controller;
+		} catch (IOException e) {
+			System.err.println("Couldn't find the specified layout");
+			e.printStackTrace();
+			return null;
+		}
+	}
+
+	public LoginDialogController showLoginDialog() {
+		try {
+			FXMLLoader loader = new FXMLLoader();
+			loader.setLocation(TRLauncher.class.getResource("view/login/LoginDialog.fxml"));
+
+			AnchorPane pane = loader.load();
+
+			Stage dialogStage = new Stage();
+			dialogStage.setTitle("Login");
+			dialogStage.initModality(Modality.WINDOW_MODAL);
+			dialogStage.initOwner(primaryStage);
+			Scene scene = new Scene(pane);
+			dialogStage.setScene(scene);
+
+			LoginDialogController controller = loader.getController();
+			controller.setDialogStage(dialogStage);
+
+			dialogStage.showAndWait();
+
+			return controller;
+
 		} catch (IOException e) {
 			System.err.println("Couldn't find the specified layout");
 			e.printStackTrace();

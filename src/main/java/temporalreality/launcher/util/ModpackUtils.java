@@ -11,8 +11,11 @@ import temporalreality.launcher.model.Mod;
 import temporalreality.launcher.model.Modpack;
 import temporalreality.launcher.model.Version;
 import temporalreality.launcher.view.downloaddialog.DownloadDialogController;
+import temporalreality.launcher.view.login.LoginDialogController;
 import temporalreality.launcher.view.overview.ModpackOverviewController;
 import uk.co.rx14.jmclaunchlib.MCInstance;
+import uk.co.rx14.jmclaunchlib.auth.Credentials;
+import uk.co.rx14.jmclaunchlib.exceptions.ForbiddenOperationException;
 import uk.co.rx14.jmclaunchlib.util.NullSupplier;
 
 import java.io.*;
@@ -20,6 +23,8 @@ import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
+import java.util.Random;
+import java.util.function.Supplier;
 
 /**
  * @author shadowfacts
@@ -207,21 +212,49 @@ public class ModpackUtils {
 				caches.mkdirs();
 			}
 
-			MCInstance instance = MCInstance.createForge(
-					modpack.getSelectedVersion().mcVersion,
-					modpack.getSelectedVersion().forgeVersion,
-					"modpacks/" + modpack.getName() + "/",
-					"caches/",
-					NullSupplier.INSTANCE
-			);
+			LoginDialogController controller = TRLauncher.getLauncher().showLoginDialog();
 
-			MCInstance.LaunchSpec spec = instance.getOfflineLaunchSpec("ShadowfactsDev");
+			if (controller.isLoggedIn()) {
 
-			Process process = spec.run(Paths.get("/usr/bin/java"));
-			StreamRedirect output = new StreamRedirect(process.getInputStream(), new Logger("MC", true), LogLevel.INFO);
-			StreamRedirect error = new StreamRedirect(process.getErrorStream(), new Logger("MC", true), LogLevel.ERROR);
-			output.start();
-			error.start();
+				MCInstance instance = MCInstance.createForge(
+						modpack.getSelectedVersion().mcVersion,
+						modpack.getSelectedVersion().forgeVersion,
+						"modpacks/" + modpack.getName() + "/",
+						"caches/",
+						controller
+				);
+
+				try {
+					MCInstance.LaunchSpec spec;
+
+					if (controller.get() == null) { //TODO: TEST
+						spec = instance.getOfflineLaunchSpec("TRGuest" + new Random().nextInt(25));
+					} else {
+						spec = instance.getLaunchSpec();
+					}
+
+
+					Process process = spec.run(Paths.get("/usr/bin/java"));
+					StreamRedirect output = new StreamRedirect(process.getInputStream(), new Logger("MC", true), LogLevel.INFO);
+					StreamRedirect error = new StreamRedirect(process.getErrorStream(), new Logger("MC", true), LogLevel.ERROR);
+					output.start();
+					error.start();
+
+				} catch (ForbiddenOperationException e) {
+
+					System.out.println("Invalid credentials!");
+					Alert alert = new Alert(Alert.AlertType.ERROR);
+					alert.initOwner(TRLauncher.getLauncher().getPrimaryStage());
+					alert.setTitle("Invalid Credentials");
+					alert.setHeaderText("Invalid login credentials");
+					alert.setContentText("Please launch Minecraft again and enter correct credentials.");
+
+					alert.showAndWait();
+
+				}
+			} else {
+				System.out.println("User did not login or enter offline mode, cancelling launch.");
+			}
 		}
 	}
 
