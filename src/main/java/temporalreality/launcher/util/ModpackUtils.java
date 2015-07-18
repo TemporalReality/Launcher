@@ -5,8 +5,10 @@ import javafx.scene.control.Alert;
 import net.shadowfacts.shadowlib.log.LogLevel;
 import net.shadowfacts.shadowlib.log.Logger;
 import net.shadowfacts.shadowlib.util.FileUtils;
+import net.shadowfacts.shadowlib.util.InternetUtils;
 import net.shadowfacts.shadowlib.util.StreamRedirect;
 import temporalreality.launcher.TRLauncher;
+import temporalreality.launcher.config.ConfigManager;
 import temporalreality.launcher.model.Mod;
 import temporalreality.launcher.model.Modpack;
 import temporalreality.launcher.model.Version;
@@ -22,6 +24,8 @@ import java.io.*;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 import java.util.function.Supplier;
@@ -62,7 +66,7 @@ public class ModpackUtils {
 	}
 
 	public static File makeModpacksDir() {
-		File dir = new File("modpacks/");
+		File dir = MiscUtils.getFile("modpacks/");
 		if (!dir.exists()) {
 			System.out.println("modpacks/ folder does not exist, creating it");
 			dir.mkdirs();
@@ -71,7 +75,7 @@ public class ModpackUtils {
 	}
 
 	public static File getPackDir(Modpack modpack) {
-		return new File("modpacks/" + modpack.getName() + "/");
+		return MiscUtils.getFile("modpacks/" + modpack.getName() + "/");
 	}
 
 	public static boolean isModpackInstalled(Modpack modpack) {
@@ -103,7 +107,7 @@ public class ModpackUtils {
 						updateMessage("Downloading override zip");
 						updateProgress(2, taskCount);
 
-						FileUtils.downloadFile(modpack.getSelectedVersion().overrideUrl, "temp/" + modpack.getName() + ".zip");
+						InternetUtils.downloadFile(modpack.getSelectedVersion().overrideUrl, MiscUtils.getPath("temp/" + modpack.getName() + ".zip"));
 					}
 
 //					Extract override zip
@@ -112,7 +116,7 @@ public class ModpackUtils {
 						updateMessage("Extracting override zip");
 						updateProgress(3, taskCount);
 
-						FileUtils.unzipFile("temp/" + modpack.getName() + ".zip", "modpacks/" + modpack.getName() + "/");
+						FileUtils.unzipFile(MiscUtils.getPath("temp/" + modpack.getName() + ".zip"), MiscUtils.getPath("modpacks/" + modpack.getName() + "/"));
 					}
 
 //					Delete modpack zip
@@ -121,7 +125,7 @@ public class ModpackUtils {
 						updateMessage("Deleting override zip");
 						updateProgress(4, taskCount);
 
-						new File("temp/" + modpack.getName() + ".zip").delete();
+						MiscUtils.getFile("temp/" + modpack.getName() + ".zip").delete();
 					}
 
 //					Download mods
@@ -134,7 +138,7 @@ public class ModpackUtils {
 								updateMessage("Downloading mod " + mod.name);
 								updateProgress(i + 5, taskCount);
 
-								FileUtils.downloadFile(mod.downloadUrl, "modpacks/" + modpack.getName() + "/mods/" + mod.fileName);
+								InternetUtils.downloadFile(mod.downloadUrl, MiscUtils.getPath("modpacks/" + modpack.getName() + "/mods/" + mod.fileName));
 							}
 						}
 					}
@@ -145,19 +149,20 @@ public class ModpackUtils {
 						updateMessage("Creating version.txt");
 						updateProgress(taskCount, taskCount);
 
-						File versionFile = new File("modpacks/" + modpack.getName() + "/version.txt");
+						File versionFile = MiscUtils.getFile("modpacks/" + modpack.getName() + "/version.txt");
 						if (!versionFile.exists()) {
 							versionFile.createNewFile();
 						}
 
-						PrintWriter writer = new PrintWriter("modpacks/" + modpack.getName() + "/version.txt");
+						PrintWriter writer = new PrintWriter(MiscUtils.getPath("modpacks/" + modpack.getName() + "/version.txt"));
 						writer.println(modpack.getSelectedVersion().version);
 						writer.close();
 					}
 
 //					Cancel and undo all changes
 					if (isCancelled()) {
-						FileUtils.deleteFolder(new File("modpacks/" + modpack.getName() + "/"));
+						FileUtils.deleteFolder(MiscUtils.getFile("modpacks/" + modpack.getName() + "/"));
+						return null;
 					}
 
 					succeeded();
@@ -190,7 +195,7 @@ public class ModpackUtils {
 	public static boolean canUpgrade(Modpack modpack) {
 		Version saved = null;
 		try {
-			String versionFile = Files.readAllLines(Paths.get("modpacks/" + modpack.getName() + "/version.txt")).get(0);
+			String versionFile = Files.readAllLines(Paths.get(MiscUtils.getPath("modpacks/" + modpack.getName() + "/version.txt"))).get(0);
 
 			if (versionFile != null) {
 				for (Version v : modpack.getVersions()) {
@@ -214,22 +219,33 @@ public class ModpackUtils {
 				MCInstance instance = MCInstance.createForge(
 						modpack.getSelectedVersion().mcVersion,
 						modpack.getSelectedVersion().forgeVersion,
-						"modpacks/" + modpack.getName() + "/",
-						"caches/",
+						MiscUtils.getPath("modpacks/" + modpack.getName() + "/"),
+						MiscUtils.getPath("caches/"),
 						controller
 				);
 
 				try {
 					MCInstance.LaunchSpec spec;
 
-					if (controller.get() == null) { //TODO: TEST
+					if (controller.get() == null) {
 						spec = instance.getOfflineLaunchSpec("TRGuest" + new Random().nextInt(25));
 					} else {
 						spec = instance.getLaunchSpec();
 					}
 
+//					because RX14 is using a String[] instead of an ArrayList<String>
+					ArrayList<String> temp = new ArrayList<>(Arrays.asList(spec.getJvmArgs()));
+					for (String s : ConfigManager.getInstanceConfig().jvmArgs) {
+						if (s != null && !s.equals("")) temp.add(s);
+					}
+					spec.setJvmArgs(temp.toArray(new String[0]));
 
-					Process process = spec.run(Paths.get("/usr/bin/java"));
+					ArrayList<String> temp2 = new ArrayList<>(Arrays.asList(spec.getLaunchArgs()));
+					temp2.add("--width=" + ConfigManager.getInstanceConfig().mcWidth);
+					temp2.add("--height=" + ConfigManager.getInstanceConfig().mcHeight);
+					spec.setLaunchArgs(temp2.toArray(new String[0]));
+
+					Process process = spec.run(Paths.get(ConfigManager.getInstanceConfig().javaPath));
 					StreamRedirect output = new StreamRedirect(process.getInputStream(), new Logger("MC", true), LogLevel.INFO);
 					StreamRedirect error = new StreamRedirect(process.getErrorStream(), new Logger("MC", true), LogLevel.ERROR);
 					output.start();
@@ -260,7 +276,7 @@ public class ModpackUtils {
 				@Override
 				protected Void call() throws Exception {
 
-					FileUtils.deleteFolder(new File("modpacks/" + modpack.getName() + "/"));
+					FileUtils.deleteFolder(MiscUtils.getFile("modpacks/" + modpack.getName() + "/"));
 
 					return null;
 				}

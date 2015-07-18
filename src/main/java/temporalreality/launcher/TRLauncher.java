@@ -9,16 +9,15 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import temporalreality.launcher.config.ConfigManager;
 import temporalreality.launcher.util.ModpackUtils;
 import temporalreality.launcher.model.Modpack;
+import temporalreality.launcher.view.config.ConfigDialogController;
 import temporalreality.launcher.view.downloaddialog.DownloadDialogController;
 import temporalreality.launcher.view.login.LoginDialogController;
 import temporalreality.launcher.view.overview.ModpackOverviewController;
-import uk.co.rx14.jmclaunchlib.auth.Credentials;
-import uk.co.rx14.jmclaunchlib.util.NullSupplier;
 
 import java.io.IOException;
-import java.util.function.Supplier;
 
 /**
  * @author shadowfacts
@@ -147,6 +146,31 @@ public class TRLauncher extends Application {
 		}
 	}
 
+	public void showConfigDialog() {
+		try {
+			FXMLLoader loader = new FXMLLoader();
+			loader.setLocation(TRLauncher.class.getResource("view/config/ConfigDialog.fxml"));
+
+			AnchorPane pane = loader.load();
+
+			Stage dialogStage = new Stage();
+			dialogStage.setTitle("Config");
+			dialogStage.initModality(Modality.WINDOW_MODAL);
+			dialogStage.initOwner(primaryStage);
+			Scene scene = new Scene(pane);
+			dialogStage.setScene(scene);
+
+			ConfigDialogController controller = loader.getController();
+			controller.setDialogStage(dialogStage);
+
+			dialogStage.showAndWait();
+
+		} catch (IOException e) {
+			System.err.println("Couldn't find the specified layout");
+			e.printStackTrace();
+		}
+	}
+
 	public static TRLauncher getLauncher() {
 		return launcher;
 	}
@@ -159,7 +183,9 @@ public class TRLauncher extends Application {
 		return modpacks;
 	}
 
-	public static void main(String[] args) {
+	public static void main(String[] args) throws IOException {
+		ConfigManager.getInstance().init();
+
 		launch(args);
 	}
 }

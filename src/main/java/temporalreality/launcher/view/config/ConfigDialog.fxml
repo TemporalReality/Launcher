@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="400.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="temporalreality.launcher.view.config.ConfigDialogController">
+   <children>
+      <Label layoutX="66.0" layoutY="21.0" text="Java Path" AnchorPane.topAnchor="15.0">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <TextField fx:id="javaPathField" layoutX="153.0" layoutY="14.0" prefHeight="26.0" prefWidth="197.0" AnchorPane.rightAnchor="50.0" />
+      <Button layoutX="341.0" layoutY="14.0" mnemonicParsing="false" onAction="#javaPathButtonPressed" text="..." AnchorPane.rightAnchor="15.0" />
+      <Label layoutX="13.0" layoutY="56.0" text="JVM Arguments" AnchorPane.leftAnchor="13.0" AnchorPane.topAnchor="55.0">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <TextField fx:id="jvmArgumentsField" layoutX="153.0" layoutY="54.0" prefHeight="26.0" prefWidth="232.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="54.0" />
+      <Label layoutX="99.0" layoutY="136.0" text="Width" AnchorPane.leftAnchor="99.0" AnchorPane.topAnchor="95.0">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <TextField fx:id="widthField" layoutX="153.0" layoutY="94.0" prefHeight="26.0" prefWidth="232.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="94.0" />
+      <Label layoutX="90.0" layoutY="177.0" text="Height" AnchorPane.leftAnchor="90.0" AnchorPane.topAnchor="135.0">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <TextField fx:id="heightField" layoutX="153.0" layoutY="134.0" prefHeight="26.0" prefWidth="232.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="134.0" />
+      <Label layoutX="12.0" layoutY="217.0" text="TR Launcher Dir" AnchorPane.leftAnchor="12.0" AnchorPane.topAnchor="175.0">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <TextField fx:id="launcherDirField" layoutX="153.0" layoutY="174.0" prefHeight="26.0" prefWidth="197.0" />
+      <Button layoutX="353.0" layoutY="174.0" mnemonicParsing="false" onAction="#trDirPressed" text="..." />
+      <Button defaultButton="true" layoutX="321.0" layoutY="360.0" mnemonicParsing="false" onAction="#okPressed" text="Ok" AnchorPane.bottomAnchor="15.0" AnchorPane.rightAnchor="15.0" />
+      <Button layoutX="269.0" layoutY="359.0" mnemonicParsing="false" onAction="#cancelPressed" text="Cancel" />
+      <Text layoutX="21.0" layoutY="293.0" strokeType="OUTSIDE" strokeWidth="0.0" text="You must restart the launcher for new settings to take effect." />
+   </children>
+</AnchorPane>
