@@ -43,7 +43,7 @@ sourceSets {
 
 tasks.build.dependsOn shadowJar
 
-archives {
+artifacts {
 	jar
 	shadowJar
 }
