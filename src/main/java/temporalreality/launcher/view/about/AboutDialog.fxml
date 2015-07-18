@@ -35,7 +35,7 @@
       <Label layoutX="386.0" layoutY="247.0" text="Apache Commons IO" />
       <Hyperlink layoutX="314.0" layoutY="186.0" onAction="#shadowlibPressed" text="https://github.com/shadowfacts/ShadowLib" />
       <Label layoutX="418.0" layoutY="170.0" text="ShadowLib" />
-      <Label layoutX="236.0" layoutY="108.0" text="RX14: Gradle Wizard" />
+      <Label layoutX="183.0" layoutY="108.0" text="RX14: jMCLaunchLib and Gradle Wizard" />
       <Hyperlink layoutX="187.0" layoutY="14.0" onAction="#temporalRealityPressed" text="Temporal Reality Launcher" AnchorPane.topAnchor="10.0">
          <font>
             <Font size="18.0" />
