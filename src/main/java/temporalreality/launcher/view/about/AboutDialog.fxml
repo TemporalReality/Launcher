@@ -36,7 +36,7 @@
       <Hyperlink layoutX="302.0" layoutY="186.0" onAction="#shadowlibPressed" text="https://github.com/shadowfacts/ShadowLib" />
       <Label layoutX="406.0" layoutY="170.0" text="ShadowLib" />
       <Label layoutX="236.0" layoutY="116.0" text="RX14: Gradle Wizard" />
-      <Hyperlink layoutX="199.0" layoutY="14.0" onAction="#temporalRealityPressed" text="Temporal Reality Launcher" AnchorPane.topAnchor="10.0">
+      <Hyperlink layoutX="187.0" layoutY="14.0" onAction="#temporalRealityPressed" text="Temporal Reality Launcher" AnchorPane.topAnchor="10.0">
          <font>
             <Font size="18.0" />
          </font>
