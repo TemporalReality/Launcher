@@ -35,15 +35,15 @@ import java.util.function.Supplier;
  */
 public class ModpackUtils {
 
-	public static void loadModpacks(String url, List<Modpack> modpacks) throws Exception {
-//		System.out.println("Loading modpacks from " + url);
-//		String data = getModpackData(url);
-//		String[] packs = data.split("\n");
-//		for (String s : packs) {
-//			modpacks.add(Modpack.get(new URL(s)));
-//		}
-		System.out.println("Loading modpacks from local file");
-		modpacks.add(Modpack.get(new File("basically-basic.json")));
+	public static void loadModpacks(List<Modpack> modpacks) throws Exception {
+		for (String s : ConfigManager.getInstanceConfig().packIndexes) {
+			System.out.println("Loading modpacks from index at " + s);
+			String data = getModpackData(s);
+			String[] packs = data.split("\n");
+			for (String pack : packs) {
+				modpacks.add(Modpack.get(new URL(pack)));
+			}
+		}
 	}
 
 	private static String getModpackData(String urlString) throws Exception{

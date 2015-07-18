@@ -28,6 +28,13 @@ public class ConfigDeserializer implements JsonDeserializer<Config> {
 		config.mcHeight = obj.get("mcHeight").getAsInt();
 		config.launcherDir = obj.get("launcherDir").getAsString();
 
+		JsonArray indexArray = obj.get("packIndexes").getAsJsonArray();
+		String[] packIndex = new String[indexArray.size()];
+		for (int i = 0; i < indexArray.size(); i++) {
+			 packIndex[i] = indexArray.get(i).getAsString();
+		}
+		config.packIndexes = packIndex;
+
 		return config;
 	}
 

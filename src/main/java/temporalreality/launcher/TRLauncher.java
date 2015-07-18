@@ -37,8 +37,11 @@ public class TRLauncher extends Application {
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
-		ModpackUtils.loadModpacks("https://gist.githubusercontent.com/shadowfacts/89d9b6a33a815a8344ef/raw/8b2c1ff5fce28ed12f37493345c2d200ca42caed/gistfile1.txt", modpacks);
 		launcher = this;
+
+		ConfigManager.getInstance().init();
+
+		ModpackUtils.loadModpacks(modpacks);
 
 		this.primaryStage = primaryStage;
 		this.primaryStage.setTitle("Temporal Reality");
@@ -205,8 +208,6 @@ public class TRLauncher extends Application {
 	}
 
 	public static void main(String[] args) throws IOException {
-		ConfigManager.getInstance().init();
-
 		launch(args);
 	}
 }

@@ -10,5 +10,6 @@ public class Config {
 	public int mcWidth;
 	public int mcHeight;
 	public String launcherDir;
+	public String[] packIndexes;
 
 }
