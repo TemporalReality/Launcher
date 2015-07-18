@@ -171,6 +171,27 @@ public class TRLauncher extends Application {
 		}
 	}
 
+	public void showAboutDialog() {
+		try {
+			FXMLLoader loader = new FXMLLoader();
+			loader.setLocation(TRLauncher.class.getResource("view/about/AboutDialog.fxml"));
+
+			AnchorPane pane = loader.load();
+
+			Stage dialogStage = new Stage();
+			dialogStage.setTitle("About");
+			dialogStage.initModality(Modality.WINDOW_MODAL);
+			dialogStage.initOwner(primaryStage);
+			Scene scene = new Scene(pane);
+			dialogStage.setScene(scene);
+
+			dialogStage.showAndWait();
+		} catch (IOException e) {
+			System.err.println("Couldn't find the specified layout");
+			e.printStackTrace();
+		}
+	}
+
 	public static TRLauncher getLauncher() {
 		return launcher;
 	}

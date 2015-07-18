@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="350.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="temporalreality.launcher.view.about.AboutDialogController">
+   <children>
+      <Label layoutX="258.0" layoutY="33.0" text="Version 1.0.0" AnchorPane.topAnchor="40.0">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Label>
+      <Label layoutX="213.0" layoutY="100.0" text="Shadowfacts: Lead Developer" />
+      <Label layoutX="106.0" layoutY="170.0" text="jMCLaunchLib" />
+      <Hyperlink layoutX="28.0" layoutY="186.0" onAction="#jMCLaunchLibPressed" text="https://github.com/RX14/jMCLaunchLib" />
+      <Label layoutX="281.0" layoutY="84.0" text="Credits" />
+      <Label layoutX="271.0" layoutY="152.0" text="Libraries">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+      </Label>
+      <Label layoutX="136.0" layoutY="210.0" text="Gson" />
+      <Hyperlink layoutX="53.0" layoutY="223.0" onAction="#gsonPressed" text="https://github.com/google/gson" />
+      <Hyperlink layoutX="64.0" layoutY="263.0" onAction="#groovyPressed" text="http://www.groovy-lang.org/" />
+      <Label layoutX="131.0" layoutY="247.0" text="Groovy" />
+      <Label layoutX="106.0" layoutY="287.0" text="Unirest for Java" />
+      <Hyperlink layoutX="70.0" layoutY="303.0" onAction="#unirestPressed" text="http://unirest.io/java.html" />
+      <Hyperlink layoutX="301.0" layoutY="303.0" onAction="#commonsCodecPressed" text="https://github.com/apache/commons-codec" />
+      <Label layoutX="362.0" layoutY="287.0" text="Apache Commons Codec" />
+      <Label layoutX="405.0" layoutY="210.0" text="XZ for Java" />
+      <Hyperlink layoutX="345.0" layoutY="223.0" onAction="#xzPressed" text="http://tukaani.org/xz/java.html" />
+      <Hyperlink layoutX="310.0" layoutY="263.0" onAction="#commonsIOPressed" text="https://github.com/apache/commons-io" />
+      <Label layoutX="374.0" layoutY="247.0" text="Apache Commons IO" />
+      <Hyperlink layoutX="302.0" layoutY="186.0" onAction="#shadowlibPressed" text="https://github.com/shadowfacts/ShadowLib" />
+      <Label layoutX="406.0" layoutY="170.0" text="ShadowLib" />
+      <Label layoutX="236.0" layoutY="116.0" text="RX14: Gradle Wizard" />
+      <Hyperlink layoutX="199.0" layoutY="14.0" onAction="#temporalRealityPressed" text="Temporal Reality Launcher" AnchorPane.topAnchor="10.0">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Hyperlink>
+   </children>
+</AnchorPane>

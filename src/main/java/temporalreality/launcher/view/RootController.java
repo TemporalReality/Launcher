@@ -27,7 +27,8 @@ public class RootController {
 
 				m.getItems().get(0).setOnAction(event -> {
 					System.out.println("Showing about dialog");
-//					TODO: Show about dialog
+
+					TRLauncher.getLauncher().showAboutDialog();
 				});
 
 			} else if (m.getText().equalsIgnoreCase("file")) {
