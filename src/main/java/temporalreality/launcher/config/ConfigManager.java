@@ -1,11 +1,17 @@
 package temporalreality.launcher.config;
 
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.PrintWriter;
+
+import net.shadowfacts.shadowlib.util.InternetUtils;
+import temporalreality.launcher.TRLauncher;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import net.shadowfacts.shadowlib.util.InternetUtils;
-
-import java.io.*;
 
 /**
  * @author shadowfacts
@@ -60,7 +66,7 @@ public class ConfigManager {
 			writer.println(data);
 			writer.close();
 		} catch (FileNotFoundException e) {
-			System.err.println("Config file could not be found");
+			TRLauncher.log.error("Config file could not be found");
 			e.printStackTrace();
 		}
 	}

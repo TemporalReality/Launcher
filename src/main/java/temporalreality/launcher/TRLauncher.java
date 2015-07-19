@@ -69,7 +69,7 @@ public class TRLauncher extends Application {
 			primaryStage.show();
 
 		} catch (IOException e) {
-			System.err.println("Couldn't find the specified layout");
+			TRLauncher.log.error("Couldn't find the specified layout");
 			e.printStackTrace();
 		}
 	}
@@ -87,7 +87,7 @@ public class TRLauncher extends Application {
 			ModpackOverviewController controller = loader.getController();
 			controller.setPrimaryStage(primaryStage);
 		} catch (IOException e) {
-			System.err.println("Couldn't find the specified layout");
+			TRLauncher.log.error("Couldn't find the specified layout");
 			e.printStackTrace();
 		}
 	}
@@ -122,7 +122,7 @@ public class TRLauncher extends Application {
 
 			return controller;
 		} catch (IOException e) {
-			System.err.println("Couldn't find the specified layout");
+			TRLauncher.log.error("Couldn't find the specified layout");
 			e.printStackTrace();
 			return null;
 		}
@@ -150,7 +150,7 @@ public class TRLauncher extends Application {
 			return controller;
 
 		} catch (IOException e) {
-			System.err.println("Couldn't find the specified layout");
+			TRLauncher.log.error("Couldn't find the specified layout");
 			e.printStackTrace();
 			return null;
 		}
@@ -176,7 +176,7 @@ public class TRLauncher extends Application {
 			dialogStage.showAndWait();
 
 		} catch (IOException e) {
-			System.err.println("Couldn't find the specified layout");
+			TRLauncher.log.error("Couldn't find the specified layout");
 			e.printStackTrace();
 		}
 	}
@@ -197,7 +197,7 @@ public class TRLauncher extends Application {
 
 			dialogStage.showAndWait();
 		} catch (IOException e) {
-			System.err.println("Couldn't find the specified layout");
+			TRLauncher.log.error("Couldn't find the specified layout");
 			e.printStackTrace();
 		}
 	}
@@ -223,6 +223,7 @@ public class TRLauncher extends Application {
 		try {
 			LogManager.setDefaultContext(LogManager.getContext("Launcher", System.out, new FileOutputStream(file)));
 		} catch (FileNotFoundException e) {
+			System.err.println("Could not setup logging library properly.");
 			e.printStackTrace();
 			LogManager.setDefaultContext(LogManager.getContext("Launcher", System.out));
 		}
