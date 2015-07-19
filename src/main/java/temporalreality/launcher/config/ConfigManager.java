@@ -32,12 +32,24 @@ public class ConfigManager {
 		if (!file.getParentFile().exists()) {
 			file.getParentFile().mkdirs();
 		}
-		if (!file.exists()) {
+		boolean flag = !file.exists();
+		if (flag) {
 			file.createNewFile();
 			InternetUtils.downloadFile("https://gist.githubusercontent.com/shadowfacts/dc87dd58fdcd317ebd1d/raw/da5dccc30341c37ae8cb1ddf284da86df899abc0/0.1.0.json", file);
 		}
 
 		config = gson.fromJson(new FileReader(file), Config.class);
+
+		if (flag) {
+			config.javaPath = System.getProperty("java.home") + "/bin/";
+			if (System.getProperty("os.name").startsWith("Win")) {
+				config.javaPath += "java.exe";
+			} else {
+				config.javaPath += "java";
+			}
+			save();
+		}
+
 	}
 
 	public void save() {
