@@ -37,7 +37,7 @@ public class ModpackUtils {
 
 	public static void loadModpacks(List<Modpack> modpacks) throws Exception {
 		for (String s : ConfigManager.getInstanceConfig().packIndexes) {
-			System.out.println("Loading modpacks from index at " + s);
+			TRLauncher.log.info("Loading modpacks from index at " + s);
 			String data = getModpackData(s);
 			String[] packs = data.split("\n");
 			for (String pack : packs) {
@@ -68,7 +68,7 @@ public class ModpackUtils {
 	public static File makeModpacksDir() {
 		File dir = MiscUtils.getFile("modpacks/");
 		if (!dir.exists()) {
-			System.out.println("modpacks/ folder does not exist, creating it");
+			TRLauncher.log.info("modpacks/ folder does not exist, creating it");
 			dir.mkdirs();
 		}
 		return dir;
@@ -94,7 +94,7 @@ public class ModpackUtils {
 
 //					Create modpack dir
 					if (!getPackDir(modpack).exists() && !isCancelled()) {
-						System.out.println("Creating dir for " + modpack.getName());
+						TRLauncher.log.info("Creating dir for " + modpack.getName());
 						updateMessage("Creating modpack directory");
 						updateProgress(1, taskCount);
 
@@ -103,7 +103,7 @@ public class ModpackUtils {
 
 //					Download override zip
 					if (!isCancelled()) {
-						System.out.println("Downloading override zip to temp/" + modpack.getName() + ".zip");
+						TRLauncher.log.info("Downloading override zip to temp/" + modpack.getName() + ".zip");
 						updateMessage("Downloading override zip");
 						updateProgress(2, taskCount);
 
@@ -112,7 +112,7 @@ public class ModpackUtils {
 
 //					Extract override zip
 					if (!isCancelled()) {
-						System.out.println("Extracting override zip");
+						TRLauncher.log.info("Extracting override zip");
 						updateMessage("Extracting override zip");
 						updateProgress(3, taskCount);
 
@@ -121,7 +121,7 @@ public class ModpackUtils {
 
 //					Delete modpack zip
 					if (!isCancelled()) {
-						System.out.println("Deleting override zip");
+						TRLauncher.log.info("Deleting override zip");
 						updateMessage("Deleting override zip");
 						updateProgress(4, taskCount);
 
@@ -134,7 +134,7 @@ public class ModpackUtils {
 							if (!isCancelled()) {
 								Mod mod = modpack.getSelectedVersion().mods.get(i);
 
-								System.out.println("Downloading mod " + mod.name);
+								TRLauncher.log.info("Downloading mod " + mod.name);
 								updateMessage("Downloading mod " + mod.name);
 								updateProgress(i + 5, taskCount);
 
@@ -145,7 +145,7 @@ public class ModpackUtils {
 
 //					Create version file
 					if (!isCancelled()) {
-						System.out.println("Creating version.txt file for " + modpack.getName());
+						TRLauncher.log.info("Creating version.txt file for " + modpack.getName());
 						updateMessage("Creating version.txt");
 						updateProgress(taskCount, taskCount);
 
@@ -253,7 +253,7 @@ public class ModpackUtils {
 
 				} catch (ForbiddenOperationException e) {
 
-					System.out.println("Invalid credentials!");
+					TRLauncher.log.info("Invalid credentials!");
 					Alert alert = new Alert(Alert.AlertType.ERROR);
 					alert.initOwner(TRLauncher.getLauncher().getPrimaryStage());
 					alert.setTitle("Invalid Credentials");
@@ -264,7 +264,7 @@ public class ModpackUtils {
 
 				}
 			} else {
-				System.out.println("User did not login or enter offline mode, cancelling launch.");
+				TRLauncher.log.info("User did not login or enter offline mode, cancelling launch.");
 			}
 		}
 	}

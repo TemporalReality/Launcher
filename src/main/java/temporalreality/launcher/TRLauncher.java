@@ -1,5 +1,10 @@
 package temporalreality.launcher;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -10,19 +15,21 @@ import javafx.scene.layout.BorderPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import temporalreality.launcher.config.ConfigManager;
-import temporalreality.launcher.util.ModpackUtils;
 import temporalreality.launcher.model.Modpack;
+import temporalreality.launcher.util.ModpackUtils;
 import temporalreality.launcher.view.config.ConfigDialogController;
 import temporalreality.launcher.view.downloaddialog.DownloadDialogController;
 import temporalreality.launcher.view.login.LoginDialogController;
 import temporalreality.launcher.view.overview.ModpackOverviewController;
-
-import java.io.IOException;
+import coolsquid.logging.LogManager;
+import coolsquid.logging.Logger;
 
 /**
  * @author shadowfacts
  */
 public class TRLauncher extends Application {
+
+	public static final Logger log;
 
 	private static TRLauncher launcher;
 
@@ -51,7 +58,7 @@ public class TRLauncher extends Application {
 	}
 
 	public void initRootLayout() {
-		System.out.println("Initializing root layout");
+		TRLauncher.log.info("Initializing root layout");
 		try {
 			FXMLLoader loader = new FXMLLoader();
 			loader.setLocation(TRLauncher.class.getResource("view/RootLayout.fxml"));
@@ -68,7 +75,7 @@ public class TRLauncher extends Application {
 	}
 
 	public void showModpackOverview() {
-		System.out.println("Showing modpack overview");
+		TRLauncher.log.info("Showing modpack overview");
 		try {
 			FXMLLoader loader = new FXMLLoader();
 			loader.setLocation(TRLauncher.class.getResource("view/overview/ModpackOverview.fxml"));
@@ -209,5 +216,16 @@ public class TRLauncher extends Application {
 
 	public static void main(String[] args) throws IOException {
 		launch(args);
+	}
+
+	static {
+		File file = new File("launcher.log");
+		try {
+			LogManager.setDefaultContext(LogManager.getContext("Launcher", System.out, new FileOutputStream(file)));
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+			LogManager.setDefaultContext(LogManager.getContext("Launcher", System.out));
+		}
+		log = LogManager.getLogger("Launcher");
 	}
 }

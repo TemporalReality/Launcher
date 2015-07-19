@@ -1,13 +1,21 @@
 package temporalreality.launcher.model;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import javafx.beans.property.*;
-import temporalreality.launcher.util.ModpackDeserializer;
-
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.ArrayList;
+
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
+import temporalreality.launcher.TRLauncher;
+import temporalreality.launcher.util.ModpackDeserializer;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 /**
  * @author shadowfacts
@@ -51,7 +59,7 @@ public class Modpack {
 	}
 
 	public static Modpack get(URL url) throws IOException {
-		System.out.println("Loading modpack from " + url);
+		TRLauncher.log.info("Loading modpack from " + url);
 		BufferedReader reader = null;
 		try {
 			reader = new BufferedReader(new InputStreamReader(url.openStream()));

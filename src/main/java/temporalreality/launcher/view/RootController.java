@@ -26,7 +26,7 @@ public class RootController {
 			if (m.getText().equalsIgnoreCase("help")) {
 
 				m.getItems().get(0).setOnAction(event -> {
-					System.out.println("Showing about dialog");
+					TRLauncher.log.info("Showing about dialog");
 
 					TRLauncher.getLauncher().showAboutDialog();
 				});
@@ -34,7 +34,7 @@ public class RootController {
 			} else if (m.getText().equalsIgnoreCase("file")) {
 				MenuItem configureItem = new MenuItem("Configure");
 				configureItem.setOnAction(event -> {
-					System.out.println("Showing config dialog");
+					TRLauncher.log.info("Showing config dialog");
 
 					TRLauncher.getLauncher().showConfigDialog();
 				});
@@ -43,7 +43,7 @@ public class RootController {
 				m.getItems().add(1, new SeparatorMenuItem());
 
 				m.getItems().get(2).setOnAction(event -> {
-					System.out.println("Goodbye");
+					TRLauncher.log.info("Goodbye");
 					System.exit(0);
 				});
 			}
