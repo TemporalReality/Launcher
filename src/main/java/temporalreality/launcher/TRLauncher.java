@@ -23,6 +23,7 @@ import temporalreality.launcher.view.login.LoginDialogController;
 import temporalreality.launcher.view.overview.ModpackOverviewController;
 import coolsquid.logging.LogManager;
 import coolsquid.logging.Logger;
+import temporalreality.launcher.view.passwordidalog.PasswordDialogController;
 
 /**
  * @author shadowfacts
@@ -149,6 +150,34 @@ public class TRLauncher extends Application {
 
 			return controller;
 
+		} catch (IOException e) {
+			TRLauncher.log.error("Couldn't find the specified layout");
+			e.printStackTrace();
+			return null;
+		}
+	}
+
+	public PasswordDialogController showPasswordDialog(String username) {
+		try {
+			FXMLLoader loader = new FXMLLoader();
+			loader.setLocation(TRLauncher.class.getResource("view/passworddialog/PasswordDialog.fxml"));
+
+			AnchorPane pane = loader.load();
+
+			Stage dialogStage = new Stage();
+			dialogStage.setTitle("Login");
+			dialogStage.initModality(Modality.WINDOW_MODAL);
+			dialogStage.initOwner(primaryStage);
+			Scene scene = new Scene(pane);
+			dialogStage.setScene(scene);
+
+			PasswordDialogController controller = loader.getController();
+			controller.setDialogStage(dialogStage);
+			controller.setUsername(username);
+
+			dialogStage.showAndWait();
+
+			return controller;
 		} catch (IOException e) {
 			TRLauncher.log.error("Couldn't find the specified layout");
 			e.printStackTrace();

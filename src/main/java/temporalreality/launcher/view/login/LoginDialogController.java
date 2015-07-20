@@ -12,7 +12,7 @@ import java.util.function.Supplier;
 /**
  * @author shadowfacts
  */
-public class LoginDialogController implements Supplier<Credentials> {
+public class LoginDialogController {
 
 	private Stage dialogStage;
 
@@ -55,14 +55,6 @@ public class LoginDialogController implements Supplier<Credentials> {
 		dialogStage.close();
 	}
 
-	@FXML
-	private void launchOfflineMode() {
-		loggedIn = true;
-
-		dialogStage.close();
-	}
-
-	@Override
 	public Credentials get() {
 		if (username != null && password != null) {
 			return new Credentials(username, password);
@@ -82,4 +74,9 @@ public class LoginDialogController implements Supplier<Credentials> {
 	public String getUsername() {
 		return username;
 	}
+
+	public String getPassword() {
+		return password;
+	}
+
 }

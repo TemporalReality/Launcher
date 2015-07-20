@@ -16,6 +16,5 @@
       </Label>
       <Button fx:id="ok" defaultButton="true" layoutX="227.0" layoutY="160.0" mnemonicParsing="false" onAction="#okPressed" text="Ok" AnchorPane.bottomAnchor="15.0" AnchorPane.rightAnchor="15.0" />
       <Button fx:id="cancel" layoutX="175.0" layoutY="159.0" mnemonicParsing="false" onAction="#cancelPressed" text="Cancel" />
-      <Button layoutX="14.0" layoutY="159.0" mnemonicParsing="false" onAction="#launchOfflineMode" text="Launch Offline Mode" />
    </children>
 </AnchorPane>

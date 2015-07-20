@@ -1,6 +1,8 @@
 package temporalreality.launcher.util;
 
+import temporalreality.launcher.TRLauncher;
 import temporalreality.launcher.config.ConfigManager;
+import temporalreality.launcher.view.login.LoginDialogController;
 
 import java.io.File;
 

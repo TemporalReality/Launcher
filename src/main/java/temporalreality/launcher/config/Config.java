@@ -7,9 +7,10 @@ public class Config {
 
 	public String javaPath;
 	public String[] jvmArgs;
-	public int mcWidth;
-	public int mcHeight;
 	public String launcherDir;
 	public String[] packIndexes;
+	public String username;
+	public int mcWidth;
+	public int mcHeight;
 
 }

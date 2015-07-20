@@ -15,10 +15,12 @@ import temporalreality.launcher.model.Version;
 import temporalreality.launcher.view.downloaddialog.DownloadDialogController;
 import temporalreality.launcher.view.login.LoginDialogController;
 import temporalreality.launcher.view.overview.ModpackOverviewController;
+import temporalreality.launcher.view.passwordidalog.PasswordDialogController;
+import uk.co.rx14.jmclaunchlib.LaunchSpec;
 import uk.co.rx14.jmclaunchlib.MCInstance;
-import uk.co.rx14.jmclaunchlib.auth.Credentials;
+import uk.co.rx14.jmclaunchlib.auth.PasswordSupplier;
 import uk.co.rx14.jmclaunchlib.exceptions.ForbiddenOperationException;
-import uk.co.rx14.jmclaunchlib.util.NullSupplier;
+import uk.co.rx14.jmclaunchlib.tasks.LaunchTask;
 
 import java.io.*;
 import java.net.URL;
@@ -28,7 +30,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
-import java.util.function.Supplier;
 
 /**
  * @author shadowfacts
@@ -212,60 +213,118 @@ public class ModpackUtils {
 	public static void launch(Modpack modpack) {
 		if (isModpackInstalled(modpack)) {
 
-			LoginDialogController controller = TRLauncher.getLauncher().showLoginDialog();
+			PasswordSupplier passwordSupplier = null;
 
-			if (controller.isLoggedIn()) {
+			String selectedUsername = ConfigManager.getInstanceConfig().username;
+			final boolean[] offline = new boolean[]{false};
 
-				MCInstance instance = MCInstance.createForge(
-						modpack.getSelectedVersion().mcVersion,
-						modpack.getSelectedVersion().forgeVersion,
-						MiscUtils.getPath("modpacks/" + modpack.getName() + "/"),
-						MiscUtils.getPath("caches/"),
-						controller
-				);
+			if (selectedUsername != null || !selectedUsername.equals("")) {
 
-				try {
-					MCInstance.LaunchSpec spec;
-
-					if (controller.get() == null) {
-						spec = instance.getOfflineLaunchSpec("TRGuest" + new Random().nextInt(25));
-					} else {
-						spec = instance.getLaunchSpec();
-					}
-
-//					because RX14 is using a String[] instead of an ArrayList<String>
-					ArrayList<String> temp = new ArrayList<>(Arrays.asList(spec.getJvmArgs()));
-					for (String s : ConfigManager.getInstanceConfig().jvmArgs) {
-						if (s != null && !s.equals("")) temp.add(s);
-					}
-					spec.setJvmArgs(temp.toArray(new String[0]));
-
-					ArrayList<String> temp2 = new ArrayList<>(Arrays.asList(spec.getLaunchArgs()));
-					temp2.add("--width=" + ConfigManager.getInstanceConfig().mcWidth);
-					temp2.add("--height=" + ConfigManager.getInstanceConfig().mcHeight);
-					spec.setLaunchArgs(temp2.toArray(new String[0]));
-
-					Process process = spec.run(Paths.get(ConfigManager.getInstanceConfig().javaPath));
-					StreamRedirect output = new StreamRedirect(process.getInputStream(), new Logger("MC", true), LogLevel.INFO);
-					StreamRedirect error = new StreamRedirect(process.getErrorStream(), new Logger("MC", true), LogLevel.ERROR);
-					output.start();
-					error.start();
-
-				} catch (ForbiddenOperationException e) {
-
-					TRLauncher.log.info("Invalid credentials!");
+				passwordSupplier = (String username) -> {
+					PasswordDialogController controller = TRLauncher.getLauncher().showPasswordDialog(username);
+					offline[0] = controller.isOffline();
+					return controller.getPassword();
+				};
+			} else {
+				LoginDialogController controller = TRLauncher.getLauncher().showLoginDialog();
+				if (controller != null && controller.isLoggedIn()) {
+					passwordSupplier = (String username) -> {
+						if (username.equals(controller.getUsername())) {
+							return controller.getPassword();
+						} else {
+							return null;
+						}
+					};
+					selectedUsername = controller.getUsername();
+					ConfigManager.getInstanceConfig().username = controller.getUsername();
+					ConfigManager.getInstance().save();
+				} else {
+					TRLauncher.log.error("You must login at least once to launch Minecraft");
 					Alert alert = new Alert(Alert.AlertType.ERROR);
 					alert.initOwner(TRLauncher.getLauncher().getPrimaryStage());
-					alert.setTitle("Invalid Credentials");
-					alert.setHeaderText("Invalid login credentials");
-					alert.setContentText("Please launch Minecraft again and enter correct credentials.");
-
+					alert.setTitle("Login");
+					alert.setHeaderText("Login Required");
+					alert.setContentText("You must login at least once to launch Minecraft.");
 					alert.showAndWait();
-
 				}
-			} else {
-				TRLauncher.log.info("User did not login or enter offline mode, cancelling launch.");
 			}
+
+			MCInstance instance = MCInstance.createForge(
+					modpack.getSelectedVersion().mcVersion,
+					modpack.getSelectedVersion().forgeVersion,
+					MiscUtils.getPath("modpacks/" + modpack.getName() + "/"),
+					MiscUtils.getPath("caches/"),
+					passwordSupplier
+			);
+
+			LaunchTask launchTask;
+
+			if (offline[0]) {
+				launchTask = instance.getOfflineLaunchTask("TRGuest" + new Random().nextInt(1000));
+			} else {
+				launchTask = instance.getLaunchTask(selectedUsername);
+			}
+
+
+
+//			LoginDialogController controller = TRLauncher.getLauncher().showLoginDialog();
+//
+//			if (controller.isLoggedIn()) {
+//
+//				MCInstance instance = MCInstance.createForge(
+//						modpack.getSelectedVersion().mcVersion,
+//						modpack.getSelectedVersion().forgeVersion,
+//						MiscUtils.getPath("modpacks/" + modpack.getName() + "/"),
+//						MiscUtils.getPath("caches/"),
+//						(String username) -> {
+//							return "";
+//						}
+//				);
+//
+//				try {
+////					LaunchSpec spec;
+//					LaunchTask task;
+//
+//					if (controller.get() == null) {
+////						spec = instance.getOfflineLaunchSpec("TRGuest" + new Random().nextInt(25));
+//						task = instance.getLaunchTask();
+//					} else {
+////						spec = instance.getLaunchSpec();
+//					}
+//
+////					because RX14 is using a String[] instead of an ArrayList<String>
+//					ArrayList<String> temp = new ArrayList<>(Arrays.asList(spec.getJvmArgs()));
+//					for (String s : ConfigManager.getInstanceConfig().jvmArgs) {
+//						if (s != null && !s.equals("")) temp.add(s);
+//					}
+//					spec.setJvmArgs(temp.toArray(new String[0]));
+//
+//					ArrayList<String> temp2 = new ArrayList<>(Arrays.asList(spec.getLaunchArgs()));
+//					temp2.add("--width=" + ConfigManager.getInstanceConfig().mcWidth);
+//					temp2.add("--height=" + ConfigManager.getInstanceConfig().mcHeight);
+//					spec.setLaunchArgs(temp2.toArray(new String[0]));
+//
+//					Process process = spec.run(Paths.get(ConfigManager.getInstanceConfig().javaPath));
+//					StreamRedirect output = new StreamRedirect(process.getInputStream(), new Logger("MC", true), LogLevel.INFO);
+//					StreamRedirect error = new StreamRedirect(process.getErrorStream(), new Logger("MC", true), LogLevel.ERROR);
+//					output.start();
+//					error.start();
+//
+//				} catch (ForbiddenOperationException e) {
+//
+//					TRLauncher.log.info("Invalid credentials!");
+//					Alert alert = new Alert(Alert.AlertType.ERROR);
+//					alert.initOwner(TRLauncher.getLauncher().getPrimaryStage());
+//					alert.setTitle("Invalid Credentials");
+//					alert.setHeaderText("Invalid login credentials");
+//					alert.setContentText("Please launch Minecraft again and enter correct credentials.");
+//
+//					alert.showAndWait();
+//
+//				}
+//			} else {
+//				TRLauncher.log.info("User did not login or enter offline mode, cancelling launch.");
+//			}
 		}
 	}
 

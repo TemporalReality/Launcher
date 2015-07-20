@@ -23,17 +23,18 @@ public class ConfigDeserializer implements JsonDeserializer<Config> {
 			jvmArgs[i] = jvmArgArray.get(i).getAsString();
 		}
 		config.jvmArgs = jvmArgs;
-
-		config.mcWidth = obj.get("mcWidth").getAsInt();
-		config.mcHeight = obj.get("mcHeight").getAsInt();
 		config.launcherDir = obj.get("launcherDir").getAsString();
 
 		JsonArray indexArray = obj.get("packIndexes").getAsJsonArray();
 		String[] packIndex = new String[indexArray.size()];
 		for (int i = 0; i < indexArray.size(); i++) {
-			 packIndex[i] = indexArray.get(i).getAsString();
+			packIndex[i] = indexArray.get(i).getAsString();
 		}
 		config.packIndexes = packIndex;
+
+		config.mcWidth = obj.get("mcWidth").getAsInt();
+		config.mcHeight = obj.get("mcHeight").getAsInt();
+		config.username = obj.get("username").getAsString();
 
 		return config;
 	}
