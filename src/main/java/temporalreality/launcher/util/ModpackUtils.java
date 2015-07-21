@@ -277,10 +277,6 @@ public class ModpackUtils {
 
 //			TODO: Progress dialog
 
-			for (uk.co.rx14.jmclaunchlib.util.Task task : launchTask.getCurrentTasks()) {
-				if (task instanceof LoginTask)
-			}
-
 			launchTask.start();
 
 			LaunchSpec spec = launchTask.getSpec();
