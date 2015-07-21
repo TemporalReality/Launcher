@@ -1,5 +1,6 @@
 package temporalreality.launcher.util;
 
+import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.scene.control.Alert;
 import net.shadowfacts.shadowlib.log.LogLevel;
@@ -8,6 +9,7 @@ import net.shadowfacts.shadowlib.util.FileUtils;
 import net.shadowfacts.shadowlib.util.InternetUtils;
 import net.shadowfacts.shadowlib.util.StreamRedirect;
 import temporalreality.launcher.TRLauncher;
+import temporalreality.launcher.auth.PasswordResult;
 import temporalreality.launcher.config.ConfigManager;
 import temporalreality.launcher.model.Mod;
 import temporalreality.launcher.model.Modpack;
@@ -29,6 +31,9 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.FutureTask;
 
 /**
  * @author shadowfacts
@@ -209,7 +214,7 @@ public class ModpackUtils {
 		return modpack.getSelectedVersion().equals(saved);
 	}
 
-	public static void launch(Modpack modpack) {
+	public static void launch(Modpack modpack, boolean offline) {
 		if (isModpackInstalled(modpack)) {
 
 //			PasswordSupplier passwordSupplier;
@@ -225,15 +230,28 @@ public class ModpackUtils {
 
 			PasswordSupplier passwordSupplier = null;
 
-			String selectedUsername = ConfigManager.getInstanceConfig().username;
-			final boolean[] offline = new boolean[]{false};
+			final String selectedUsername = ConfigManager.getInstanceConfig().username;
+			String theUsername = null;
 
 			if (selectedUsername != null && !selectedUsername.equals("")) {
 
+				FutureTask<String> passwordTask = new FutureTask<>(() ->
+					TRLauncher.getLauncher().showPasswordDialog(selectedUsername).getPassword()
+				);
+				Platform.runLater(passwordTask);
+
+
 				passwordSupplier = (String username) -> {
-					PasswordDialogController controller = TRLauncher.getLauncher().showPasswordDialog(username);
-					offline[0] = controller.isOffline();
-					return controller.getPassword();
+					try {
+						return passwordTask.get();
+					} catch (InterruptedException e) {
+						TRLauncher.log.error("The password retrieval was interrupted");
+						e.printStackTrace();
+					} catch (ExecutionException e) {
+						TRLauncher.log.error("There was a problem retrieving the password");
+						e.printStackTrace();
+					}
+					return null;
 				};
 			} else {
 				LoginDialogController controller = TRLauncher.getLauncher().showLoginDialog();
@@ -245,7 +263,7 @@ public class ModpackUtils {
 							return null;
 						}
 					};
-					selectedUsername = controller.getUsername();
+					theUsername = controller.getUsername();
 					ConfigManager.getInstanceConfig().username = controller.getUsername();
 					ConfigManager.getInstance().save();
 				} else {
@@ -269,10 +287,10 @@ public class ModpackUtils {
 
 			LaunchTask launchTask;
 
-			if (offline[0]) {
+			if (offline) {
 				launchTask = instance.getOfflineLaunchTask("TRGuest" + new Random().nextInt(1000));
 			} else {
-				launchTask = instance.getLaunchTask(selectedUsername);
+				launchTask = instance.getLaunchTask(theUsername != null ? theUsername : selectedUsername);
 			}
 
 //			TODO: Progress dialog

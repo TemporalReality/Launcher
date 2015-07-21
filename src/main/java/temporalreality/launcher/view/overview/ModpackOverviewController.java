@@ -68,6 +68,9 @@ public class ModpackOverviewController {
 	private Button launch;
 
 	@FXML
+	private Button launchOffline;
+
+	@FXML
 	private Button delete;
 
 
@@ -102,7 +105,12 @@ public class ModpackOverviewController {
 
 	@FXML
 	private void launchPressed() {
-		ModpackUtils.launch(modpackTable.getSelectionModel().getSelectedItem());
+		ModpackUtils.launch(modpackTable.getSelectionModel().getSelectedItem(), false);
+	}
+
+	@FXML
+	private void launchOfflinePressed() {
+		ModpackUtils.launch(modpackTable.getSelectionModel().getSelectedItem(), true);
 	}
 
 	@FXML
@@ -176,6 +184,7 @@ public class ModpackOverviewController {
 					download.setDisable(true);
 //				}
 				launch.setDisable(false);
+				launchOffline.setDisable(false);
 				delete.setDisable(false);
 				version.setDisable(false);
 
@@ -198,6 +207,7 @@ public class ModpackOverviewController {
 			} else {
 				download.setDisable(false);
 				launch.setDisable(true);
+				launchOffline.setDisable(true);
 				delete.setDisable(true);
 				version.setDisable(false);
 
@@ -206,6 +216,7 @@ public class ModpackOverviewController {
 		} else {
 			download.setDisable(true);
 			launch.setDisable(true);
+			launchOffline.setDisable(true);
 			delete.setDisable(true);
 			version.setDisable(true);
 		}

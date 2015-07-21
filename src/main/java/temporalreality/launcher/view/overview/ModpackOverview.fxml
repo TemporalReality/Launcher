@@ -79,6 +79,7 @@
                       <Button fx:id="download" defaultButton="true" mnemonicParsing="false" onAction="#downloadPressed" text="Download" />
                         <MenuButton fx:id="version" mnemonicParsing="false" onAction="#versionSelected" text="Version" />
                         <Button fx:id="launch" disable="true" mnemonicParsing="false" onAction="#launchPressed" text="Launch" />
+                        <Button fx:id="launchOffline" disable="true" mnemonicParsing="false" onAction="#launchOfflinePressed" text="Launch Offline" />
                         <Button fx:id="delete" disable="true" mnemonicParsing="false" onAction="#deletePressed" text="Delete" />
                     </items>
                   </ToolBar>

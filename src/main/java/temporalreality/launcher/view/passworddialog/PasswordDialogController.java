@@ -4,6 +4,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import temporalreality.launcher.auth.PasswordResult;
 
 /**
  * @author shadowfacts
@@ -45,6 +46,9 @@ public class PasswordDialogController {
 		dialogStage.close();
 	}
 
+	public PasswordResult getResult() {
+		return new PasswordResult(password, offline);
+	}
 
 	public String getUsername() {
 		return username;
