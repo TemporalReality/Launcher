@@ -15,19 +15,18 @@ import temporalreality.launcher.model.Version;
 import temporalreality.launcher.view.downloaddialog.DownloadDialogController;
 import temporalreality.launcher.view.login.LoginDialogController;
 import temporalreality.launcher.view.overview.ModpackOverviewController;
-import temporalreality.launcher.view.passwordidalog.PasswordDialogController;
+import temporalreality.launcher.view.passworddialog.PasswordDialogController;
 import uk.co.rx14.jmclaunchlib.LaunchSpec;
 import uk.co.rx14.jmclaunchlib.MCInstance;
 import uk.co.rx14.jmclaunchlib.auth.PasswordSupplier;
-import uk.co.rx14.jmclaunchlib.exceptions.ForbiddenOperationException;
 import uk.co.rx14.jmclaunchlib.tasks.LaunchTask;
+import uk.co.rx14.jmclaunchlib.tasks.LoginTask;
 
 import java.io.*;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
 
@@ -213,12 +212,23 @@ public class ModpackUtils {
 	public static void launch(Modpack modpack) {
 		if (isModpackInstalled(modpack)) {
 
+//			PasswordSupplier passwordSupplier;
+//
+//			String selectedUsername = ConfigManager.getInstanceConfig().username;
+//			boolean offline = false;
+//
+//			if (selectedUsername != null && !selectedUsername.equals("")) {
+//				passwordSupplier = (String username) -> {
+//
+//				}
+//			}
+
 			PasswordSupplier passwordSupplier = null;
 
 			String selectedUsername = ConfigManager.getInstanceConfig().username;
 			final boolean[] offline = new boolean[]{false};
 
-			if (selectedUsername != null || !selectedUsername.equals("")) {
+			if (selectedUsername != null && !selectedUsername.equals("")) {
 
 				passwordSupplier = (String username) -> {
 					PasswordDialogController controller = TRLauncher.getLauncher().showPasswordDialog(username);
@@ -264,6 +274,31 @@ public class ModpackUtils {
 			} else {
 				launchTask = instance.getLaunchTask(selectedUsername);
 			}
+
+//			TODO: Progress dialog
+
+			for (uk.co.rx14.jmclaunchlib.util.Task task : launchTask.getCurrentTasks()) {
+				if (task instanceof LoginTask)
+			}
+
+			launchTask.start();
+
+			LaunchSpec spec = launchTask.getSpec();
+
+			if (spec.getJvmArgs() == null) spec.setJvmArgs(new ArrayList<String>());
+			if (spec.getLaunchArgs() == null) spec.setLaunchArgs(new ArrayList<String>());
+
+			for (String s : ConfigManager.getInstanceConfig().jvmArgs) {
+				if (s != null && !s.equals("")) spec.getJvmArgs().add(s);
+			}
+			spec.getLaunchArgs().add("--width=" + ConfigManager.getInstanceConfig().mcWidth);
+			spec.getLaunchArgs().add("--height=" + ConfigManager.getInstanceConfig().mcHeight);
+
+			Process process = spec.run(Paths.get(ConfigManager.getInstanceConfig().javaPath));
+			StreamRedirect output = new StreamRedirect(process.getInputStream(), new Logger("MC", true), LogLevel.INFO);
+			StreamRedirect error = new StreamRedirect(process.getErrorStream(), new Logger("MC", true), LogLevel.ERROR);
+			output.start();
+			error.start();
 
 
 

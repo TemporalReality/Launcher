@@ -23,7 +23,7 @@ import temporalreality.launcher.view.login.LoginDialogController;
 import temporalreality.launcher.view.overview.ModpackOverviewController;
 import coolsquid.logging.LogManager;
 import coolsquid.logging.Logger;
-import temporalreality.launcher.view.passwordidalog.PasswordDialogController;
+import temporalreality.launcher.view.passworddialog.PasswordDialogController;
 
 /**
  * @author shadowfacts

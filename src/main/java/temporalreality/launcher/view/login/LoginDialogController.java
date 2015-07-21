@@ -71,6 +71,10 @@ public class LoginDialogController {
 		return loggedIn;
 	}
 
+	public void setUsername(String username) {
+		usernameField.setText(username);
+	}
+
 	public String getUsername() {
 		return username;
 	}

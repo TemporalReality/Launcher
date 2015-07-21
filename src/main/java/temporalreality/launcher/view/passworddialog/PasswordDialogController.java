@@ -1,4 +1,4 @@
-package temporalreality.launcher.view.passwordidalog;
+package temporalreality.launcher.view.passworddialog;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
