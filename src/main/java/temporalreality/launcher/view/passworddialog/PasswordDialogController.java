@@ -56,6 +56,7 @@ public class PasswordDialogController {
 
 	public void setUsername(String username) {
 		this.username = username;
+		initialize();
 	}
 
 	public String getPassword() {

@@ -31,9 +31,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.FutureTask;
+import java.util.concurrent.*;
 
 /**
  * @author shadowfacts
@@ -300,9 +298,31 @@ public class ModpackUtils {
 
 //			TODO: Progress dialog
 
+//					Thread thread = new Thread(new Runnable() {
+//						@Override
+//						public void run() {
+//							for (uk.co.rx14.jmclaunchlib.util.Task task : launchTask.getCurrentTasks()) {
+//								System.out.println("task = " + task);
+//							}
+//						}
+//					});
+//					ScheduledExecutorService exec = Executors.newSingleThreadScheduledExecutor();
+//					exec.scheduleAtFixedRate(new Runnable() {
+//						@Override
+//						public void run() {
+//							for (uk.co.rx14.jmclaunchlib.util.Task task : launchTask.getCurrentTasks()) {
+//								System.out.println("task = " + task);
+//							}
+//						}
+//					}, 0, 100, TimeUnit.MILLISECONDS);
+
 					launchTask.start();
 
 					LaunchSpec spec = launchTask.getSpec();
+
+//					for (String s : spec.getJavaCommandlineArray()) {
+//						TRLauncher.log.info(s);
+//					}
 
 					if (spec.getJvmArgs() == null) spec.setJvmArgs(new ArrayList<String>());
 					if (spec.getLaunchArgs() == null) spec.setLaunchArgs(new ArrayList<String>());
