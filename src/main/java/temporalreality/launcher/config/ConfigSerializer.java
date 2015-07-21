@@ -22,6 +22,12 @@ public class ConfigSerializer implements JsonSerializer<Config> {
 		result.add("jvmArgs", jvmArgs);
 		result.add("launcherDir", new JsonPrimitive(src.launcherDir));
 
+		JsonArray packIndexes = new JsonArray();
+		for (String s : src.packIndexes) {
+			jvmArgs.add(new JsonPrimitive(s));
+		}
+		result.add("packIndexes", packIndexes);
+
 		result.add("mcWidth", new JsonPrimitive(src.mcWidth));
 		result.add("mcHeight", new JsonPrimitive(src.mcHeight));
 		result.add("username", new JsonPrimitive(src.username));

@@ -238,11 +238,11 @@ public class ModpackUtils {
 				FutureTask<String> passwordTask = new FutureTask<>(() ->
 					TRLauncher.getLauncher().showPasswordDialog(selectedUsername).getPassword()
 				);
-				Platform.runLater(passwordTask);
 
 
 				passwordSupplier = (String username) -> {
 					try {
+						Platform.runLater(passwordTask);
 						return passwordTask.get();
 					} catch (InterruptedException e) {
 						TRLauncher.log.error("The password retrieval was interrupted");
@@ -285,34 +285,47 @@ public class ModpackUtils {
 					passwordSupplier
 			);
 
-			LaunchTask launchTask;
+			final String finalTheUsername = theUsername;
+			Task<Void> task = new Task<Void>() {
+				@Override
+				protected Void call() throws Exception {
 
-			if (offline) {
-				launchTask = instance.getOfflineLaunchTask("TRGuest" + new Random().nextInt(1000));
-			} else {
-				launchTask = instance.getLaunchTask(theUsername != null ? theUsername : selectedUsername);
-			}
+					LaunchTask launchTask;
+
+					if (offline) {
+						launchTask = instance.getOfflineLaunchTask("TRGuest" + new Random().nextInt(1000));
+					} else {
+						launchTask = instance.getLaunchTask(finalTheUsername != null ? finalTheUsername : selectedUsername);
+					}
 
 //			TODO: Progress dialog
 
-			launchTask.start();
+					launchTask.start();
 
-			LaunchSpec spec = launchTask.getSpec();
+					LaunchSpec spec = launchTask.getSpec();
 
-			if (spec.getJvmArgs() == null) spec.setJvmArgs(new ArrayList<String>());
-			if (spec.getLaunchArgs() == null) spec.setLaunchArgs(new ArrayList<String>());
+					if (spec.getJvmArgs() == null) spec.setJvmArgs(new ArrayList<String>());
+					if (spec.getLaunchArgs() == null) spec.setLaunchArgs(new ArrayList<String>());
 
-			for (String s : ConfigManager.getInstanceConfig().jvmArgs) {
-				if (s != null && !s.equals("")) spec.getJvmArgs().add(s);
-			}
-			spec.getLaunchArgs().add("--width=" + ConfigManager.getInstanceConfig().mcWidth);
-			spec.getLaunchArgs().add("--height=" + ConfigManager.getInstanceConfig().mcHeight);
+					for (String s : ConfigManager.getInstanceConfig().jvmArgs) {
+						if (s != null && !s.equals("")) spec.getJvmArgs().add(s);
+					}
+					spec.getLaunchArgs().add("--width=" + ConfigManager.getInstanceConfig().mcWidth);
+					spec.getLaunchArgs().add("--height=" + ConfigManager.getInstanceConfig().mcHeight);
 
-			Process process = spec.run(Paths.get(ConfigManager.getInstanceConfig().javaPath));
-			StreamRedirect output = new StreamRedirect(process.getInputStream(), new Logger("MC", true), LogLevel.INFO);
-			StreamRedirect error = new StreamRedirect(process.getErrorStream(), new Logger("MC", true), LogLevel.ERROR);
-			output.start();
-			error.start();
+					Process process = spec.run(Paths.get(ConfigManager.getInstanceConfig().javaPath));
+					StreamRedirect output = new StreamRedirect(process.getInputStream(), new Logger("MC", true), LogLevel.INFO);
+					StreamRedirect error = new StreamRedirect(process.getErrorStream(), new Logger("MC", true), LogLevel.ERROR);
+					output.start();
+					error.start();
+
+					return null;
+				}
+			};
+
+			new Thread(task).start();
+
+
 
 
 
