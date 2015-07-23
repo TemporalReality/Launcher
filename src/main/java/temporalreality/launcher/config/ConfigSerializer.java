@@ -24,7 +24,7 @@ public class ConfigSerializer implements JsonSerializer<Config> {
 
 		JsonArray packIndexes = new JsonArray();
 		for (String s : src.packIndexes) {
-			jvmArgs.add(new JsonPrimitive(s));
+			packIndexes.add(new JsonPrimitive(s));
 		}
 		result.add("packIndexes", packIndexes);
 
