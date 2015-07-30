@@ -12,5 +12,6 @@ public class Config {
 	public String username;
 	public int mcWidth;
 	public int mcHeight;
+	public boolean offline;
 
 }

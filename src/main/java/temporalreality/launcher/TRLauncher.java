@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import javafx.application.Application;
 import javafx.collections.FXCollections;
@@ -15,11 +16,14 @@ import javafx.scene.layout.BorderPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import temporalreality.launcher.config.ConfigManager;
+import temporalreality.launcher.model.Mod;
 import temporalreality.launcher.model.Modpack;
 import temporalreality.launcher.util.ModpackUtils;
+import temporalreality.launcher.view.account.AddAccountController;
 import temporalreality.launcher.view.config.ConfigDialogController;
 import temporalreality.launcher.view.downloaddialog.DownloadDialogController;
 import temporalreality.launcher.view.login.LoginDialogController;
+import temporalreality.launcher.view.modlist.ModListController;
 import temporalreality.launcher.view.overview.ModpackOverviewController;
 import coolsquid.logging.LogManager;
 import coolsquid.logging.Logger;
@@ -228,6 +232,79 @@ public class TRLauncher extends Application {
 		} catch (IOException e) {
 			TRLauncher.log.error("Couldn't find the specified layout");
 			e.printStackTrace();
+		}
+	}
+
+	public void showModListDialog(ArrayList<Mod> mods) {
+		try {
+			FXMLLoader loader = new FXMLLoader();
+			loader.setLocation(TRLauncher.class.getResource("view/modlist/ModList.fxml"));
+
+			AnchorPane pane = loader.load();
+
+			Stage dialogStage = new Stage();
+			dialogStage.setTitle("Mod List");
+			dialogStage.initModality(Modality.WINDOW_MODAL);
+			dialogStage.initOwner(primaryStage);
+			Scene scene = new Scene(pane);
+			dialogStage.setScene(scene);
+
+			ModListController controller = loader.getController();
+			controller.setMods(FXCollections.observableArrayList(mods));
+
+			dialogStage.showAndWait();
+		} catch (IOException e) {
+			TRLauncher.log.error("Couldn't find the specified layout");
+			e.printStackTrace();
+		}
+	}
+
+	public void showAccountsDialog() {
+		try {
+			FXMLLoader loader = new FXMLLoader();
+			loader.setLocation(TRLauncher.class.getResource("view/account/Accounts.fxml"));
+
+			AnchorPane pane = loader.load();
+
+			Stage dialogStage = new Stage();
+			dialogStage.setTitle("Accounts");
+			dialogStage.initModality(Modality.WINDOW_MODAL);
+			dialogStage.initOwner(primaryStage);
+			Scene scene = new Scene(pane);
+			dialogStage.setScene(scene);
+
+			dialogStage.showAndWait();
+		} catch (IOException e) {
+			TRLauncher.log.error("Couldn't find the specified layout");
+			e.printStackTrace();
+		}
+	}
+
+	public String showAddAccountDialog() {
+		try {
+			FXMLLoader loader = new FXMLLoader();
+			loader.setLocation(TRLauncher.class.getResource("view/account/AddAccount.fxml"));
+
+			AnchorPane pane = loader.load();
+
+			Stage dialogStage = new Stage();
+			dialogStage.setTitle("Add Account");
+			dialogStage.initModality(Modality.WINDOW_MODAL);
+			dialogStage.initOwner(primaryStage);
+			Scene scene = new Scene(pane);
+			dialogStage.setScene(scene);
+
+			AddAccountController controller = loader.getController();
+			controller.setDialogStage(dialogStage);
+
+			dialogStage.showAndWait();
+
+			return controller.getUsername();
+
+		} catch (IOException e) {
+			TRLauncher.log.error("Couldn't find the specified layout");
+			e.printStackTrace();
+			return null;
 		}
 	}
 

@@ -1,6 +1,8 @@
 package temporalreality.launcher.config;
 
 import com.google.gson.*;
+import temporalreality.launcher.accounts.Account;
+import temporalreality.launcher.accounts.AccountManager;
 
 import java.lang.reflect.Type;
 
@@ -31,6 +33,18 @@ public class ConfigSerializer implements JsonSerializer<Config> {
 		result.add("mcWidth", new JsonPrimitive(src.mcWidth));
 		result.add("mcHeight", new JsonPrimitive(src.mcHeight));
 		result.add("username", new JsonPrimitive(src.username));
+		result.add("offline", new JsonPrimitive(src.offline));
+		/*
+		Account Manager
+		 */
+//		JsonArray accounts = new JsonArray();
+//		for (Account account : AccountManager.getInstance().getAccounts()) {
+//			JsonObject accountObj = new JsonObject();
+//			accountObj.add("username", new JsonPrimitive(account.getUsername()));
+//			accountObj.add("active", new JsonPrimitive(account.equals(AccountManager.getInstance().getSelectedAccount())));
+//			accounts.add(accountObj);
+//		}
+//		result.add("accounts", accounts);
 
 		return result;
 	}

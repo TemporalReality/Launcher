@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="500.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <TableView layoutX="80.0" layoutY="50.0" maxWidth="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <columns>
+          <TableColumn maxWidth="-Infinity" minWidth="-Infinity" prefWidth="200.0" resizable="false" text="Username/Email" />
+        </columns>
+      </TableView>
+      <TextField layoutX="250.0" layoutY="75.0" promptText="Username/Email" AnchorPane.leftAnchor="215.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="15.0" />
+      <Button layoutX="215.0" layoutY="155.0" mnemonicParsing="false" text="Delete Account" AnchorPane.leftAnchor="215.0" AnchorPane.topAnchor="185.0" />
+      <Button layoutX="215.0" layoutY="107.0" mnemonicParsing="false" text="Activate" AnchorPane.leftAnchor="215.0" AnchorPane.topAnchor="145.0" />
+      <Button layoutX="223.0" layoutY="62.0" mnemonicParsing="false" text="Save" AnchorPane.leftAnchor="215.0" AnchorPane.topAnchor="105.0" />
+      <Button layoutX="321.0" layoutY="52.0" mnemonicParsing="false" text="Add" AnchorPane.leftAnchor="215.0" AnchorPane.topAnchor="65.0" />
+   </children>
+</AnchorPane>

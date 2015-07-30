@@ -7,6 +7,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import temporalreality.launcher.TRLauncher;
+import temporalreality.launcher.config.ConfigManager;
 import temporalreality.launcher.control.VersionMenuItem;
 import temporalreality.launcher.model.Modpack;
 import temporalreality.launcher.model.Version;
@@ -73,6 +74,9 @@ public class ModpackOverviewController {
 	@FXML
 	private Button delete;
 
+	@FXML
+	private Button mods;
+
 
 	public ModpackOverviewController() {
 
@@ -134,6 +138,11 @@ public class ModpackOverviewController {
 //		updateButtons(modpackTable.getSelectionModel().getSelectedItem());
 	}
 
+	@FXML
+	private void modListPressed() {
+		TRLauncher.getLauncher().showModListDialog(modpackTable.getSelectionModel().getSelectedItem().getSelectedVersion().mods);
+	}
+
 	private void setSelectedVersion(Version v) {
 		version.setText(v.version);
 		modpackTable.getSelectionModel().getSelectedItem().setSelectedVersion(v);
@@ -187,6 +196,7 @@ public class ModpackOverviewController {
 				launchOffline.setDisable(false);
 				delete.setDisable(false);
 				version.setDisable(false);
+				mods.setDisable(false);
 
 				String versionFile = null;
 				try {
@@ -210,6 +220,7 @@ public class ModpackOverviewController {
 				launchOffline.setDisable(true);
 				delete.setDisable(true);
 				version.setDisable(false);
+				mods.setDisable(false);
 
 				version.setText(modpack.getSelectedVersion().version);
 			}
@@ -219,6 +230,7 @@ public class ModpackOverviewController {
 			launchOffline.setDisable(true);
 			delete.setDisable(true);
 			version.setDisable(true);
+			mods.setDisable(true);
 		}
 	}
 

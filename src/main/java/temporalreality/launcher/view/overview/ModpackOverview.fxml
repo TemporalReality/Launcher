@@ -81,6 +81,7 @@
                         <Button fx:id="launch" disable="true" mnemonicParsing="false" onAction="#launchPressed" text="Launch" />
                         <Button fx:id="launchOffline" disable="true" mnemonicParsing="false" onAction="#launchOfflinePressed" text="Launch Offline" />
                         <Button fx:id="delete" disable="true" mnemonicParsing="false" onAction="#deletePressed" text="Delete" />
+                        <Button fx:id="mods" mnemonicParsing="false" onAction="#modListPressed" text="Mods" />
                     </items>
                   </ToolBar>
                </children>

@@ -9,7 +9,7 @@ import net.shadowfacts.shadowlib.util.FileUtils;
 import net.shadowfacts.shadowlib.util.InternetUtils;
 import net.shadowfacts.shadowlib.util.StreamRedirect;
 import temporalreality.launcher.TRLauncher;
-import temporalreality.launcher.auth.PasswordResult;
+import temporalreality.launcher.accounts.AccountManager;
 import temporalreality.launcher.config.ConfigManager;
 import temporalreality.launcher.model.Mod;
 import temporalreality.launcher.model.Modpack;
@@ -17,12 +17,10 @@ import temporalreality.launcher.model.Version;
 import temporalreality.launcher.view.downloaddialog.DownloadDialogController;
 import temporalreality.launcher.view.login.LoginDialogController;
 import temporalreality.launcher.view.overview.ModpackOverviewController;
-import temporalreality.launcher.view.passworddialog.PasswordDialogController;
 import uk.co.rx14.jmclaunchlib.LaunchSpec;
-import uk.co.rx14.jmclaunchlib.MCInstance;
+import uk.co.rx14.jmclaunchlib.LaunchTask;
+import uk.co.rx14.jmclaunchlib.LaunchTaskBuilder;
 import uk.co.rx14.jmclaunchlib.auth.PasswordSupplier;
-import uk.co.rx14.jmclaunchlib.tasks.LaunchTask;
-import uk.co.rx14.jmclaunchlib.tasks.LoginTask;
 
 import java.io.*;
 import java.net.URL;
@@ -215,17 +213,6 @@ public class ModpackUtils {
 	public static void launch(Modpack modpack, boolean offline) {
 		if (isModpackInstalled(modpack)) {
 
-//			PasswordSupplier passwordSupplier;
-//
-//			String selectedUsername = ConfigManager.getInstanceConfig().username;
-//			boolean offline = false;
-//
-//			if (selectedUsername != null && !selectedUsername.equals("")) {
-//				passwordSupplier = (String username) -> {
-//
-//				}
-//			}
-
 			PasswordSupplier passwordSupplier = null;
 
 			final String selectedUsername = ConfigManager.getInstanceConfig().username;
@@ -275,54 +262,34 @@ public class ModpackUtils {
 				}
 			}
 
-			MCInstance instance = MCInstance.createForge(
-					modpack.getSelectedVersion().mcVersion,
-					modpack.getSelectedVersion().forgeVersion,
-					MiscUtils.getPath("modpacks/" + modpack.getName() + "/"),
-					MiscUtils.getPath("caches/"),
-					passwordSupplier
-			);
+			LaunchTaskBuilder builder = new LaunchTaskBuilder()
+					.setCachesDir(MiscUtils.getPath("caches/"))
+					.setInstanceDir(MiscUtils.getPath("modpacks/" + modpack.getName() + "/"))
+					.setForgeVersion(modpack.getSelectedVersion().mcVersion, modpack.getSelectedVersion().forgeVersion)
+					.setPasswordSupplier(passwordSupplier);
 
-			final String finalTheUsername = theUsername;
+			final LaunchTaskBuilder theBuilder;
+
+			if (ConfigManager.getInstanceConfig().username != null && !ConfigManager.getInstanceConfig().username.equals("")) {
+				theUsername = ConfigManager.getInstanceConfig().username;
+			} else {
+				theUsername = "TRGuest" + new Random().nextInt(1000);
+			}
+
+			theBuilder = builder.setUsername(theUsername).setOffline(offline);
+
+
 			Task<Void> task = new Task<Void>() {
 				@Override
 				protected Void call() throws Exception {
 
-					LaunchTask launchTask;
-
-					if (offline) {
-						launchTask = instance.getOfflineLaunchTask("TRGuest" + new Random().nextInt(1000));
-					} else {
-						launchTask = instance.getLaunchTask(finalTheUsername != null ? finalTheUsername : selectedUsername);
-					}
+					LaunchTask launchTask = theBuilder.build();
 
 //			TODO: Progress dialog
-
-//					Thread thread = new Thread(new Runnable() {
-//						@Override
-//						public void run() {
-//							for (uk.co.rx14.jmclaunchlib.util.Task task : launchTask.getCurrentTasks()) {
-//								System.out.println("task = " + task);
-//							}
-//						}
-//					});
-//					ScheduledExecutorService exec = Executors.newSingleThreadScheduledExecutor();
-//					exec.scheduleAtFixedRate(new Runnable() {
-//						@Override
-//						public void run() {
-//							for (uk.co.rx14.jmclaunchlib.util.Task task : launchTask.getCurrentTasks()) {
-//								System.out.println("task = " + task);
-//							}
-//						}
-//					}, 0, 100, TimeUnit.MILLISECONDS);
 
 					launchTask.start();
 
 					LaunchSpec spec = launchTask.getSpec();
-
-//					for (String s : spec.getJavaCommandlineArray()) {
-//						TRLauncher.log.info(s);
-//					}
 
 					if (spec.getJvmArgs() == null) spec.setJvmArgs(new ArrayList<String>());
 					if (spec.getLaunchArgs() == null) spec.setLaunchArgs(new ArrayList<String>());

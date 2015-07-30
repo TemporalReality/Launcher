@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import javafx.scene.control.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="200.0" prefWidth="300.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="temporalreality.launcher.view.account.AddAccountController">
+   <children>
+      <Label layoutX="97.0" layoutY="14.0" text="Add Account" AnchorPane.leftAnchor="97.0" AnchorPane.rightAnchor="96.0" AnchorPane.topAnchor="15.0">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Label>
+      <TextField fx:id="usernameField" layoutX="69.0" layoutY="87.0" promptText="Username/Email" AnchorPane.bottomAnchor="85.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="85.0" />
+      <Button defaultButton="true" layoutX="242.0" layoutY="154.0" mnemonicParsing="false" onAction="#okPressed" text="Ok" AnchorPane.bottomAnchor="15.0" AnchorPane.rightAnchor="15.0" />
+      <Button layoutX="175.0" layoutY="159.0" mnemonicParsing="false" onAction="#cancelPressed" text="Cancel" AnchorPane.bottomAnchor="15.0" AnchorPane.rightAnchor="75.0" />
+   </children>
+</AnchorPane>

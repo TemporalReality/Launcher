@@ -71,6 +71,11 @@ public class ConfigManager {
 		}
 	}
 
+
+	public boolean signedIn() {
+		return getConfig().username != null && !getConfig().username.equals("");
+	}
+
 	public Config getConfig() {
 		return config;
 	}

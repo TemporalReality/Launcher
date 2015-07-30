@@ -1,6 +1,8 @@
 package temporalreality.launcher.config;
 
 import com.google.gson.*;
+import temporalreality.launcher.accounts.Account;
+import temporalreality.launcher.accounts.AccountManager;
 
 import java.lang.reflect.Type;
 
@@ -35,6 +37,25 @@ public class ConfigDeserializer implements JsonDeserializer<Config> {
 		config.mcWidth = obj.get("mcWidth").getAsInt();
 		config.mcHeight = obj.get("mcHeight").getAsInt();
 		config.username = obj.get("username").getAsString();
+		config.offline = obj.get("offline").getAsBoolean();
+
+		/*
+		Account Manager
+		 */
+//		JsonArray accountArray = obj.get("accounts").getAsJsonArray();
+//		for (int i = 0; i < accountArray.size(); i++) {
+////			AccountManager.getInstance().addAccount(new Account(accountArray.get(i).getAsString()));
+//			JsonObject accountObj = accountArray.get(i).getAsJsonObject();
+//
+//			boolean active = accountObj.get("active").getAsBoolean();
+//
+//			Account account = new Account(accountObj.get("username").getAsString());
+//
+//			AccountManager.getInstance().addAccount(account);
+//			if (active) {
+//				AccountManager.getInstance().setSelectedAccount(account);
+//			}
+//		}
 
 		return config;
 	}
