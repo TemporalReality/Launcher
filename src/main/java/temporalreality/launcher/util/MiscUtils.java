@@ -1,8 +1,6 @@
 package temporalreality.launcher.util;
 
-import temporalreality.launcher.TRLauncher;
 import temporalreality.launcher.config.ConfigManager;
-import temporalreality.launcher.view.login.LoginDialogController;
 
 import java.io.File;
 
@@ -12,7 +10,6 @@ import java.io.File;
 public class MiscUtils {
 
 	public static String getPath(String s) {
-//		return ConfigManager.getInstanceConfig().launcherDir + "/" + s;
 		String launcherDir = ConfigManager.getInstanceConfig().launcherDir;
 		if (!launcherDir.equals("")) {
 			return launcherDir + "/" + s;
