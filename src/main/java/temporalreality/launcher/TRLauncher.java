@@ -19,7 +19,7 @@ import temporalreality.launcher.config.ConfigManager;
 import temporalreality.launcher.model.Mod;
 import temporalreality.launcher.model.Modpack;
 import temporalreality.launcher.util.ModpackUtils;
-import temporalreality.launcher.view.account.AddAccountController;
+import temporalreality.launcher.view.account.SetUsernameController;
 import temporalreality.launcher.view.config.ConfigDialogController;
 import temporalreality.launcher.view.downloaddialog.DownloadDialogController;
 import temporalreality.launcher.view.login.LoginDialogController;
@@ -259,31 +259,10 @@ public class TRLauncher extends Application {
 		}
 	}
 
-	public void showAccountsDialog() {
+	public String showSetUsernameDialog() {
 		try {
 			FXMLLoader loader = new FXMLLoader();
-			loader.setLocation(TRLauncher.class.getResource("view/account/Accounts.fxml"));
-
-			AnchorPane pane = loader.load();
-
-			Stage dialogStage = new Stage();
-			dialogStage.setTitle("Accounts");
-			dialogStage.initModality(Modality.WINDOW_MODAL);
-			dialogStage.initOwner(primaryStage);
-			Scene scene = new Scene(pane);
-			dialogStage.setScene(scene);
-
-			dialogStage.showAndWait();
-		} catch (IOException e) {
-			TRLauncher.log.error("Couldn't find the specified layout");
-			e.printStackTrace();
-		}
-	}
-
-	public String showAddAccountDialog() {
-		try {
-			FXMLLoader loader = new FXMLLoader();
-			loader.setLocation(TRLauncher.class.getResource("view/account/AddAccount.fxml"));
+			loader.setLocation(TRLauncher.class.getResource("view/account/SetUsername.fxml"));
 
 			AnchorPane pane = loader.load();
 
@@ -294,7 +273,7 @@ public class TRLauncher extends Application {
 			Scene scene = new Scene(pane);
 			dialogStage.setScene(scene);
 
-			AddAccountController controller = loader.getController();
+			SetUsernameController controller = loader.getController();
 			controller.setDialogStage(dialogStage);
 
 			dialogStage.showAndWait();

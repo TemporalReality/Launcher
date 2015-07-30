@@ -3,6 +3,7 @@ package temporalreality.launcher.util;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.scene.control.Alert;
+import javafx.stage.Modality;
 import net.shadowfacts.shadowlib.log.LogLevel;
 import net.shadowfacts.shadowlib.log.Logger;
 import net.shadowfacts.shadowlib.util.FileUtils;
@@ -213,6 +214,16 @@ public class ModpackUtils {
 	public static void launch(Modpack modpack, boolean offline) {
 		if (isModpackInstalled(modpack)) {
 
+			if (ConfigManager.getInstanceConfig().username == null || ConfigManager.getInstanceConfig().username.equals("")) {
+				Alert alert = new Alert(Alert.AlertType.ERROR);
+				alert.setTitle("Login!");
+				alert.setHeaderText("You must have a username selected");
+				alert.setContentText("You must select a username in the Accounts menu to launch Minecraft.");
+				alert.initModality(Modality.WINDOW_MODAL);
+				alert.initOwner(TRLauncher.getLauncher().getPrimaryStage());
+				alert.showAndWait();
+			}
+
 			PasswordSupplier passwordSupplier = null;
 
 			final String selectedUsername = ConfigManager.getInstanceConfig().username;
@@ -238,28 +249,6 @@ public class ModpackUtils {
 					}
 					return null;
 				};
-			} else {
-				LoginDialogController controller = TRLauncher.getLauncher().showLoginDialog();
-				if (controller != null && controller.isLoggedIn()) {
-					passwordSupplier = (String username) -> {
-						if (username.equals(controller.getUsername())) {
-							return controller.getPassword();
-						} else {
-							return null;
-						}
-					};
-					theUsername = controller.getUsername();
-					ConfigManager.getInstanceConfig().username = controller.getUsername();
-					ConfigManager.getInstance().save();
-				} else {
-					TRLauncher.log.error("You must login at least once to launch Minecraft");
-					Alert alert = new Alert(Alert.AlertType.ERROR);
-					alert.initOwner(TRLauncher.getLauncher().getPrimaryStage());
-					alert.setTitle("Login");
-					alert.setHeaderText("Login Required");
-					alert.setContentText("You must login at least once to launch Minecraft.");
-					alert.showAndWait();
-				}
 			}
 
 			LaunchTaskBuilder builder = new LaunchTaskBuilder()

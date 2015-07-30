@@ -7,7 +7,7 @@ import javafx.stage.Stage;
 /**
  * @author shadowfacts
  */
-public class AddAccountController {
+public class SetUsernameController {
 
 	private Stage dialogStage;
 
