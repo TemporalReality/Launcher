@@ -4,12 +4,13 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="300.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="temporalreality.launcher.view.modlist.ModListController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="450.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="temporalreality.launcher.view.modlist.ModListController">
    <children>
       <TableView fx:id="modTable" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <columns>
           <TableColumn fx:id="nameColumn" minWidth="150.0" prefWidth="83.0" text="Name" />
           <TableColumn fx:id="urlColumn" minWidth="150.0" prefWidth="67.0" text="URL" />
+            <TableColumn fx:id="authorsColumn" minWidth="150.0" prefWidth="150.0" text="Authors" />
         </columns>
       </TableView>
    </children>

@@ -1,11 +1,12 @@
 package temporalreality.launcher.view.modlist;
 
-import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import net.shadowfacts.shadowlib.util.DesktopUtils;
+import net.shadowfacts.shadowlib.util.StringUtils;
 import temporalreality.launcher.model.Mod;
 
 import java.net.URISyntaxException;
@@ -26,17 +27,23 @@ public class ModListController {
 	@FXML
 	private TableColumn<Mod, String> urlColumn;
 
+	@FXML
+	private TableColumn<Mod, String> authorsColumn;
+
 
 	@FXML
 	private void initialize() {
-		nameColumn.setCellValueFactory(cellData -> new SimpleObjectProperty<String>(cellData.getValue().name));
+		nameColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().name));
 
-		urlColumn.setCellValueFactory(cellData -> new SimpleObjectProperty<String>(cellData.getValue().url));
+		urlColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().url));
+
+		authorsColumn.setCellValueFactory(cellData -> new SimpleStringProperty(StringUtils.join(cellData.getValue().authors, ", ")));
 
 		modTable.getSelectionModel().selectedItemProperty().addListener(((observable, oldValue, newValue) -> {
 			try {
 				DesktopUtils.openWebpage(newValue.url);
-			} catch (URISyntaxException ignored) {}
+			} catch (URISyntaxException ignored) {
+			}
 		}));
 	}
 
