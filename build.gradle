@@ -57,6 +57,6 @@ sourceSets {
 tasks.build.dependsOn shadowJar
 
 artifacts {
-	jar
-	shadowJar
+	archives jar
+	archives shadowJar
 }
