@@ -41,7 +41,7 @@ public class ConfigManager {
 		boolean flag = !file.exists();
 		if (flag) {
 			file.createNewFile();
-			InternetUtils.downloadFile("https://gist.githubusercontent.com/shadowfacts/dc87dd58fdcd317ebd1d/raw/da5dccc30341c37ae8cb1ddf284da86df899abc0/0.1.0.json", file);
+			InternetUtils.downloadFile("https://gist.githubusercontent.com/shadowfacts/dd388e0dc9afe45e0b1f/raw/9ff472320b433531758a84162331ea933b3d11ac/gistfile1.txt", file);
 		}
 
 		config = gson.fromJson(new FileReader(file), Config.class);
