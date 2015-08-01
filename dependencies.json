@@ -7,11 +7,6 @@
 		},
 		{
 			"type": "maven",
-			"name": "RX14",
-			"url": "http://mvn.rx14.co.uk/local/"
-		},
-		{
-			"type": "maven",
 			"name": "shadowfacts",
 			"url": "http://mvn.rx14.co.uk/shadowfacts/"
 		}
@@ -27,7 +22,7 @@
 		},
 		{
 			"type": "maven",
-			"repo": "RX14",
+			"repo": "jcenter",
 			"group": "uk.co.rx14.jmclaunchlib",
 			"name": "jMCLaunchLib",
 			"version": "0.3.0",
