@@ -1,1 +1,1 @@
-https://github.com/TemporalReality/Launcher/blob/master/dependencies.json
+https://raw.githubusercontent.com/TemporalReality/Launcher/master/dependencies.json
