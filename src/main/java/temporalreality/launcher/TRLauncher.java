@@ -18,6 +18,7 @@ import javafx.stage.Stage;
 import temporalreality.launcher.config.ConfigManager;
 import temporalreality.launcher.model.Mod;
 import temporalreality.launcher.model.Modpack;
+import temporalreality.launcher.util.MiscUtils;
 import temporalreality.launcher.util.ModpackUtils;
 import temporalreality.launcher.view.account.SetUsernameController;
 import temporalreality.launcher.view.config.ConfigDialogController;
@@ -33,7 +34,7 @@ import temporalreality.launcher.view.passworddialog.PasswordDialogController;
  */
 public class TRLauncher extends Application {
 
-	public static final Logger log;
+	public static Logger log;
 
 	private static TRLauncher launcher;
 
@@ -43,15 +44,22 @@ public class TRLauncher extends Application {
 	private ObservableList<Modpack> modpacks = FXCollections.observableArrayList();
 
 	public TRLauncher() throws Exception {
-
-	}
-
-	@Override
-	public void start(Stage primaryStage) throws Exception {
 		launcher = this;
 
 		ConfigManager.getInstance().init();
 
+		try {
+			LogManager.setDefaultContext(LogManager.getContext("Launcher", System.out, new FileOutputStream(MiscUtils.getFile("launcher.log"))));
+		} catch (FileNotFoundException e) {
+			System.err.println("Could not setup logging library properly.");
+			e.printStackTrace();
+			LogManager.setDefaultContext(LogManager.getContext("Launcher", System.out));
+		}
+		log = LogManager.getLogger("Launcher");
+	}
+
+	@Override
+	public void start(Stage primaryStage) throws Exception {
 		ModpackUtils.loadModpacks(modpacks);
 
 		this.primaryStage = primaryStage;
@@ -272,17 +280,5 @@ public class TRLauncher extends Application {
 
 	public static void main(String[] args) throws IOException {
 		launch(args);
-	}
-
-	static {
-		File file = new File("launcher.log");
-		try {
-			LogManager.setDefaultContext(LogManager.getContext("Launcher", System.out, new FileOutputStream(file)));
-		} catch (FileNotFoundException e) {
-			System.err.println("Could not setup logging library properly.");
-			e.printStackTrace();
-			LogManager.setDefaultContext(LogManager.getContext("Launcher", System.out));
-		}
-		log = LogManager.getLogger("Launcher");
 	}
 }
