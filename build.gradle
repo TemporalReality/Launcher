@@ -26,14 +26,6 @@ dependencies {
 	compile group: 'uk.co.rx14.jmclaunchlib', name: 'jMCLaunchLib', version: '0.3.0'
 	compile group: 'com.google.code.gson', name: 'gson', version: '2.3.1'
 	compile group: 'coolsquid', name: 'SquidLogging', version: '1.0.0'
-
-	// GODDAMNIT RX14
-	compile "org.codehaus.groovy:groovy-all:2.4.3:indy"
-	compile "com.mashape.unirest:unirest-java:1.4.5"
-	compile "commons-codec:commons-codec:1.10"
-	compile "org.tukaani:xz:1.5"
-	compile "commons-io:commons-io:2.4"
-	compile "commons-logging:commons-logging:1.2"
 }
 
 jar {
