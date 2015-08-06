@@ -71,12 +71,9 @@ public class TRLauncher extends Application {
 		this.primaryStage = primaryStage;
 		this.primaryStage.setTitle("Temporal Reality");
 		MiscUtils.addIcons(this.primaryStage);
-		Runtime.getRuntime().addShutdownHook(new Thread() {
-			@Override
-			public void run() {
-				if (minecraft != null) minecraft.destroyForcibly();
-			}
-		});
+		Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+			if (minecraft != null) minecraft.destroyForcibly();
+		}));
 
 		if (OperatingSystem.getOS() == OperatingSystem.OSX) {
 			try {
