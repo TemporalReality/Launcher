@@ -114,7 +114,10 @@ public class ModpackUtils {
 						connection.setDoInput(true);
 						connection.setDoOutput(true);
 						connection.connect();
-						IOUtils.copy(connection.getInputStream(), new FileOutputStream(MiscUtils.getFile("temp/" + modpack.getName() + ".zip")));
+						File f = MiscUtils.getFile("temp/" + modpack.getName() + ".zip");
+						if (!f.getParentFile().exists()) f.getParentFile().mkdirs();
+						if (!f.exists()) f.createNewFile();
+						IOUtils.copy(connection.getInputStream(), new FileOutputStream(f));
 					}
 
 //					Extract override zip
@@ -151,7 +154,10 @@ public class ModpackUtils {
 								connection.setDoInput(true);
 								connection.setDoOutput(true);
 								connection.connect();
-								IOUtils.copy(connection.getInputStream(), new FileOutputStream(MiscUtils.getFile("modpacks/" + modpack.getName() + "/mods/" + mod.fileName)));
+								File f = MiscUtils.getFile("modpacks/" + modpack.getName() + "/mods/" + mod.fileName);
+								if (!f.getParentFile().exists()) f.getParentFile().mkdirs();
+								if (!f.exists()) f.createNewFile();
+								IOUtils.copy(connection.getInputStream(), new FileOutputStream(f));
 							}
 						}
 					}
