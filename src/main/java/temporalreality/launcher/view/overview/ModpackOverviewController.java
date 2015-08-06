@@ -17,6 +17,7 @@ import temporalreality.launcher.util.VersionUtils;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.Optional;
 
 /**
@@ -161,6 +162,9 @@ public class ModpackOverviewController {
 
 			image.setImage(new Image(modpack.getLogoUrl()));
 
+			ArrayList<VersionMenuItem> toRemove = new ArrayList<>();
+			version.getItems().stream().filter(item -> item instanceof VersionMenuItem).forEach(item -> toRemove.add((VersionMenuItem)item));
+			toRemove.stream().forEach(item -> version.getItems().remove(item));
 			for (Version v : modpack.getVersions()) {
 				VersionMenuItem item = new VersionMenuItem(v);
 				item.setOnAction(event -> {
