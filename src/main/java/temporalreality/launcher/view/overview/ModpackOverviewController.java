@@ -1,5 +1,6 @@
 package temporalreality.launcher.view.overview;
 
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
@@ -160,7 +161,11 @@ public class ModpackOverviewController {
 			forgeVer.setText(modpack.getSelectedVersion().forgeVersion);
 			description.setText(modpack.getDescription());
 
-			image.setImage(new Image(modpack.getLogoUrl()));
+			Thread logoThread = new Thread(() -> {
+				Image image = new Image(modpack.getLogoUrl());
+				Platform.runLater(() -> this.image.setImage(image));
+			});
+			logoThread.start();
 
 			version.getItems().removeAll(version.getItems());
 			for (Version v : modpack.getVersions()) {
