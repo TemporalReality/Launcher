@@ -7,8 +7,8 @@ import javafx.stage.Modality;
 import net.shadowfacts.shadowlib.log.LogLevel;
 import net.shadowfacts.shadowlib.log.Logger;
 import net.shadowfacts.shadowlib.util.FileUtils;
-import net.shadowfacts.shadowlib.util.InternetUtils;
 import net.shadowfacts.shadowlib.util.StreamRedirect;
+import org.apache.commons.io.IOUtils;
 import temporalreality.launcher.TRLauncher;
 import temporalreality.launcher.config.ConfigManager;
 import temporalreality.launcher.model.Mod;
@@ -22,6 +22,7 @@ import uk.co.rx14.jmclaunchlib.LaunchTaskBuilder;
 import uk.co.rx14.jmclaunchlib.auth.PasswordSupplier;
 
 import java.io.*;
+import java.net.HttpURLConnection;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -107,7 +108,13 @@ public class ModpackUtils {
 						updateMessage("Downloading override zip");
 						updateProgress(2, taskCount);
 
-						InternetUtils.downloadFile(modpack.getSelectedVersion().overrideUrl, MiscUtils.getPath("temp/" + modpack.getName() + ".zip"));
+						HttpURLConnection connection = (HttpURLConnection)new URL(modpack.getSelectedVersion().overrideUrl).openConnection();
+						connection.setRequestMethod("GET");
+						connection.setAllowUserInteraction(false);
+						connection.setDoInput(true);
+						connection.setDoOutput(true);
+						connection.connect();
+						IOUtils.copy(connection.getInputStream(), new FileOutputStream(MiscUtils.getFile("temp/" + modpack.getName() + ".zip")));
 					}
 
 //					Extract override zip
@@ -138,7 +145,13 @@ public class ModpackUtils {
 								updateMessage("Downloading mod " + mod.name);
 								updateProgress(i + 5, taskCount);
 
-								InternetUtils.downloadFile(mod.downloadUrl, MiscUtils.getPath("modpacks/" + modpack.getName() + "/mods/" + mod.fileName));
+								HttpURLConnection connection = (HttpURLConnection)new URL(mod.downloadUrl).openConnection();
+								connection.setRequestMethod("GET");
+								connection.setAllowUserInteraction(false);
+								connection.setDoInput(true);
+								connection.setDoOutput(true);
+								connection.connect();
+								IOUtils.copy(connection.getInputStream(), new FileOutputStream(MiscUtils.getFile("modpacks/" + modpack.getName() + "/mods/" + mod.fileName)));
 							}
 						}
 					}
