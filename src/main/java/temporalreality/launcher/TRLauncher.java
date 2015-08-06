@@ -71,7 +71,6 @@ public class TRLauncher extends Application {
 		MiscUtils.addIcons(this.primaryStage);
 
 		if (OperatingSystem.getOS() == OperatingSystem.OSX) {
-			System.setProperty("com.apple.mrj.application.apple.menu.about.name", "Temporal Reality Launcher");
 			try {
 				OSUtils.setOSXDockIcon(new URL("http://temporal-reality.com/logo/1024.png"));
 			} catch (MalformedURLException ignored) {}
