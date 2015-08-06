@@ -306,6 +306,8 @@ public class ModpackUtils {
 					output.start();
 					error.start();
 
+					TRLauncher.getLauncher().setMinecraft(process);
+
 					return null;
 				}
 			};

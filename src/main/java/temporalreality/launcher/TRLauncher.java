@@ -47,6 +47,8 @@ public class TRLauncher extends Application {
 
 	private ObservableList<Modpack> modpacks = FXCollections.observableArrayList();
 
+	private Process minecraft;
+
 	public TRLauncher() throws Exception {
 		launcher = this;
 
@@ -69,6 +71,12 @@ public class TRLauncher extends Application {
 		this.primaryStage = primaryStage;
 		this.primaryStage.setTitle("Temporal Reality");
 		MiscUtils.addIcons(this.primaryStage);
+		Runtime.getRuntime().addShutdownHook(new Thread() {
+			@Override
+			public void run() {
+				if (minecraft != null) minecraft.destroyForcibly();
+			}
+		});
 
 		if (OperatingSystem.getOS() == OperatingSystem.OSX) {
 			try {
@@ -287,6 +295,14 @@ public class TRLauncher extends Application {
 
 	public ObservableList<Modpack> getModpacks() {
 		return modpacks;
+	}
+
+	public Process getMinecraft() {
+		return minecraft;
+	}
+
+	public void setMinecraft(Process minecraft) {
+		this.minecraft = minecraft;
 	}
 
 	public static void main(String[] args) throws IOException {
