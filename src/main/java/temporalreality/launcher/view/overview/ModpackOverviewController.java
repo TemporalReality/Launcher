@@ -162,9 +162,7 @@ public class ModpackOverviewController {
 
 			image.setImage(new Image(modpack.getLogoUrl()));
 
-			ArrayList<VersionMenuItem> toRemove = new ArrayList<>();
-			version.getItems().stream().filter(item -> item instanceof VersionMenuItem).forEach(item -> toRemove.add((VersionMenuItem)item));
-			toRemove.stream().forEach(item -> version.getItems().remove(item));
+			version.getItems().removeAll(version.getItems());
 			for (Version v : modpack.getVersions()) {
 				VersionMenuItem item = new VersionMenuItem(v);
 				item.setOnAction(event -> {
