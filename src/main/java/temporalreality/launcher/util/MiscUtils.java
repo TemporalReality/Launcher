@@ -1,5 +1,7 @@
 package temporalreality.launcher.util;
 
+import javafx.scene.image.Image;
+import javafx.stage.Stage;
 import temporalreality.launcher.config.ConfigManager;
 
 import java.io.File;
@@ -20,6 +22,16 @@ public class MiscUtils {
 
 	public static File getFile(String s) {
 		return new File(getPath(s));
+	}
+
+	public static void addIcons(Stage stage) {
+		stage.getIcons().addAll(
+				new Image("http://temporal-reality.com/logo/1024.png"),
+				new Image("http://temporal-reality.com/logo/512.png"),
+				new Image("http://temporal-reality.com/logo/256.png"),
+				new Image("http://temporal-reality.com/logo/128.png"),
+				new Image("http://temporal-reality.com/logo/64.png")
+		);
 	}
 
 }
