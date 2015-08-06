@@ -1,9 +1,10 @@
 package temporalreality.launcher;
 
-import java.io.File;
+import java.awt.*;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 
 import javafx.application.Application;
@@ -11,10 +12,12 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import net.shadowfacts.shadowlib.util.OperatingSystem;
 import temporalreality.launcher.config.ConfigManager;
 import temporalreality.launcher.model.Mod;
 import temporalreality.launcher.model.Modpack;
@@ -64,6 +67,14 @@ public class TRLauncher extends Application {
 
 		this.primaryStage = primaryStage;
 		this.primaryStage.setTitle("Temporal Reality");
+		this.primaryStage.getIcons().add(new Image("http://i.imgur.com/L9zXP7u.png"));
+
+		System.out.println("OperatingSystem.getOS() = " + OperatingSystem.getOS());
+		System.out.println("System.getProperty(\"os.name\") = " + System.getProperty("os.name"));
+		if (OperatingSystem.getOS() == OperatingSystem.OSX) {
+			com.apple.eawt.Application osxApplication = com.apple.eawt.Application.getApplication();
+			osxApplication.setDockIconImage(Toolkit.getDefaultToolkit().getImage(new URL("http://i.imgur.com/L9zXP7u.png")));
+		}
 
 		initRootLayout();
 		showModpackOverview();
