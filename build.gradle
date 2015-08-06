@@ -5,10 +5,6 @@ plugins {
 	id 'com.github.johnrengelman.shadow' version '1.2.1'
 }
 
-if (System.getenv().BUILD_NUMBER != null) {
-	version += "-build-" + System.getenv().BUILD_NUMBER
-}
-
 repositories {
 	jcenter()
 	maven {
