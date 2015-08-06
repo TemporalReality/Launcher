@@ -1,9 +1,9 @@
 package temporalreality.launcher;
 
-import java.awt.*;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 
@@ -17,12 +17,13 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import net.shadowfacts.shadowlib.util.OperatingSystem;
+import net.shadowfacts.shadowlib.util.os.OperatingSystem;
 import temporalreality.launcher.config.ConfigManager;
 import temporalreality.launcher.model.Mod;
 import temporalreality.launcher.model.Modpack;
 import temporalreality.launcher.util.MiscUtils;
 import temporalreality.launcher.util.ModpackUtils;
+import net.shadowfacts.shadowlib.util.os.OSUtils;
 import temporalreality.launcher.view.account.SetUsernameController;
 import temporalreality.launcher.view.config.ConfigDialogController;
 import temporalreality.launcher.view.downloaddialog.DownloadDialogController;
@@ -69,11 +70,10 @@ public class TRLauncher extends Application {
 		this.primaryStage.setTitle("Temporal Reality");
 		this.primaryStage.getIcons().add(new Image("http://i.imgur.com/L9zXP7u.png"));
 
-		System.out.println("OperatingSystem.getOS() = " + OperatingSystem.getOS());
-		System.out.println("System.getProperty(\"os.name\") = " + System.getProperty("os.name"));
 		if (OperatingSystem.getOS() == OperatingSystem.OSX) {
-			com.apple.eawt.Application osxApplication = com.apple.eawt.Application.getApplication();
-			osxApplication.setDockIconImage(Toolkit.getDefaultToolkit().getImage(new URL("http://i.imgur.com/L9zXP7u.png")));
+			try {
+				OSUtils.setOSXDockIcon(new URL("http://i.imgur.com/L9zXP7u.png"));
+			} catch (MalformedURLException ignored) {}
 		}
 
 		initRootLayout();
