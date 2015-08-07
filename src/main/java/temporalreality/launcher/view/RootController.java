@@ -54,12 +54,12 @@ public class RootController {
 		menuBar.getMenus().add(2, accountsMenu);
 		MenuItem account = new MenuItem(ConfigManager.getInstanceConfig().username);
 
-		CheckMenuItem offline = new CheckMenuItem("Offline");
-		offline.setSelected(ConfigManager.getInstanceConfig().offline);
-		offline.setOnAction(event -> {
-			ConfigManager.getInstanceConfig().offline = offline.isSelected();
-			ConfigManager.getInstance().save();
-		});
+//		CheckMenuItem offline = new CheckMenuItem("Offline");
+//		offline.setSelected(ConfigManager.getInstanceConfig().offline);
+//		offline.setOnAction(event -> {
+//			ConfigManager.getInstanceConfig().offline = offline.isSelected();
+//			ConfigManager.getInstance().save();
+//		});
 
 		MenuItem set = new MenuItem("Set Account...");
 		set.setOnAction(event -> {
@@ -71,7 +71,7 @@ public class RootController {
 			}
 		});
 
-		accountsMenu.getItems().addAll(account, new SeparatorMenuItem(), offline, set);
+		accountsMenu.getItems().addAll(account, new SeparatorMenuItem(), set);
 
 	}
 
