@@ -35,6 +35,14 @@ public class ConfigManager {
 	}
 
 	public void init() throws IOException {
+		String prop = System.getProperty("temporalreality.launcher.config");
+		if (prop != null && !prop.equals("")) {
+			file = new File(prop);
+		}
+
+		System.out.println("config file = " + file);
+
+
 		if (!file.getParentFile().exists()) {
 			file.getParentFile().mkdirs();
 		}

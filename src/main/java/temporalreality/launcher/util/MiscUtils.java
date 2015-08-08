@@ -11,8 +11,18 @@ import java.io.File;
  */
 public class MiscUtils {
 
+	private static String launcherDir = null;
+
 	public static String getPath(String s) {
-		String launcherDir = ConfigManager.getInstanceConfig().launcherDir;
+		if (launcherDir == null) {
+			String prop = System.getProperty("temporalreality.launcher.dir");
+			if (prop != null && !prop.equals("")) {
+				launcherDir = prop;
+			} else {
+				launcherDir = ConfigManager.getInstanceConfig().launcherDir;
+			}
+		}
+
 		if (!launcherDir.equals("")) {
 			return launcherDir + "/" + s;
 		} else {
