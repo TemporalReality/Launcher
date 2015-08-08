@@ -50,8 +50,11 @@ public class ModpackDeserializer implements JsonDeserializer<Modpack> {
 					mod.authors.add(authorsArray.get(k).getAsString());
 				}
 
-				mod.downloadUrl = modObj.get("downloadUrl").getAsString();
-				mod.fileName = modObj.get("fileName").getAsString();
+				JsonElement downloadUrl = modObj.get("downloadUrl");
+				mod.downloadUrl = downloadUrl == null ? "" : downloadUrl.getAsString();
+
+				JsonElement fileName = modObj.get("fileName");
+				mod.fileName = fileName == null ? "" : fileName.getAsString();
 
 				v.addMod(mod);
 			}

@@ -144,20 +144,23 @@ public class ModpackUtils {
 							if (!isCancelled()) {
 								Mod mod = modpack.getSelectedVersion().mods.get(i);
 
-								TRLauncher.log.info("Downloading mod " + mod.name);
-								updateMessage("Downloading mod " + mod.name);
-								updateProgress(i + 5, taskCount);
+								if (mod.downloadUrl != null && !mod.downloadUrl.equals("") &&
+										mod.fileName != null && !mod.fileName.equals("")) {
+									TRLauncher.log.info("Downloading mod " + mod.name);
+									updateMessage("Downloading mod " + mod.name);
+									updateProgress(i + 5, taskCount);
 
-								HttpURLConnection connection = (HttpURLConnection)new URL(mod.downloadUrl).openConnection();
-								connection.setRequestMethod("GET");
-								connection.setAllowUserInteraction(false);
-								connection.setDoInput(true);
-								connection.setDoOutput(true);
-								connection.connect();
-								File f = MiscUtils.getFile("modpacks/" + modpack.getName() + "/mods/" + mod.fileName);
-								if (!f.getParentFile().exists()) f.getParentFile().mkdirs();
-								if (!f.exists()) f.createNewFile();
-								IOUtils.copy(connection.getInputStream(), new FileOutputStream(f));
+									HttpURLConnection connection = (HttpURLConnection) new URL(mod.downloadUrl).openConnection();
+									connection.setRequestMethod("GET");
+									connection.setAllowUserInteraction(false);
+									connection.setDoInput(true);
+									connection.setDoOutput(true);
+									connection.connect();
+									File f = MiscUtils.getFile("modpacks/" + modpack.getName() + "/mods/" + mod.fileName);
+									if (!f.getParentFile().exists()) f.getParentFile().mkdirs();
+									if (!f.exists()) f.createNewFile();
+									IOUtils.copy(connection.getInputStream(), new FileOutputStream(f));
+								}
 							}
 						}
 					}
