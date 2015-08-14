@@ -32,31 +32,36 @@ public class ModpackDeserializer implements JsonDeserializer<Modpack> {
 			JsonObject versionObj = versionArray.get(i).getAsJsonObject();
 
 			v.version = versionObj.get("version").getAsString();
-			v.changelogUrl = versionObj.get("changelogUrl").getAsString();
+			JsonElement changelogUrl = versionObj.get("changelogUrl");
+			v.changelogUrl = changelogUrl == null ? "" : changelogUrl.getAsString();
 			v.mcVersion = versionObj.get("mcVersion").getAsString();
-			v.forgeVersion = versionObj.get("forgeVersion").getAsString();
-			v.overrideUrl = versionObj.get("overrideUrl").getAsString();
+			JsonElement forgeVersion = versionObj.get("forgeVersion");
+			v.forgeVersion = forgeVersion == null ? "" : forgeVersion.getAsString();
+			JsonElement overrideUrl = versionObj.get("overrideUrl");
+			v.overrideUrl = overrideUrl == null ? "" : overrideUrl.getAsString();
 
-			JsonArray modsArray = versionObj.get("mods").getAsJsonArray();
-			for (int j = 0; j < modsArray.size(); j++) {
-				Mod mod = new Mod();
-				JsonObject modObj = modsArray.get(j).getAsJsonObject();
+			JsonElement mods = versionObj.get("mods");
+			if (mods != null) {
+				for (int j = 0; j < mods.getAsJsonArray().size(); j++) {
+					Mod mod = new Mod();
+					JsonObject modObj = mods.getAsJsonArray().get(j).getAsJsonObject();
 
-				mod.name = modObj.get("name").getAsString();
-				mod.url = modObj.get("url").getAsString();
+					mod.name = modObj.get("name").getAsString();
+					mod.url = modObj.get("url").getAsString();
 
-				JsonArray authorsArray = modObj.get("authors").getAsJsonArray();
-				for (int k = 0; k < authorsArray.size(); k++) {
-					mod.authors.add(authorsArray.get(k).getAsString());
+					JsonArray authorsArray = modObj.get("authors").getAsJsonArray();
+					for (int k = 0; k < authorsArray.size(); k++) {
+						mod.authors.add(authorsArray.get(k).getAsString());
+					}
+
+					JsonElement downloadUrl = modObj.get("downloadUrl");
+					mod.downloadUrl = downloadUrl == null ? "" : downloadUrl.getAsString();
+
+					JsonElement fileName = modObj.get("fileName");
+					mod.fileName = fileName == null ? "" : fileName.getAsString();
+
+					v.addMod(mod);
 				}
-
-				JsonElement downloadUrl = modObj.get("downloadUrl");
-				mod.downloadUrl = downloadUrl == null ? "" : downloadUrl.getAsString();
-
-				JsonElement fileName = modObj.get("fileName");
-				mod.fileName = fileName == null ? "" : fileName.getAsString();
-
-				v.addMod(mod);
 			}
 
 			modpack.addVersion(v);

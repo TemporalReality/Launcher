@@ -103,39 +103,41 @@ public class ModpackUtils {
 					}
 
 //					Download override zip
-					if (!isCancelled()) {
-						TRLauncher.log.info("Downloading override zip to temp/" + modpack.getName() + ".zip");
-						updateMessage("Downloading override zip");
-						updateProgress(2, taskCount);
+					if (modpack.getSelectedVersion().overrideUrl != null && !modpack.getSelectedVersion().overrideUrl.equals("")) {
+						if (!isCancelled()) {
+							TRLauncher.log.info("Downloading override zip to temp/" + modpack.getName() + ".zip");
+							updateMessage("Downloading override zip");
+							updateProgress(2, taskCount);
 
-						HttpURLConnection connection = (HttpURLConnection)new URL(modpack.getSelectedVersion().overrideUrl).openConnection();
-						connection.setRequestMethod("GET");
-						connection.setAllowUserInteraction(false);
-						connection.setDoInput(true);
-						connection.setDoOutput(true);
-						connection.connect();
-						File f = MiscUtils.getFile("temp/" + modpack.getName() + ".zip");
-						if (!f.getParentFile().exists()) f.getParentFile().mkdirs();
-						if (!f.exists()) f.createNewFile();
-						IOUtils.copy(connection.getInputStream(), new FileOutputStream(f));
-					}
+							HttpURLConnection connection = (HttpURLConnection) new URL(modpack.getSelectedVersion().overrideUrl).openConnection();
+							connection.setRequestMethod("GET");
+							connection.setAllowUserInteraction(false);
+							connection.setDoInput(true);
+							connection.setDoOutput(true);
+							connection.connect();
+							File f = MiscUtils.getFile("temp/" + modpack.getName() + ".zip");
+							if (!f.getParentFile().exists()) f.getParentFile().mkdirs();
+							if (!f.exists()) f.createNewFile();
+							IOUtils.copy(connection.getInputStream(), new FileOutputStream(f));
+						}
 
 //					Extract override zip
-					if (!isCancelled()) {
-						TRLauncher.log.info("Extracting override zip");
-						updateMessage("Extracting override zip");
-						updateProgress(3, taskCount);
+						if (!isCancelled()) {
+							TRLauncher.log.info("Extracting override zip");
+							updateMessage("Extracting override zip");
+							updateProgress(3, taskCount);
 
-						FileUtils.unzipFile(MiscUtils.getPath("temp/" + modpack.getName() + ".zip"), MiscUtils.getPath("modpacks/" + modpack.getName() + "/"));
-					}
+							FileUtils.unzipFile(MiscUtils.getPath("temp/" + modpack.getName() + ".zip"), MiscUtils.getPath("modpacks/" + modpack.getName() + "/"));
+						}
 
 //					Delete modpack zip
-					if (!isCancelled()) {
-						TRLauncher.log.info("Deleting override zip");
-						updateMessage("Deleting override zip");
-						updateProgress(4, taskCount);
+						if (!isCancelled()) {
+							TRLauncher.log.info("Deleting override zip");
+							updateMessage("Deleting override zip");
+							updateProgress(4, taskCount);
 
-						MiscUtils.getFile("temp/" + modpack.getName() + ".zip").delete();
+							MiscUtils.getFile("temp/" + modpack.getName() + ".zip").delete();
+						}
 					}
 
 //					Download mods
@@ -274,8 +276,14 @@ public class ModpackUtils {
 			LaunchTaskBuilder builder = new LaunchTaskBuilder()
 					.setCachesDir(MiscUtils.getPath("caches/"))
 					.setInstanceDir(MiscUtils.getPath("modpacks/" + modpack.getName() + "/"))
-					.setForgeVersion(modpack.getSelectedVersion().mcVersion, modpack.getSelectedVersion().forgeVersion)
+//					.setForgeVersion(modpack.getSelectedVersion().mcVersion, modpack.getSelectedVersion().forgeVersion)
 					.setPasswordSupplier(passwordSupplier);
+
+			if (modpack.getSelectedVersion().forgeVersion != null && !modpack.getSelectedVersion().forgeVersion.equals("")) {
+				builder = builder.setForgeVersion(modpack.getSelectedVersion().mcVersion, modpack.getSelectedVersion().forgeVersion);
+			} else {
+				builder = builder.setMinecraftVersion(modpack.getSelectedVersion().mcVersion);
+			}
 
 			final LaunchTaskBuilder theBuilder;
 
