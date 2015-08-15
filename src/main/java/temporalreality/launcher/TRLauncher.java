@@ -3,7 +3,6 @@ package temporalreality.launcher;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.PrintStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -63,24 +62,6 @@ public class TRLauncher extends Application {
 			LogManager.setDefaultContext(LogManager.getContext("Launcher", System.out));
 		}
 		log = LogManager.getLogger("Launcher");
-		System.setOut(new PrintStream(System.out) {
-
-			private final Logger log = LogManager.getLogger("STDOUT");
-
-			@Override
-			public void println(String ln) {
-				log.info(ln);
-			}
-		});
-		System.setErr(new PrintStream(System.err) {
-
-			private final Logger log = LogManager.getLogger("STDERR");
-
-			@Override
-			public void println(String ln) {
-				log.error(ln);
-			}
-		});
 	}
 
 	@Override
