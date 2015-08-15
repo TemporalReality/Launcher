@@ -42,7 +42,12 @@ public class ModpackUtils {
 			String data = getModpackData(s);
 			String[] packs = data.split("\n");
 			for (String pack : packs) {
-				modpacks.add(Modpack.get(new URL(pack)));
+				try {
+					modpacks.add(Modpack.get(new URL(pack)));
+				} catch (Throwable t) {
+					TRLauncher.log.error("Failed to download pack: " + pack);
+					TRLauncher.log.catching(t);
+				}
 			}
 		}
 	}
@@ -93,7 +98,7 @@ public class ModpackUtils {
 				protected Void call() throws Exception {
 					int taskCount = modpack.getSelectedVersion().mods.size() + 5;
 
-//					Create modpack dir
+					//					Create modpack dir
 					if (!getPackDir(modpack).exists() && !isCancelled()) {
 						TRLauncher.log.info("Creating dir for " + modpack.getName());
 						updateMessage("Creating modpack directory");
@@ -102,7 +107,7 @@ public class ModpackUtils {
 						getPackDir(modpack).mkdirs();
 					}
 
-//					Download override zip
+					//					Download override zip
 					if (modpack.getSelectedVersion().overrideUrl != null && !modpack.getSelectedVersion().overrideUrl.equals("")) {
 						if (!isCancelled()) {
 							TRLauncher.log.info("Downloading override zip to temp/" + modpack.getName() + ".zip");
@@ -121,7 +126,7 @@ public class ModpackUtils {
 							IOUtils.copy(connection.getInputStream(), new FileOutputStream(f));
 						}
 
-//					Extract override zip
+						//					Extract override zip
 						if (!isCancelled()) {
 							TRLauncher.log.info("Extracting override zip");
 							updateMessage("Extracting override zip");
@@ -130,7 +135,7 @@ public class ModpackUtils {
 							FileUtils.unzipFile(MiscUtils.getPath("temp/" + modpack.getName() + ".zip"), MiscUtils.getPath("modpacks/" + modpack.getName() + "/"));
 						}
 
-//					Delete modpack zip
+						//					Delete modpack zip
 						if (!isCancelled()) {
 							TRLauncher.log.info("Deleting override zip");
 							updateMessage("Deleting override zip");
@@ -140,7 +145,7 @@ public class ModpackUtils {
 						}
 					}
 
-//					Download mods
+					//					Download mods
 					if (!isCancelled()) {
 						for (int i = 0; i < modpack.getSelectedVersion().mods.size(); i++) {
 							if (!isCancelled()) {
@@ -167,7 +172,7 @@ public class ModpackUtils {
 						}
 					}
 
-//					Create version file
+					//					Create version file
 					if (!isCancelled()) {
 						TRLauncher.log.info("Creating version.txt file for " + modpack.getName());
 						updateMessage("Creating version.txt");
@@ -183,7 +188,7 @@ public class ModpackUtils {
 						writer.close();
 					}
 
-//					Cancel and undo all changes
+					//					Cancel and undo all changes
 					if (isCancelled()) {
 						FileUtils.deleteFolder(MiscUtils.getFile("modpacks/" + modpack.getName() + "/"));
 						return null;
@@ -254,8 +259,8 @@ public class ModpackUtils {
 			if (selectedUsername != null && !selectedUsername.equals("")) {
 
 				FutureTask<String> passwordTask = new FutureTask<>(() ->
-					TRLauncher.getLauncher().showPasswordDialog(selectedUsername).getPassword()
-				);
+				TRLauncher.getLauncher().showPasswordDialog(selectedUsername).getPassword()
+						);
 
 
 				passwordSupplier = (String username) -> {
@@ -274,10 +279,10 @@ public class ModpackUtils {
 			}
 
 			LaunchTaskBuilder builder = new LaunchTaskBuilder()
-					.setCachesDir(MiscUtils.getPath("caches/"))
-					.setInstanceDir(MiscUtils.getPath("modpacks/" + modpack.getName() + "/"))
-//					.setForgeVersion(modpack.getSelectedVersion().mcVersion, modpack.getSelectedVersion().forgeVersion)
-					.setPasswordSupplier(passwordSupplier);
+			.setCachesDir(MiscUtils.getPath("caches/"))
+			.setInstanceDir(MiscUtils.getPath("modpacks/" + modpack.getName() + "/"))
+			//					.setForgeVersion(modpack.getSelectedVersion().mcVersion, modpack.getSelectedVersion().forgeVersion)
+			.setPasswordSupplier(passwordSupplier);
 
 			if (modpack.getSelectedVersion().forgeVersion != null && !modpack.getSelectedVersion().forgeVersion.equals("")) {
 				builder = builder.setForgeVersion(modpack.getSelectedVersion().mcVersion, modpack.getSelectedVersion().forgeVersion);
@@ -302,7 +307,7 @@ public class ModpackUtils {
 
 					LaunchTask launchTask = theBuilder.build();
 
-//			TODO: Progress dialog
+					//			TODO: Progress dialog
 
 					launchTask.start();
 
@@ -335,64 +340,64 @@ public class ModpackUtils {
 
 
 
-//			LoginDialogController controller = TRLauncher.getLauncher().showLoginDialog();
-//
-//			if (controller.isLoggedIn()) {
-//
-//				MCInstance instance = MCInstance.createForge(
-//						modpack.getSelectedVersion().mcVersion,
-//						modpack.getSelectedVersion().forgeVersion,
-//						MiscUtils.getPath("modpacks/" + modpack.getName() + "/"),
-//						MiscUtils.getPath("caches/"),
-//						(String username) -> {
-//							return "";
-//						}
-//				);
-//
-//				try {
-////					LaunchSpec spec;
-//					LaunchTask task;
-//
-//					if (controller.get() == null) {
-////						spec = instance.getOfflineLaunchSpec("TRGuest" + new Random().nextInt(25));
-//						task = instance.getLaunchTask();
-//					} else {
-////						spec = instance.getLaunchSpec();
-//					}
-//
-////					because RX14 is using a String[] instead of an ArrayList<String>
-//					ArrayList<String> temp = new ArrayList<>(Arrays.asList(spec.getJvmArgs()));
-//					for (String s : ConfigManager.getInstanceConfig().jvmArgs) {
-//						if (s != null && !s.equals("")) temp.add(s);
-//					}
-//					spec.setJvmArgs(temp.toArray(new String[0]));
-//
-//					ArrayList<String> temp2 = new ArrayList<>(Arrays.asList(spec.getLaunchArgs()));
-//					temp2.add("--width=" + ConfigManager.getInstanceConfig().mcWidth);
-//					temp2.add("--height=" + ConfigManager.getInstanceConfig().mcHeight);
-//					spec.setLaunchArgs(temp2.toArray(new String[0]));
-//
-//					Process process = spec.run(Paths.get(ConfigManager.getInstanceConfig().javaPath));
-//					StreamRedirect output = new StreamRedirect(process.getInputStream(), new Logger("MC", true), LogLevel.INFO);
-//					StreamRedirect error = new StreamRedirect(process.getErrorStream(), new Logger("MC", true), LogLevel.ERROR);
-//					output.start();
-//					error.start();
-//
-//				} catch (ForbiddenOperationException e) {
-//
-//					TRLauncher.log.info("Invalid credentials!");
-//					Alert alert = new Alert(Alert.AlertType.ERROR);
-//					alert.initOwner(TRLauncher.getLauncher().getPrimaryStage());
-//					alert.setTitle("Invalid Credentials");
-//					alert.setHeaderText("Invalid login credentials");
-//					alert.setContentText("Please launch Minecraft again and enter correct credentials.");
-//
-//					alert.showAndWait();
-//
-//				}
-//			} else {
-//				TRLauncher.log.info("User did not login or enter offline mode, cancelling launch.");
-//			}
+			//			LoginDialogController controller = TRLauncher.getLauncher().showLoginDialog();
+			//
+			//			if (controller.isLoggedIn()) {
+			//
+			//				MCInstance instance = MCInstance.createForge(
+			//						modpack.getSelectedVersion().mcVersion,
+			//						modpack.getSelectedVersion().forgeVersion,
+			//						MiscUtils.getPath("modpacks/" + modpack.getName() + "/"),
+			//						MiscUtils.getPath("caches/"),
+			//						(String username) -> {
+			//							return "";
+			//						}
+			//				);
+			//
+			//				try {
+			////					LaunchSpec spec;
+			//					LaunchTask task;
+			//
+			//					if (controller.get() == null) {
+			////						spec = instance.getOfflineLaunchSpec("TRGuest" + new Random().nextInt(25));
+			//						task = instance.getLaunchTask();
+			//					} else {
+			////						spec = instance.getLaunchSpec();
+			//					}
+			//
+			////					because RX14 is using a String[] instead of an ArrayList<String>
+			//					ArrayList<String> temp = new ArrayList<>(Arrays.asList(spec.getJvmArgs()));
+			//					for (String s : ConfigManager.getInstanceConfig().jvmArgs) {
+			//						if (s != null && !s.equals("")) temp.add(s);
+			//					}
+			//					spec.setJvmArgs(temp.toArray(new String[0]));
+			//
+			//					ArrayList<String> temp2 = new ArrayList<>(Arrays.asList(spec.getLaunchArgs()));
+			//					temp2.add("--width=" + ConfigManager.getInstanceConfig().mcWidth);
+			//					temp2.add("--height=" + ConfigManager.getInstanceConfig().mcHeight);
+			//					spec.setLaunchArgs(temp2.toArray(new String[0]));
+			//
+			//					Process process = spec.run(Paths.get(ConfigManager.getInstanceConfig().javaPath));
+			//					StreamRedirect output = new StreamRedirect(process.getInputStream(), new Logger("MC", true), LogLevel.INFO);
+			//					StreamRedirect error = new StreamRedirect(process.getErrorStream(), new Logger("MC", true), LogLevel.ERROR);
+			//					output.start();
+			//					error.start();
+			//
+			//				} catch (ForbiddenOperationException e) {
+			//
+			//					TRLauncher.log.info("Invalid credentials!");
+			//					Alert alert = new Alert(Alert.AlertType.ERROR);
+			//					alert.initOwner(TRLauncher.getLauncher().getPrimaryStage());
+			//					alert.setTitle("Invalid Credentials");
+			//					alert.setHeaderText("Invalid login credentials");
+			//					alert.setContentText("Please launch Minecraft again and enter correct credentials.");
+			//
+			//					alert.showAndWait();
+			//
+			//				}
+			//			} else {
+			//				TRLauncher.log.info("User did not login or enter offline mode, cancelling launch.");
+			//			}
 		}
 	}
 
