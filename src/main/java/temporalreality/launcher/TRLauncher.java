@@ -62,6 +62,24 @@ public class TRLauncher extends Application {
 			LogManager.setDefaultContext(LogManager.getContext("Launcher", System.out));
 		}
 		log = LogManager.getLogger("Launcher");
+		System.setOut(new PrintStream(System.out) {
+
+			private final Logger log = LogManager.getLogger("STDOUT");
+
+			@Override
+			public void println(String ln) {
+				log.info(ln);
+			}
+		});
+		System.setErr(new PrintStream(System.err) {
+
+			private final Logger log = LogManager.getLogger("STDERR");
+
+			@Override
+			public void println(String ln) {
+				log.error(ln);
+			}
+		});
 	}
 
 	@Override
