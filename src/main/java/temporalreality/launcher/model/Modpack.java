@@ -1,21 +1,15 @@
 package temporalreality.launcher.model;
 
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.URL;
-import java.util.ArrayList;
-
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import temporalreality.launcher.TRLauncher;
 import temporalreality.launcher.util.ModpackDeserializer;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+import java.io.*;
+import java.net.URL;
+import java.util.ArrayList;
 
 /**
  * @author shadowfacts
@@ -34,6 +28,8 @@ public class Modpack {
 
 	private Version selectedVersion;
 
+	private boolean beta;
+
 	public Modpack() {
 		this.name = "";
 
@@ -42,6 +38,8 @@ public class Modpack {
 		this.description = new SimpleStringProperty();
 
 		this.versions = new ArrayList<>();
+
+		this.beta = false;
 	}
 
 	public static Modpack get(File f) throws FileNotFoundException {
@@ -147,5 +145,13 @@ public class Modpack {
 
 	public void setSelectedVersion(Version selectedVersion) {
 		this.selectedVersion = selectedVersion;
+	}
+
+	public boolean isBeta() {
+		return beta;
+	}
+
+	public void setBeta(boolean beta) {
+		this.beta = beta;
 	}
 }

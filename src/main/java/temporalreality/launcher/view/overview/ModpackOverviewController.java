@@ -8,17 +8,14 @@ import javafx.scene.image.ImageView;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import temporalreality.launcher.TRLauncher;
-import temporalreality.launcher.config.ConfigManager;
 import temporalreality.launcher.control.VersionMenuItem;
 import temporalreality.launcher.model.Modpack;
 import temporalreality.launcher.model.Version;
 import temporalreality.launcher.util.ModpackUtils;
-import temporalreality.launcher.util.VersionUtils;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.Optional;
 
 /**
@@ -86,7 +83,7 @@ public class ModpackOverviewController {
 		modpackTable.setItems(TRLauncher.getLauncher().getModpacks());
 
 		nameColumn.setCellValueFactory(cellData ->
-			cellData.getValue().getNameProperty()
+			cellData.getValue().isBeta() ? cellData.getValue().getNameProperty().concat(" (BETA)") : cellData.getValue().getNameProperty()
 		);
 
 		showModpackDetails(null);

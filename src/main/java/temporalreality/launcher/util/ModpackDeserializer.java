@@ -1,13 +1,11 @@
 package temporalreality.launcher.util;
 
 import com.google.gson.*;
-import com.google.gson.annotations.JsonAdapter;
 import temporalreality.launcher.model.Mod;
 import temporalreality.launcher.model.Modpack;
 import temporalreality.launcher.model.Version;
 
 import java.lang.reflect.Type;
-import java.util.ArrayList;
 
 /**
  * @author shadowfacts
@@ -25,6 +23,8 @@ public class ModpackDeserializer implements JsonDeserializer<Modpack> {
 		modpack.setAuthor(obj.get("author").getAsString());
 		modpack.setDescription(obj.get("description").getAsString());
 		modpack.setLogoUrl(obj.get("logoUrl").getAsString());
+
+		if (obj.has("beta")) modpack.setBeta(obj.get("beta").getAsBoolean());
 
 		JsonArray versionArray = obj.get("versions").getAsJsonArray();
 		for (int i = 0; i < versionArray.size(); i++) {
