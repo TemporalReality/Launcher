@@ -102,7 +102,6 @@ public class ModpackUtils {
 		boolean installed = isModpackInstalled(modpack);
 		if (!installed || canUpgrade(modpack)) {
 			File packDir = getPackDir(modpack);
-			String oldVersion = Files.readAllLines(Paths.get(MiscUtils.getPath("modpacks/" + modpack.getName() + "/version.txt"))).get(0);
 			Task<Void> downloadTask = new Task<Void>() {
 				@Override
 				protected Void call() throws Exception {
@@ -117,6 +116,8 @@ public class ModpackUtils {
 						packDir.mkdirs();
 					}
 					else if (!isCancelled()) {
+						File versionsTxt = new File("./modpacks/" + modpack.getName(), "versions.txt");
+						String oldVersion = versionsTxt.exists() ? org.apache.commons.io.FileUtils.readLines(versionsTxt).get(0) : "";
 						TRLauncher.log.info("Making backup of  " + modpack.getName());
 						updateMessage("Making backup of old modpack files");
 						updateProgress(1, taskCount);
