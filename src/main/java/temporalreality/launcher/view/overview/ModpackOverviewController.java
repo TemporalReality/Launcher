@@ -143,7 +143,6 @@ public class ModpackOverviewController {
 	}
 
 	private void setSelectedVersion(Version v) {
-		System.out.println(v);
 		version.setText(v.version);
 		modpackTable.getSelectionModel().getSelectedItem().setSelectedVersion(v);
 	}
