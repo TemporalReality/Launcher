@@ -1,10 +1,13 @@
 package temporalreality.launcher.config;
 
-import com.google.gson.*;
-import temporalreality.launcher.accounts.Account;
-import temporalreality.launcher.accounts.AccountManager;
-
 import java.lang.reflect.Type;
+
+import com.google.gson.JsonArray;
+import com.google.gson.JsonDeserializationContext;
+import com.google.gson.JsonDeserializer;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParseException;
 
 /**
  * @author shadowfacts
@@ -42,20 +45,20 @@ public class ConfigDeserializer implements JsonDeserializer<Config> {
 		/*
 		Account Manager
 		 */
-//		JsonArray accountArray = obj.get("accounts").getAsJsonArray();
-//		for (int i = 0; i < accountArray.size(); i++) {
-////			AccountManager.getInstance().addAccount(new Account(accountArray.get(i).getAsString()));
-//			JsonObject accountObj = accountArray.get(i).getAsJsonObject();
-//
-//			boolean active = accountObj.get("active").getAsBoolean();
-//
-//			Account account = new Account(accountObj.get("username").getAsString());
-//
-//			AccountManager.getInstance().addAccount(account);
-//			if (active) {
-//				AccountManager.getInstance().setSelectedAccount(account);
-//			}
-//		}
+		//		JsonArray accountArray = obj.get("accounts").getAsJsonArray();
+		//		for (int i = 0; i < accountArray.size(); i++) {
+		////			AccountManager.getInstance().addAccount(new Account(accountArray.get(i).getAsString()));
+		//			JsonObject accountObj = accountArray.get(i).getAsJsonObject();
+		//
+		//			boolean active = accountObj.get("active").getAsBoolean();
+		//
+		//			Account account = new Account(accountObj.get("username").getAsString());
+		//
+		//			AccountManager.getInstance().addAccount(account);
+		//			if (active) {
+		//				AccountManager.getInstance().setSelectedAccount(account);
+		//			}
+		//		}
 
 		return config;
 	}

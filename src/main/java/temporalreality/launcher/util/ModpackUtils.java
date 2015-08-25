@@ -1,5 +1,21 @@
 package temporalreality.launcher.util;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.FutureTask;
+
 import javafx.application.Platform;
 import javafx.concurrent.Task;
 import javafx.scene.control.Alert;
@@ -8,28 +24,19 @@ import net.shadowfacts.shadowlib.log.LogLevel;
 import net.shadowfacts.shadowlib.log.Logger;
 import net.shadowfacts.shadowlib.util.FileUtils;
 import net.shadowfacts.shadowlib.util.StreamRedirect;
+
 import org.apache.commons.io.IOUtils;
+
 import temporalreality.launcher.TRLauncher;
 import temporalreality.launcher.config.ConfigManager;
 import temporalreality.launcher.model.Mod;
 import temporalreality.launcher.model.Modpack;
-import temporalreality.launcher.model.Version;
 import temporalreality.launcher.view.downloaddialog.DownloadDialogController;
 import temporalreality.launcher.view.overview.ModpackOverviewController;
 import uk.co.rx14.jmclaunchlib.LaunchSpec;
 import uk.co.rx14.jmclaunchlib.LaunchTask;
 import uk.co.rx14.jmclaunchlib.LaunchTaskBuilder;
 import uk.co.rx14.jmclaunchlib.auth.PasswordSupplier;
-
-import java.io.*;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Random;
-import java.util.concurrent.*;
 
 /**
  * @author shadowfacts
@@ -92,19 +99,25 @@ public class ModpackUtils {
 	public static void download(Modpack modpack,  Runnable successHandler, ModpackOverviewController controller) throws IOException {
 		makeModpacksDir();
 
-		if (!isModpackInstalled(modpack) || canUpgrade(modpack)) {
-			Task downloadTask = new Task<Void>() {
+		boolean installed = isModpackInstalled(modpack);
+		if (!installed || canUpgrade(modpack)) {
+			File packDir = getPackDir(modpack);
+			if (installed) {
+				ZipUtils.zipFolder(new File("./modpacks/" + modpack.getName()), new File("./backups/" + modpack.getName() + '-' + System.currentTimeMillis() + ".zip"));
+				packDir.delete();
+			}
+			Task<Void> downloadTask = new Task<Void>() {
 				@Override
 				protected Void call() throws Exception {
 					int taskCount = modpack.getSelectedVersion().mods.size() + 5;
 
 					//					Create modpack dir
-					if (!getPackDir(modpack).exists() && !isCancelled()) {
+					if (!packDir.exists() && !isCancelled()) {
 						TRLauncher.log.info("Creating dir for " + modpack.getName());
 						updateMessage("Creating modpack directory");
 						updateProgress(1, taskCount);
 
-						getPackDir(modpack).mkdirs();
+						packDir.mkdirs();
 					}
 
 					//					Download override zip
@@ -222,20 +235,13 @@ public class ModpackUtils {
 	}
 
 	public static boolean canUpgrade(Modpack modpack) {
-		Version saved = null;
+		String saved = null;
 		try {
-			String versionFile = Files.readAllLines(Paths.get(MiscUtils.getPath("modpacks/" + modpack.getName() + "/version.txt"))).get(0);
+			saved = Files.readAllLines(Paths.get(MiscUtils.getPath("modpacks/" + modpack.getName() + "/version.txt"))).get(0);
+		} catch (IOException e) {
 
-			if (versionFile != null) {
-				for (Version v : modpack.getVersions()) {
-					if (v.version.equals(versionFile)) {
-						saved = v;
-					}
-				}
-			}
-		} catch (IOException ignored) {}
-
-		return modpack.getSelectedVersion().equals(saved);
+		}
+		return !modpack.getSelectedVersion().version.equals(saved);
 	}
 
 	public static void launch(Modpack modpack, boolean offline) {
@@ -404,7 +410,7 @@ public class ModpackUtils {
 
 	public static void delete(Modpack modpack, Runnable successHandler) {
 		if (isModpackInstalled(modpack)) {
-			Task deleteTask = new Task<Void>() {
+			Task<Void> deleteTask = new Task<Void>() {
 				@Override
 				protected Void call() throws Exception {
 

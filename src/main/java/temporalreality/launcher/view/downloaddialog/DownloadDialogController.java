@@ -14,7 +14,7 @@ public class DownloadDialogController {
 
 	private Modpack modpack;
 	private Stage dialogStage;
-	private Task task;
+	private Task<?> task;
 
 	@FXML
 	private Label downloadingLabel;
@@ -60,11 +60,11 @@ public class DownloadDialogController {
 		this.dialogStage = dialogStage;
 	}
 
-	public Task getTask() {
+	public Task<?> getTask() {
 		return task;
 	}
 
-	public void setTask(Task task) {
+	public void setTask(Task<?> task) {
 		this.task = task;
 		task.setOnSucceeded(event -> {
 			close();

@@ -12,26 +12,25 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.image.Image;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import net.shadowfacts.shadowlib.util.os.OSUtils;
 import net.shadowfacts.shadowlib.util.os.OperatingSystem;
 import temporalreality.launcher.config.ConfigManager;
 import temporalreality.launcher.model.Mod;
 import temporalreality.launcher.model.Modpack;
 import temporalreality.launcher.util.MiscUtils;
 import temporalreality.launcher.util.ModpackUtils;
-import net.shadowfacts.shadowlib.util.os.OSUtils;
 import temporalreality.launcher.view.account.SetUsernameController;
 import temporalreality.launcher.view.config.ConfigDialogController;
 import temporalreality.launcher.view.downloaddialog.DownloadDialogController;
 import temporalreality.launcher.view.modlist.ModListController;
 import temporalreality.launcher.view.overview.ModpackOverviewController;
+import temporalreality.launcher.view.passworddialog.PasswordDialogController;
 import coolsquid.logging.LogManager;
 import coolsquid.logging.Logger;
-import temporalreality.launcher.view.passworddialog.PasswordDialogController;
 
 /**
  * @author shadowfacts

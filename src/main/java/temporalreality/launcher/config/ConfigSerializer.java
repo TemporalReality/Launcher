@@ -1,10 +1,13 @@
 package temporalreality.launcher.config;
 
-import com.google.gson.*;
-import temporalreality.launcher.accounts.Account;
-import temporalreality.launcher.accounts.AccountManager;
-
 import java.lang.reflect.Type;
+
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonPrimitive;
+import com.google.gson.JsonSerializationContext;
+import com.google.gson.JsonSerializer;
 
 /**
  * @author shadowfacts
@@ -37,14 +40,14 @@ public class ConfigSerializer implements JsonSerializer<Config> {
 		/*
 		Account Manager
 		 */
-//		JsonArray accounts = new JsonArray();
-//		for (Account account : AccountManager.getInstance().getAccounts()) {
-//			JsonObject accountObj = new JsonObject();
-//			accountObj.add("username", new JsonPrimitive(account.getUsername()));
-//			accountObj.add("active", new JsonPrimitive(account.equals(AccountManager.getInstance().getSelectedAccount())));
-//			accounts.add(accountObj);
-//		}
-//		result.add("accounts", accounts);
+		//		JsonArray accounts = new JsonArray();
+		//		for (Account account : AccountManager.getInstance().getAccounts()) {
+		//			JsonObject accountObj = new JsonObject();
+		//			accountObj.add("username", new JsonPrimitive(account.getUsername()));
+		//			accountObj.add("active", new JsonPrimitive(account.equals(AccountManager.getInstance().getSelectedAccount())));
+		//			accounts.add(accountObj);
+		//		}
+		//		result.add("accounts", accounts);
 
 		return result;
 	}

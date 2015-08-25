@@ -1,8 +1,19 @@
 package temporalreality.launcher.view.overview;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.Optional;
+
 import javafx.application.Platform;
 import javafx.fxml.FXML;
-import javafx.scene.control.*;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.Label;
+import javafx.scene.control.MenuButton;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.text.Text;
@@ -12,11 +23,6 @@ import temporalreality.launcher.control.VersionMenuItem;
 import temporalreality.launcher.model.Modpack;
 import temporalreality.launcher.model.Version;
 import temporalreality.launcher.util.ModpackUtils;
-
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.Optional;
 
 /**
  * @author shadowfacts
@@ -83,14 +89,14 @@ public class ModpackOverviewController {
 		modpackTable.setItems(TRLauncher.getLauncher().getModpacks());
 
 		nameColumn.setCellValueFactory(cellData ->
-			cellData.getValue().isBeta() ? cellData.getValue().getNameProperty().concat(" (BETA)") : cellData.getValue().getNameProperty()
-		);
+		cellData.getValue().isBeta() ? cellData.getValue().getNameProperty().concat(" (BETA)") : cellData.getValue().getNameProperty()
+				);
 
 		showModpackDetails(null);
 
 		modpackTable.getSelectionModel().selectedItemProperty().addListener(((observable, oldValue, newValue) ->
-			showModpackDetails(newValue)
-		));
+		showModpackDetails(newValue)
+				));
 	}
 
 	@FXML
@@ -126,7 +132,7 @@ public class ModpackOverviewController {
 
 	@FXML
 	private void versionSelected() {
-//		updateButtons(modpackTable.getSelectionModel().getSelectedItem());
+		updateButtons(modpackTable.getSelectionModel().getSelectedItem());
 	}
 
 	@FXML
@@ -165,7 +171,7 @@ public class ModpackOverviewController {
 				version.getItems().add(item);
 			}
 
-//			TODO: Add separator and view changelog item
+			//			TODO: Add separator and view changelog item
 		} else {
 			name.setText("");
 			authorsLabel.setText("");
@@ -183,11 +189,11 @@ public class ModpackOverviewController {
 	private void updateButtons(Modpack modpack) {
 		if (modpack != null) {
 			if (ModpackUtils.isModpackInstalled(modpack)) {
-//				if (ModpackUtils.canUpgrade(modpack, VersionUtils.getVersionFromString(modpack, version.getText()))) {
-//					download.setDisable(false);
-//				} else {
+				if (ModpackUtils.canUpgrade(modpack)) {
+					download.setDisable(false);
+				} else {
 					download.setDisable(true);
-//				}
+				}
 				launch.setDisable(false);
 				delete.setDisable(false);
 				version.setDisable(false);
