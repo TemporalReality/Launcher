@@ -143,6 +143,7 @@ public class ModpackOverviewController {
 	}
 
 	private void setSelectedVersion(Version v) {
+		System.out.println(v);
 		version.setText(v.version);
 		modpackTable.getSelectionModel().getSelectedItem().setSelectedVersion(v);
 	}
@@ -173,8 +174,20 @@ public class ModpackOverviewController {
 				});
 				version.getItems().add(item);
 			}
-			if (!modpack.getVersions().isEmpty())
+			String versionFile = null;
+			try {
+				versionFile = Files.readAllLines(Paths.get("modpacks/" + modpack.getName() + "/version.txt")).get(0);
+			} catch (IOException ignored) {}
+
+			if (versionFile != null) {
+				for (Version v : modpack.getVersions()) {
+					if (v.version.equals(versionFile)) {
+						setSelectedVersion(v);
+					}
+				}
+			} else {
 				setSelectedVersion(modpack.getVersions().get(modpack.getVersions().size() - 1));
+			}
 			//			TODO: Add separator and view changelog item
 		} else {
 			name.setText("");
@@ -206,23 +219,6 @@ public class ModpackOverviewController {
 				delete.setDisable(false);
 				version.setDisable(false);
 				mods.setDisable(false);
-
-				String versionFile = null;
-				try {
-					versionFile = Files.readAllLines(Paths.get("modpacks/" + modpack.getName() + "/version.txt")).get(0);
-				} catch (IOException ignored) {}
-
-				if (versionFile != null) {
-					for (Version v : modpack.getVersions()) {
-						if (v.version.equals(versionFile)) {
-							modpack.setSelectedVersion(v);
-							version.setText(v.version);
-						}
-					}
-				} else {
-					version.setText(modpack.getSelectedVersion().version);
-				}
-
 			} else {
 				download.setDisable(false);
 				launch.setDisable(true);
