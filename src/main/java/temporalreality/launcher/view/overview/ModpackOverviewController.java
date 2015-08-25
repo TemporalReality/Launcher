@@ -197,7 +197,6 @@ public class ModpackOverviewController {
 	private void updateButtons(Modpack modpack) {
 		if (modpack != null) {
 			if (ModpackUtils.isModpackInstalled(modpack)) {
-				System.out.println(modpack.getSelectedVersion());
 				if (ModpackUtils.canUpgrade(modpack)) {
 					download.setDisable(false);
 				} else {
