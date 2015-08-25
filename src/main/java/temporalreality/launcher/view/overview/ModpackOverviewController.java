@@ -170,11 +170,11 @@ public class ModpackOverviewController {
 				item.setOnAction(event -> {
 					setSelectedVersion(item.getVersion());
 					updateButtons();
-					setSelectedVersion(item.getVersion());
 				});
 				version.getItems().add(item);
 			}
-
+			if (!modpack.getVersions().isEmpty())
+				setSelectedVersion(modpack.getVersions().get(modpack.getVersions().size() - 1));
 			//			TODO: Add separator and view changelog item
 		} else {
 			name.setText("");
@@ -197,6 +197,7 @@ public class ModpackOverviewController {
 	private void updateButtons(Modpack modpack) {
 		if (modpack != null) {
 			if (ModpackUtils.isModpackInstalled(modpack)) {
+				System.out.println(modpack.getSelectedVersion());
 				if (ModpackUtils.canUpgrade(modpack)) {
 					download.setDisable(false);
 				} else {

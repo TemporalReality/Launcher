@@ -31,4 +31,9 @@ public class Version {
 		}
 		return false;
 	}
+
+	@Override
+	public String toString() {
+		return version;
+	}
 }

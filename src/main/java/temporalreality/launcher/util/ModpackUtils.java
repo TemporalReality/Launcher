@@ -102,6 +102,7 @@ public class ModpackUtils {
 		boolean installed = isModpackInstalled(modpack);
 		if (!installed || canUpgrade(modpack)) {
 			File packDir = getPackDir(modpack);
+			String oldVersion = Files.readAllLines(Paths.get(MiscUtils.getPath("modpacks/" + modpack.getName() + "/version.txt"))).get(0);
 			Task<Void> downloadTask = new Task<Void>() {
 				@Override
 				protected Void call() throws Exception {
@@ -120,12 +121,16 @@ public class ModpackUtils {
 						updateMessage("Making backup of old modpack files");
 						updateProgress(1, taskCount);
 						ZipUtils.zipFolder(new File("./modpacks/" + modpack.getName()), new File("./backups/" + modpack.getName() + '-' + System.currentTimeMillis() + ".zip"));
-						for (File file: packDir.listFiles())
-							if (!file.getName().matches("(saves|options.txt|servers.dat)"))
+						for (File file: packDir.listFiles()) {
+							System.out.println(file.getParent());
+							if (file.isDirectory() && file.getParent() != null && file.getParentFile().getName().equals("saves"))
+								file.renameTo(new File(file.getAbsolutePath() + " - " + oldVersion));
+							else if (!file.getName().matches("(saves|options.txt|servers.dat)"))
 								if (file.isDirectory())
 									FileUtils.deleteFolder(file);
 								else
 									file.delete();
+						}
 					}
 
 					//					Download override zip

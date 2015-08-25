@@ -154,4 +154,9 @@ public class Modpack {
 	public void setBeta(boolean beta) {
 		this.beta = beta;
 	}
+
+	@Override
+	public String toString() {
+		return getDisplayName();
+	}
 }
