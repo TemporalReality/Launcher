@@ -102,10 +102,6 @@ public class ModpackUtils {
 		boolean installed = isModpackInstalled(modpack);
 		if (!installed || canUpgrade(modpack)) {
 			File packDir = getPackDir(modpack);
-			if (installed) {
-				ZipUtils.zipFolder(new File("./modpacks/" + modpack.getName()), new File("./backups/" + modpack.getName() + '-' + System.currentTimeMillis() + ".zip"));
-				packDir.delete();
-			}
 			Task<Void> downloadTask = new Task<Void>() {
 				@Override
 				protected Void call() throws Exception {
@@ -118,6 +114,18 @@ public class ModpackUtils {
 						updateProgress(1, taskCount);
 
 						packDir.mkdirs();
+					}
+					else if (!isCancelled()) {
+						TRLauncher.log.info("Making backup of  " + modpack.getName());
+						updateMessage("Making backup of old modpack files");
+						updateProgress(1, taskCount);
+						ZipUtils.zipFolder(new File("./modpacks/" + modpack.getName()), new File("./backups/" + modpack.getName() + '-' + System.currentTimeMillis() + ".zip"));
+						for (File file: packDir.listFiles())
+							if (!file.getName().matches("(saves|options.txt|servers.dat)"))
+								if (file.isDirectory())
+									FileUtils.deleteFolder(file);
+								else
+									file.delete();
 					}
 
 					//					Download override zip

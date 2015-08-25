@@ -41,7 +41,6 @@ public class MiscUtils {
 				new Image("http://temporal-reality.com/logo/256.png"),
 				new Image("http://temporal-reality.com/logo/128.png"),
 				new Image("http://temporal-reality.com/logo/64.png")
-		);
+				);
 	}
-
 }

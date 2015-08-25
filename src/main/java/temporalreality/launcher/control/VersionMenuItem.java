@@ -15,7 +15,6 @@ public class VersionMenuItem extends MenuItem {
 	public VersionMenuItem(Version version) {
 		super(version.version);
 		this.version = version;
-		setOnAction(event -> System.out.println("Version pressed"));
 	}
 
 	public Version getVersion() {

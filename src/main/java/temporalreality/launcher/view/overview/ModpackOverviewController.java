@@ -97,6 +97,8 @@ public class ModpackOverviewController {
 		modpackTable.getSelectionModel().selectedItemProperty().addListener(((observable, oldValue, newValue) ->
 		showModpackDetails(newValue)
 				));
+
+		version.setOnAction(event -> updateButtons());
 	}
 
 	@FXML
@@ -167,6 +169,8 @@ public class ModpackOverviewController {
 				VersionMenuItem item = new VersionMenuItem(v);
 				item.setOnAction(event -> {
 					setSelectedVersion(item.getVersion());
+					updateButtons();
+					setSelectedVersion(item.getVersion());
 				});
 				version.getItems().add(item);
 			}
@@ -184,6 +188,10 @@ public class ModpackOverviewController {
 			image.setImage(null);
 		}
 		updateButtons(modpack);
+	}
+
+	public void updateButtons() {
+		updateButtons(modpackTable.getSelectionModel().getSelectedItem());
 	}
 
 	private void updateButtons(Modpack modpack) {
