@@ -13,5 +13,7 @@ public class Config {
 	public int mcWidth;
 	public int mcHeight;
 	public boolean offline = false;
+	public boolean enableAnalytics = true;
+	public boolean enableErrorReporting = true;
 
 }

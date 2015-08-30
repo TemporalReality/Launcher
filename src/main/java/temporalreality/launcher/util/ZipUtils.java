@@ -10,6 +10,13 @@ import java.util.zip.ZipOutputStream;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 
+/**
+ * Thanks to Tony BenBrahim
+ * on StackOverflow for this
+ * class.
+ * 
+ * http://stackoverflow.com/a/29675600
+ */
 public class ZipUtils {
 
 	public static void zipFolder(final File folder, final File zipFile) throws IOException {
@@ -37,4 +44,4 @@ public class ZipUtils {
 			}
 		}
 	}
-}  
+}

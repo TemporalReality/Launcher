@@ -116,12 +116,12 @@ public class ModpackUtils {
 						packDir.mkdirs();
 					}
 					else if (!isCancelled()) {
-						File versionsTxt = new File("./modpacks/" + modpack.getName(), "versions.txt");
+						File versionsTxt = MiscUtils.getFile("modpacks/" + modpack.getName() + "/versions.txt");
 						String oldVersion = versionsTxt.exists() ? org.apache.commons.io.FileUtils.readLines(versionsTxt).get(0) : "";
 						TRLauncher.log.info("Making backup of  " + modpack.getName());
 						updateMessage("Making backup of old modpack files");
 						updateProgress(1, taskCount);
-						ZipUtils.zipFolder(new File("./modpacks/" + modpack.getName()), new File("./backups/" + modpack.getName() + '-' + System.currentTimeMillis() + ".zip"));
+						ZipUtils.zipFolder(MiscUtils.getFile("modpacks/" + modpack.getName()), MiscUtils.getFile("backups/" + modpack.getName() + '-' + System.currentTimeMillis() + ".zip"));
 						for (File file: packDir.listFiles()) {
 							System.out.println(file.getParent());
 							if (file.isDirectory() && file.getParent() != null && file.getParentFile().getName().equals("saves"))
@@ -289,10 +289,10 @@ public class ModpackUtils {
 						return passwordTask.get();
 					} catch (InterruptedException e) {
 						TRLauncher.log.error("The password retrieval was interrupted");
-						e.printStackTrace();
+						TRLauncher.log.catching(e);
 					} catch (ExecutionException e) {
 						TRLauncher.log.error("There was a problem retrieving the password");
-						e.printStackTrace();
+						TRLauncher.log.catching(e);
 					}
 					return null;
 				};
@@ -353,6 +353,8 @@ public class ModpackUtils {
 					return null;
 				}
 			};
+
+			TRLauncher.getAnalytics().sendEvent("LaunchModpack:" + modpack.getName() + ':' + modpack.getSelectedVersion().toString());
 
 			new Thread(task).start();
 

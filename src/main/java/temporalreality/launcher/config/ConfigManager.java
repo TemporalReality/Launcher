@@ -5,7 +5,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.io.PrintWriter;
+import java.io.PrintStream;
 
 import net.shadowfacts.shadowlib.util.InternetUtils;
 import temporalreality.launcher.TRLauncher;
@@ -27,11 +27,7 @@ public class ConfigManager {
 	private Gson gson;
 
 	private ConfigManager() {
-		GsonBuilder builder = new GsonBuilder();
-		builder.registerTypeAdapter(Config.class, new ConfigSerializer());
-		builder.registerTypeAdapter(Config.class, new ConfigDeserializer());
-		builder.setPrettyPrinting();
-		gson = builder.create();
+		gson = new GsonBuilder().setPrettyPrinting().create();
 	}
 
 	public void init() throws IOException {
@@ -69,16 +65,12 @@ public class ConfigManager {
 	public void save() {
 		String data = gson.toJson(config);
 
-		try {
-			PrintWriter writer = new PrintWriter(file);
+		try (PrintStream writer = new PrintStream(file)) {
 			writer.println(data);
-			writer.close();
 		} catch (FileNotFoundException e) {
-			TRLauncher.log.error("Config file could not be found");
-			e.printStackTrace();
+			TRLauncher.log.catching(e);
 		}
 	}
-
 
 	public boolean signedIn() {
 		return getConfig().username != null && !getConfig().username.equals("");

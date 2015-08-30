@@ -1,5 +1,7 @@
 package temporalreality.launcher.view.modlist;
 
+import java.net.URISyntaxException;
+
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -8,8 +10,6 @@ import javafx.scene.control.TableView;
 import net.shadowfacts.shadowlib.util.DesktopUtils;
 import net.shadowfacts.shadowlib.util.StringUtils;
 import temporalreality.launcher.model.Mod;
-
-import java.net.URISyntaxException;
 
 /**
  * @author shadowfacts

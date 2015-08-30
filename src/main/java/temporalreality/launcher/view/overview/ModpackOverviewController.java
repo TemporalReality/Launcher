@@ -105,9 +105,12 @@ public class ModpackOverviewController {
 	private void downloadPressed() {
 		try {
 			Modpack active = modpackTable.getSelectionModel().getSelectedItem();
-			ModpackUtils.download(active, () -> updateButtons(active), this);
+			ModpackUtils.download(active, () -> {
+				updateButtons(active);
+				TRLauncher.getAnalytics().sendEvent("DownloadModpack:" + active.getName() + ':' + active.getSelectedVersion().toString());
+			}, this);
 		} catch (IOException e) {
-			e.printStackTrace();
+			TRLauncher.log.catching(e);
 		}
 	}
 

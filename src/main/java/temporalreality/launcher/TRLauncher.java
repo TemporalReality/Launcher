@@ -3,9 +3,13 @@ package temporalreality.launcher;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Properties;
 
 import javafx.application.Application;
 import javafx.collections.FXCollections;
@@ -23,6 +27,7 @@ import temporalreality.launcher.model.Mod;
 import temporalreality.launcher.model.Modpack;
 import temporalreality.launcher.util.MiscUtils;
 import temporalreality.launcher.util.ModpackUtils;
+import temporalreality.launcher.util.TRAnalytics;
 import temporalreality.launcher.view.account.SetUsernameController;
 import temporalreality.launcher.view.config.ConfigDialogController;
 import temporalreality.launcher.view.downloaddialog.DownloadDialogController;
@@ -31,6 +36,8 @@ import temporalreality.launcher.view.overview.ModpackOverviewController;
 import temporalreality.launcher.view.passworddialog.PasswordDialogController;
 import coolsquid.logging.LogManager;
 import coolsquid.logging.Logger;
+import de.npe.gameanalytics.SimpleAnalytics;
+import de.npe.gameanalytics.events.GAErrorEvent.Severity;
 
 /**
  * @author shadowfacts
@@ -40,6 +47,8 @@ public class TRLauncher extends Application {
 	public static Logger log;
 
 	private static TRLauncher launcher;
+	private static TRAnalytics analytics;
+	private static String version;
 
 	private Stage primaryStage;
 	private BorderPane rootLayout;
@@ -57,7 +66,7 @@ public class TRLauncher extends Application {
 			LogManager.setDefaultContext(LogManager.getContext("Launcher", System.out, new FileOutputStream(MiscUtils.getFile("launcher.log"))));
 		} catch (FileNotFoundException e) {
 			System.err.println("Could not setup logging library properly.");
-			e.printStackTrace();
+			TRLauncher.log.catching(e);
 			LogManager.setDefaultContext(LogManager.getContext("Launcher", System.out));
 		}
 		log = LogManager.getLogger("Launcher");
@@ -65,6 +74,26 @@ public class TRLauncher extends Application {
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
+		try {
+			Properties properties = new Properties();
+			try (InputStream in = TRLauncher.class.getResourceAsStream("MANIFEST.MF")) {
+				if (in != null)
+					properties.load(in);
+				else
+					log.warn("Failed to load the jar manifest. Are we running in a development environment?");
+			}
+			version = properties.getProperty("Implementation-Version", "unknown");
+
+			analytics = new TRAnalytics(new SimpleAnalytics(version, "4b2c71837e92e180fcbc0433b57f3a05", "0e0384bf65d2d6c8887f9c4a9294a1fbed83c363"));
+			analytics.sendEvent("OS:" + System.getProperty("os.name"));
+			analytics.sendEvent("Arch:" + System.getProperty("os.arch"));
+			analytics.sendEvent("JavaVersion:" + System.getProperty("java.version").split("_")[0]);
+			analytics.sendEvent("JavaVendor:" + System.getProperty("java.vendor"));
+		} catch (Throwable t) {
+			log.error("Failed to setup analytics.");
+			analytics = new TRAnalytics(null);
+		}
+
 		ModpackUtils.loadModpacks(modpacks);
 
 		this.primaryStage = primaryStage;
@@ -97,7 +126,7 @@ public class TRLauncher extends Application {
 
 		} catch (IOException e) {
 			TRLauncher.log.error("Couldn't find the specified layout");
-			e.printStackTrace();
+			TRLauncher.log.catching(e);
 		}
 	}
 
@@ -115,7 +144,7 @@ public class TRLauncher extends Application {
 			controller.setPrimaryStage(primaryStage);
 		} catch (IOException e) {
 			TRLauncher.log.error("Couldn't find the specified layout");
-			e.printStackTrace();
+			TRLauncher.log.catching(e);
 		}
 	}
 
@@ -144,13 +173,13 @@ public class TRLauncher extends Application {
 			try {
 				Thread.sleep(4000);
 			} catch (InterruptedException e) {
-				e.printStackTrace();
+				TRLauncher.log.catching(e);
 			}
 
 			return controller;
 		} catch (IOException e) {
 			TRLauncher.log.error("Couldn't find the specified layout");
-			e.printStackTrace();
+			TRLauncher.log.catching(e);
 			return null;
 		}
 	}
@@ -178,7 +207,7 @@ public class TRLauncher extends Application {
 			return controller;
 		} catch (IOException e) {
 			TRLauncher.log.error("Couldn't find the specified layout");
-			e.printStackTrace();
+			TRLauncher.log.catching(e);
 			return null;
 		}
 	}
@@ -204,7 +233,7 @@ public class TRLauncher extends Application {
 
 		} catch (IOException e) {
 			TRLauncher.log.error("Couldn't find the specified layout");
-			e.printStackTrace();
+			TRLauncher.log.catching(e);
 		}
 	}
 
@@ -225,7 +254,7 @@ public class TRLauncher extends Application {
 			dialogStage.showAndWait();
 		} catch (IOException e) {
 			TRLauncher.log.error("Couldn't find the specified layout");
-			e.printStackTrace();
+			TRLauncher.log.catching(e);
 		}
 	}
 
@@ -249,7 +278,7 @@ public class TRLauncher extends Application {
 			dialogStage.showAndWait();
 		} catch (IOException e) {
 			TRLauncher.log.error("Couldn't find the specified layout");
-			e.printStackTrace();
+			TRLauncher.log.catching(e);
 		}
 	}
 
@@ -276,7 +305,7 @@ public class TRLauncher extends Application {
 
 		} catch (IOException e) {
 			TRLauncher.log.error("Couldn't find the specified layout");
-			e.printStackTrace();
+			TRLauncher.log.catching(e);
 			return null;
 		}
 	}
@@ -301,7 +330,24 @@ public class TRLauncher extends Application {
 		this.minecraft = minecraft;
 	}
 
+	public static String getVersion() {
+		return version;
+	}
+
+	public static TRAnalytics getAnalytics() {
+		return analytics;
+	}
+
 	public static void main(String[] args) throws IOException {
-		launch(args);
+		try {
+			launch(args);
+		} catch (Throwable t) {
+			StringWriter w = new StringWriter();
+			t.printStackTrace(new PrintWriter(w));
+			analytics.sendError(Severity.critical, w.toString());
+			TRLauncher.log.catching(t);
+		} finally {
+			System.exit(0);
+		}
 	}
 }
