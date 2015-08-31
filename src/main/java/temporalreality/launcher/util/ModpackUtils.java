@@ -31,12 +31,14 @@ import temporalreality.launcher.TRLauncher;
 import temporalreality.launcher.config.ConfigManager;
 import temporalreality.launcher.model.Mod;
 import temporalreality.launcher.model.Modpack;
+import temporalreality.launcher.model.Side;
 import temporalreality.launcher.view.downloaddialog.DownloadDialogController;
 import temporalreality.launcher.view.overview.ModpackOverviewController;
 import uk.co.rx14.jmclaunchlib.LaunchSpec;
 import uk.co.rx14.jmclaunchlib.LaunchTask;
 import uk.co.rx14.jmclaunchlib.LaunchTaskBuilder;
 import uk.co.rx14.jmclaunchlib.auth.PasswordSupplier;
+import de.npe.gameanalytics.events.GAErrorEvent.Severity;
 
 /**
  * @author shadowfacts
@@ -54,6 +56,7 @@ public class ModpackUtils {
 				} catch (Throwable t) {
 					TRLauncher.log.error("Failed to download pack: " + pack);
 					TRLauncher.log.catching(t);
+					TRLauncher.getAnalytics().sendError(Severity.error, MiscUtils.toString(t));
 				}
 			}
 		}
@@ -179,7 +182,7 @@ public class ModpackUtils {
 								Mod mod = modpack.getSelectedVersion().mods.get(i);
 
 								if (mod.downloadUrl != null && !mod.downloadUrl.equals("") &&
-										mod.fileName != null && !mod.fileName.equals("")) {
+										mod.fileName != null && !mod.fileName.equals("") && mod.side != Side.SERVER) {
 									TRLauncher.log.info("Downloading mod " + mod.name);
 									updateMessage("Downloading mod " + mod.name);
 									updateProgress(i + 5, taskCount);

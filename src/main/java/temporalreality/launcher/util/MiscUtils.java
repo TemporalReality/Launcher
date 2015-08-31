@@ -1,10 +1,12 @@
 package temporalreality.launcher.util;
 
+import java.io.File;
+import java.io.PrintWriter;
+import java.io.StringWriter;
+
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import temporalreality.launcher.config.ConfigManager;
-
-import java.io.File;
 
 /**
  * @author shadowfacts
@@ -42,5 +44,11 @@ public class MiscUtils {
 				new Image("http://temporal-reality.com/logo/128.png"),
 				new Image("http://temporal-reality.com/logo/64.png")
 				);
+	}
+
+	public static String toString(Throwable t) {
+		StringWriter w = new StringWriter();
+		t.printStackTrace(new PrintWriter(w));
+		return w.toString();
 	}
 }

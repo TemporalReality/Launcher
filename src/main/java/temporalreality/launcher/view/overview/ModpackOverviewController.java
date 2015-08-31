@@ -131,7 +131,10 @@ public class ModpackOverviewController {
 
 		if (result.isPresent() && result.get() == ButtonType.OK) {
 			Modpack active = modpackTable.getSelectionModel().getSelectedItem();
-			ModpackUtils.delete(active, () -> updateButtons(active));
+			ModpackUtils.delete(active, () -> {
+				updateButtons(active);
+				TRLauncher.getAnalytics().sendEvent("DeleteModpack:" + active.getName());
+			});
 		}
 	}
 

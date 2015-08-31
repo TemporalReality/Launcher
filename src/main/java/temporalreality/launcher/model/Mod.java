@@ -12,5 +12,6 @@ public class Mod {
 	public String url;
 	public String downloadUrl;
 	public String fileName;
+	public Side side = Side.BOTH;
 
 }

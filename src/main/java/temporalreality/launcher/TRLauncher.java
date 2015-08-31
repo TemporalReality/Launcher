@@ -4,8 +4,6 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.PrintWriter;
-import java.io.StringWriter;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -342,10 +340,9 @@ public class TRLauncher extends Application {
 		try {
 			launch(args);
 		} catch (Throwable t) {
-			StringWriter w = new StringWriter();
-			t.printStackTrace(new PrintWriter(w));
-			analytics.sendError(Severity.critical, w.toString());
+			analytics.sendError(Severity.critical, MiscUtils.toString(t));
 			TRLauncher.log.catching(t);
+			TRLauncher.getAnalytics().sendError(Severity.error, MiscUtils.toString(t));
 		} finally {
 			System.exit(0);
 		}
