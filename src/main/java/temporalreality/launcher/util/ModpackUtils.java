@@ -4,7 +4,9 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -46,7 +48,14 @@ import de.npe.gameanalytics.events.GAErrorEvent.Severity;
 public class ModpackUtils {
 
 	public static void loadModpacks(List<Modpack> modpacks) throws Exception {
-		for (String s : ConfigManager.getInstanceConfig().packIndexes) {
+		List<String> packIndexes = new ArrayList<String>();
+		String property = System.getProperty("packIndexes");
+		if (property != null)
+			for (String s: property.split(","))
+				packIndexes.add(s);
+		for (String s: ConfigManager.getInstanceConfig().packIndexes)
+			packIndexes.add(s);
+		for (String s : packIndexes) {
 			TRLauncher.log.info("Loading modpacks from index at " + s);
 			String data = getModpackData(s);
 			String[] packs = data.split("\n");
@@ -121,12 +130,11 @@ public class ModpackUtils {
 					else if (!isCancelled()) {
 						File versionsTxt = MiscUtils.getFile("modpacks/" + modpack.getName() + "/versions.txt");
 						String oldVersion = versionsTxt.exists() ? org.apache.commons.io.FileUtils.readLines(versionsTxt).get(0) : "";
-						TRLauncher.log.info("Making backup of  " + modpack.getName());
+						TRLauncher.log.info("Making backup of " + modpack.getName());
 						updateMessage("Making backup of old modpack files");
 						updateProgress(1, taskCount);
 						ZipUtils.zipFolder(MiscUtils.getFile("modpacks/" + modpack.getName()), MiscUtils.getFile("backups/" + modpack.getName() + '-' + System.currentTimeMillis() + ".zip"));
 						for (File file: packDir.listFiles()) {
-							System.out.println(file.getParent());
 							if (file.isDirectory() && file.getParent() != null && file.getParentFile().getName().equals("saves"))
 								file.renameTo(new File(file.getAbsolutePath() + " - " + oldVersion));
 							else if (!file.getName().matches("(saves|options.txt|servers.dat)"))
@@ -153,7 +161,9 @@ public class ModpackUtils {
 							File f = MiscUtils.getFile("temp/" + modpack.getName() + ".zip");
 							if (!f.getParentFile().exists()) f.getParentFile().mkdirs();
 							if (!f.exists()) f.createNewFile();
-							IOUtils.copy(connection.getInputStream(), new FileOutputStream(f));
+							try (InputStream in = connection.getInputStream(); OutputStream out = new FileOutputStream(f)) {
+								IOUtils.copy(in, out);
+							}
 						}
 
 						//					Extract override zip
@@ -181,12 +191,13 @@ public class ModpackUtils {
 							if (!isCancelled()) {
 								Mod mod = modpack.getSelectedVersion().mods.get(i);
 
-								if (mod.downloadUrl != null && !mod.downloadUrl.equals("") &&
-										mod.fileName != null && !mod.fileName.equals("") && mod.side != Side.SERVER) {
+								if (mod.downloadUrl != null && !mod.downloadUrl.equals("") && mod.side != Side.SERVER) {
+									if (mod.fileName == null || mod.fileName.isEmpty())
+										//mod.fileName = mod.name + mod.downloadUrl.hashCode() + ".jar";
+										continue;
 									TRLauncher.log.info("Downloading mod " + mod.name);
 									updateMessage("Downloading mod " + mod.name);
 									updateProgress(i + 5, taskCount);
-
 									HttpURLConnection connection = (HttpURLConnection) new URL(mod.downloadUrl).openConnection();
 									connection.setRequestMethod("GET");
 									connection.setAllowUserInteraction(false);
@@ -196,7 +207,9 @@ public class ModpackUtils {
 									File f = MiscUtils.getFile("modpacks/" + modpack.getName() + "/mods/" + mod.fileName);
 									if (!f.getParentFile().exists()) f.getParentFile().mkdirs();
 									if (!f.exists()) f.createNewFile();
-									IOUtils.copy(connection.getInputStream(), new FileOutputStream(f));
+									try (InputStream in = connection.getInputStream(); OutputStream out = new FileOutputStream(f)) {
+										IOUtils.copy(in, out);
+									}
 								}
 							}
 						}
@@ -219,12 +232,10 @@ public class ModpackUtils {
 					}
 
 					//					Cancel and undo all changes
-					if (isCancelled()) {
+					if (isCancelled())
 						FileUtils.deleteFolder(MiscUtils.getFile("modpacks/" + modpack.getName() + "/"));
-						return null;
-					}
-
-					succeeded();
+					else
+						succeeded();
 					return null;
 				}
 

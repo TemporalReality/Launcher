@@ -1,9 +1,9 @@
 package temporalreality.launcher.view.about;
 
+import java.net.URI;
+
 import javafx.fxml.FXML;
 import net.shadowfacts.shadowlib.util.DesktopUtils;
-
-import java.net.URI;
 
 /**
  * @author shadowfacts

@@ -14,4 +14,8 @@ public class Mod {
 	public String fileName;
 	public Side side = Side.BOTH;
 
+	@Override
+	public String toString() {
+		return name;
+	}
 }

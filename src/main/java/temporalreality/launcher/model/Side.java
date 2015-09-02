@@ -12,4 +12,9 @@ public enum Side {
 
 	@SerializedName("both")
 	BOTH;
+
+	@Override
+	public String toString() {
+		return name().toLowerCase();
+	}
 }
