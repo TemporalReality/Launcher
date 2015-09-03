@@ -2,7 +2,6 @@ package temporalreality.launcher.util;
 
 import temporalreality.launcher.config.ConfigManager;
 import de.npe.gameanalytics.Analytics;
-import de.npe.gameanalytics.events.GAErrorEvent.Severity;
 
 /**
  * @author CoolSquid
@@ -15,17 +14,12 @@ public class TRAnalytics {
 		this.analytics = analytics;
 	}
 
-	public void sendError(Severity severity, String message) {
-		if (isEnabled() && (ConfigManager.getInstanceConfig() == null || ConfigManager.getInstanceConfig().enableErrorReporting))
-			analytics.eventErrorNow(severity, message);
-	}
-
 	public void sendEvent(String eventID) {
-		if (isEnabled() && (ConfigManager.getInstanceConfig() == null || ConfigManager.getInstanceConfig().enableAnalytics))
+		if (isEnabled())
 			analytics.eventDesign(eventID);
 	}
 
 	public boolean isEnabled() {
-		return analytics != null && analytics.isActive();
+		return analytics != null && analytics.isActive() && (ConfigManager.getInstanceConfig() == null || ConfigManager.getInstanceConfig().enableAnalytics) && false; //temp disabled, waiting for privacy policy
 	}
 }

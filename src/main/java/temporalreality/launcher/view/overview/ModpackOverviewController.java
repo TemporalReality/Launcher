@@ -22,6 +22,7 @@ import temporalreality.launcher.TRLauncher;
 import temporalreality.launcher.control.VersionMenuItem;
 import temporalreality.launcher.model.Modpack;
 import temporalreality.launcher.model.Version;
+import temporalreality.launcher.util.Issues;
 import temporalreality.launcher.util.ModpackUtils;
 
 /**
@@ -111,6 +112,8 @@ public class ModpackOverviewController {
 			}, this);
 		} catch (IOException e) {
 			TRLauncher.log.catching(e);
+			Modpack active = modpackTable.getSelectionModel().getSelectedItem();
+			Issues.create("Error when clicking download for pack " + active != null ? active.getName() : null, e, null);
 		}
 	}
 

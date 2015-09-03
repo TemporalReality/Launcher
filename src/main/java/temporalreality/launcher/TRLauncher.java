@@ -23,6 +23,7 @@ import net.shadowfacts.shadowlib.util.os.OperatingSystem;
 import temporalreality.launcher.config.ConfigManager;
 import temporalreality.launcher.model.Mod;
 import temporalreality.launcher.model.Modpack;
+import temporalreality.launcher.util.Issues;
 import temporalreality.launcher.util.MiscUtils;
 import temporalreality.launcher.util.ModpackUtils;
 import temporalreality.launcher.util.TRAnalytics;
@@ -35,7 +36,6 @@ import temporalreality.launcher.view.passworddialog.PasswordDialogController;
 import coolsquid.logging.LogManager;
 import coolsquid.logging.Logger;
 import de.npe.gameanalytics.SimpleAnalytics;
-import de.npe.gameanalytics.events.GAErrorEvent.Severity;
 
 /**
  * @author shadowfacts
@@ -65,6 +65,7 @@ public class TRLauncher extends Application {
 		} catch (FileNotFoundException e) {
 			System.err.println("Could not setup logging library properly.");
 			TRLauncher.log.catching(e);
+			Issues.create(null, e, null);
 			LogManager.setDefaultContext(LogManager.getContext("Launcher", System.out));
 		}
 		log = LogManager.getLogger("Launcher");
@@ -125,6 +126,7 @@ public class TRLauncher extends Application {
 		} catch (IOException e) {
 			TRLauncher.log.error("Couldn't find the specified layout");
 			TRLauncher.log.catching(e);
+			Issues.create(null, e, null);
 		}
 	}
 
@@ -143,6 +145,7 @@ public class TRLauncher extends Application {
 		} catch (IOException e) {
 			TRLauncher.log.error("Couldn't find the specified layout");
 			TRLauncher.log.catching(e);
+			Issues.create(null, e, null);
 		}
 	}
 
@@ -172,12 +175,14 @@ public class TRLauncher extends Application {
 				Thread.sleep(4000);
 			} catch (InterruptedException e) {
 				TRLauncher.log.catching(e);
+				Issues.create(null, e, null);
 			}
 
 			return controller;
 		} catch (IOException e) {
 			TRLauncher.log.error("Couldn't find the specified layout");
 			TRLauncher.log.catching(e);
+			Issues.create(null, e, null);
 			return null;
 		}
 	}
@@ -206,6 +211,7 @@ public class TRLauncher extends Application {
 		} catch (IOException e) {
 			TRLauncher.log.error("Couldn't find the specified layout");
 			TRLauncher.log.catching(e);
+			Issues.create(null, e, null);
 			return null;
 		}
 	}
@@ -232,6 +238,7 @@ public class TRLauncher extends Application {
 		} catch (IOException e) {
 			TRLauncher.log.error("Couldn't find the specified layout");
 			TRLauncher.log.catching(e);
+			Issues.create(null, e, null);
 		}
 	}
 
@@ -253,6 +260,7 @@ public class TRLauncher extends Application {
 		} catch (IOException e) {
 			TRLauncher.log.error("Couldn't find the specified layout");
 			TRLauncher.log.catching(e);
+			Issues.create(null, e, null);
 		}
 	}
 
@@ -277,6 +285,7 @@ public class TRLauncher extends Application {
 		} catch (IOException e) {
 			TRLauncher.log.error("Couldn't find the specified layout");
 			TRLauncher.log.catching(e);
+			Issues.create(null, e, null);
 		}
 	}
 
@@ -304,6 +313,8 @@ public class TRLauncher extends Application {
 		} catch (IOException e) {
 			TRLauncher.log.error("Couldn't find the specified layout");
 			TRLauncher.log.catching(e);
+			Issues.create(null, e, null);
+			Issues.create(null, e, null);
 			return null;
 		}
 	}
@@ -336,13 +347,12 @@ public class TRLauncher extends Application {
 		return analytics;
 	}
 
-	public static void main(String[] args) throws IOException {
+	public static void main(String[] args) {
 		try {
 			launch(args);
 		} catch (Throwable t) {
-			analytics.sendError(Severity.critical, MiscUtils.toString(t));
-			TRLauncher.log.catching(t);
-			TRLauncher.getAnalytics().sendError(Severity.error, MiscUtils.toString(t));
+			log.catching(t);
+			Issues.create(null, t, null);
 		} finally {
 			System.exit(0);
 		}

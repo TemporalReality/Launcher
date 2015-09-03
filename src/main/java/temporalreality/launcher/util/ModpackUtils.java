@@ -40,7 +40,6 @@ import uk.co.rx14.jmclaunchlib.LaunchSpec;
 import uk.co.rx14.jmclaunchlib.LaunchTask;
 import uk.co.rx14.jmclaunchlib.LaunchTaskBuilder;
 import uk.co.rx14.jmclaunchlib.auth.PasswordSupplier;
-import de.npe.gameanalytics.events.GAErrorEvent.Severity;
 
 /**
  * @author shadowfacts
@@ -49,12 +48,12 @@ public class ModpackUtils {
 
 	public static void loadModpacks(List<Modpack> modpacks) throws Exception {
 		List<String> packIndexes = new ArrayList<String>();
-		String property = System.getProperty("packIndexes");
-		if (property != null)
-			for (String s: property.split(","))
+		for (String s: System.getProperty("temporalreality.launcher.packIndexes", "").split(","))
+			if (!s.isEmpty())
 				packIndexes.add(s);
 		for (String s: ConfigManager.getInstanceConfig().packIndexes)
-			packIndexes.add(s);
+			if (s != null && !s.isEmpty())
+				packIndexes.add(s);
 		for (String s : packIndexes) {
 			TRLauncher.log.info("Loading modpacks from index at " + s);
 			String data = getModpackData(s);
@@ -65,7 +64,7 @@ public class ModpackUtils {
 				} catch (Throwable t) {
 					TRLauncher.log.error("Failed to download pack: " + pack);
 					TRLauncher.log.catching(t);
-					TRLauncher.getAnalytics().sendError(Severity.error, MiscUtils.toString(t));
+					Issues.create("Issue while adding pack " + pack, t, null);
 				}
 			}
 		}
@@ -304,9 +303,11 @@ public class ModpackUtils {
 					} catch (InterruptedException e) {
 						TRLauncher.log.error("The password retrieval was interrupted");
 						TRLauncher.log.catching(e);
+						Issues.create(null, e, null);
 					} catch (ExecutionException e) {
 						TRLauncher.log.error("There was a problem retrieving the password");
 						TRLauncher.log.catching(e);
+						Issues.create(null, e, null);
 					}
 					return null;
 				};
