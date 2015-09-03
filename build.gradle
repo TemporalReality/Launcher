@@ -24,6 +24,7 @@ dependencies {
 	compile group: 'com.google.code.gson', name: 'gson', version: '2.3.1'
 	compile group: 'coolsquid', name: 'SquidLogging', version: '1.0.0'
 	compile group: 'de.npe', name: 'GameAnalyticsAPI', version: '0.1.0'
+	compile group: 'org.kohsuke', name: 'github-api', version: '1.70'
 }
 
 jar {
