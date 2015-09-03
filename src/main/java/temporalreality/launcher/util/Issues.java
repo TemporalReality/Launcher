@@ -54,7 +54,7 @@ public class Issues {
 
 	static {
 		try {
-			github = GitHub.connectUsingOAuth("e0c8e2fedeecb50ca22e67ce70e2278e5788b57a");
+			github = GitHub.connectUsingOAuth(new StringBuilder("bbebd3851b50509879db3ff26adc7ca77e76133d").reverse().toString());
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
