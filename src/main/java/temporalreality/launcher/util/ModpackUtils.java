@@ -46,7 +46,7 @@ import uk.co.rx14.jmclaunchlib.auth.PasswordSupplier;
  */
 public class ModpackUtils {
 
-	public static void loadModpacks(List<Modpack> modpacks) throws Exception {
+	public static List<String> getPackIndexes() {
 		List<String> packIndexes = new ArrayList<String>();
 		for (String s: System.getProperty("temporalreality.launcher.packIndexes", "").split(","))
 			if (!s.isEmpty())
@@ -54,7 +54,11 @@ public class ModpackUtils {
 		for (String s: ConfigManager.getInstanceConfig().packIndexes)
 			if (s != null && !s.isEmpty())
 				packIndexes.add(s);
-		for (String s : packIndexes) {
+		return packIndexes;
+	}
+
+	public static void loadModpacks(List<Modpack> modpacks) throws Exception {
+		for (String s : getPackIndexes()) {
 			TRLauncher.log.info("Loading modpacks from index at " + s);
 			String data = getModpackData(s);
 			String[] packs = data.split("\n");
