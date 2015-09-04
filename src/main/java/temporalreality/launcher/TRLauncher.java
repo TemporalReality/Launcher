@@ -102,7 +102,7 @@ public class TRLauncher extends Application {
 			if (minecraft != null) minecraft.destroyForcibly();
 		}));
 
-		if (OperatingSystem.getOS() == OperatingSystem.OSX) {
+		if (OperatingSystem.getOS() == OperatingSystem.OSX) { //buuuu
 			try {
 				OSUtils.setOSXDockIcon(new URL("http://temporal-reality.com/logo/1024.png"));
 			} catch (MalformedURLException ignored) {}

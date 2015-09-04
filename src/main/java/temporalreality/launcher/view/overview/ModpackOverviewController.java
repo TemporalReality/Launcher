@@ -14,7 +14,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
@@ -168,8 +167,7 @@ public class ModpackOverviewController {
 			description.setText(modpack.getDescription());
 
 			Thread logoThread = new Thread(() -> {
-				Image image = new Image(modpack.getLogoUrl());
-				Platform.runLater(() -> this.image.setImage(image));
+				Platform.runLater(() -> this.image.setImage(modpack.getLogo()));
 			});
 			logoThread.start();
 

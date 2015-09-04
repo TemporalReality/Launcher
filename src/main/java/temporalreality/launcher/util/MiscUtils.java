@@ -1,11 +1,17 @@
 package temporalreality.launcher.util;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.util.Properties;
 
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
+
+import org.apache.commons.io.FileUtils;
+
+import temporalreality.launcher.TRLauncher;
 import temporalreality.launcher.config.ConfigManager;
 
 /**
@@ -50,5 +56,18 @@ public class MiscUtils {
 		StringWriter w = new StringWriter();
 		t.printStackTrace(new PrintWriter(w));
 		return w.toString();
+	}
+
+	public static Properties getLogoProperties() {
+		Properties properties = new Properties();
+		File file = getFile("caches/logos.properties");
+		if (file.exists())
+			try {
+				properties.load(FileUtils.openInputStream(file));
+			} catch (IOException e) {
+				TRLauncher.log.catching(e);
+				Issues.create(null, e, null);
+			}
+		return properties;
 	}
 }

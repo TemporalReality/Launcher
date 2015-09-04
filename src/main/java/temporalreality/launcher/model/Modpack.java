@@ -1,15 +1,30 @@
 package temporalreality.launcher.model;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.property.StringProperty;
-import temporalreality.launcher.TRLauncher;
-import temporalreality.launcher.util.ModpackDeserializer;
-
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Properties;
+
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
+import javafx.scene.image.Image;
+
+import org.apache.commons.io.FileUtils;
+
+import temporalreality.launcher.TRLauncher;
+import temporalreality.launcher.util.Issues;
+import temporalreality.launcher.util.MiscUtils;
+import temporalreality.launcher.util.ModpackDeserializer;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 /**
  * @author shadowfacts
@@ -29,6 +44,8 @@ public class Modpack {
 	private Version selectedVersion;
 
 	private boolean beta;
+
+	private transient Image logo;
 
 	public Modpack() {
 		this.name = "";
@@ -53,7 +70,9 @@ public class Modpack {
 		GsonBuilder builder = new GsonBuilder();
 		builder.registerTypeAdapter(Modpack.class, new ModpackDeserializer());
 		Gson gson = builder.create();
-		return gson.fromJson(json, Modpack.class);
+		Modpack pack = gson.fromJson(json, Modpack.class);
+		pack.getLogo();
+		return pack;
 	}
 
 	public static Modpack get(URL url) throws IOException {
@@ -153,6 +172,35 @@ public class Modpack {
 
 	public void setBeta(boolean beta) {
 		this.beta = beta;
+	}
+
+	public Image getLogo() {
+		if (logo == null) {
+			Properties properties = MiscUtils.getLogoProperties();
+			if (!properties.containsKey(getName())) {
+				String file = MiscUtils.getPath("caches/logos/" + getName() + ".logo");
+				properties.setProperty(getName(), file);
+				try {
+					FileUtils.copyURLToFile(new URL(getLogoUrl()), new File(file));
+				} catch (IOException e) {
+					TRLauncher.log.catching(e);
+					Issues.create(null, e, null);
+				}
+				try (OutputStream out = FileUtils.openOutputStream(MiscUtils.getFile("caches/logos.properties"))) {
+					properties.store(out, null);
+				} catch (IOException e) {
+					TRLauncher.log.catching(e);
+					Issues.create(null, e, null);
+				}
+			}
+			try (InputStream in = FileUtils.openInputStream(new File(properties.getProperty(getName())))) {
+				logo = new Image(in);
+			} catch (IOException e) {
+				TRLauncher.log.catching(e);
+				Issues.create(null, e, null);
+			}
+		}
+		return logo;
 	}
 
 	@Override
