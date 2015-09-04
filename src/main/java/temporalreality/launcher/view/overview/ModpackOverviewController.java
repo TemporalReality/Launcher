@@ -79,11 +79,6 @@ public class ModpackOverviewController {
 	@FXML
 	private Button mods;
 
-
-	public ModpackOverviewController() {
-
-	}
-
 	@FXML
 	private void initialize() {
 		modpackTable.setItems(TRLauncher.getLauncher().getModpacks());
