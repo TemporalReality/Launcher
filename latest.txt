@@ -1,1 +1,1 @@
-temporalreality:TemporalRealityLauncher:0.1.6
+temporalreality:TemporalRealityLauncher:0.1.8
