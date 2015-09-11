@@ -73,6 +73,7 @@ public class TRLauncher extends Application {
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
+		Thread.setDefaultUncaughtExceptionHandler((t, e) -> Issues.create(null, e, null));
 		try {
 			Properties properties = new Properties();
 			try (InputStream in = TRLauncher.class.getResourceAsStream("MANIFEST.MF")) {
@@ -234,7 +235,7 @@ public class TRLauncher extends Application {
 			controller.setDialogStage(dialogStage);
 
 			dialogStage.showAndWait();
-
+			throw null;
 		} catch (IOException e) {
 			TRLauncher.log.error("Couldn't find the specified layout");
 			TRLauncher.log.catching(e);
@@ -313,7 +314,6 @@ public class TRLauncher extends Application {
 		} catch (IOException e) {
 			TRLauncher.log.error("Couldn't find the specified layout");
 			TRLauncher.log.catching(e);
-			Issues.create(null, e, null);
 			Issues.create(null, e, null);
 			return null;
 		}

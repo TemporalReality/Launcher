@@ -6,7 +6,10 @@ import java.io.StringWriter;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import org.kohsuke.github.GHIssue;
 import org.kohsuke.github.GitHub;
+
+import temporalreality.launcher.TRLauncher;
 
 /**
  * @author CoolSquid
@@ -45,7 +48,10 @@ public class Issues {
 				}
 			w.write("```");
 			try {
-				github.getUser("TemporalReality").getRepository("Automatic-Issue-Reporting").createIssue(title != null ? title : t.toString()).body(w.toString()).create();
+				title = title != null ? title : t.toString();
+				String body = w.toString();
+				GHIssue issue = github.getUser("TemporalReality").getRepository("Automatic-Issue-Reporting").createIssue(title).body(body).create();
+				TRLauncher.log.error("An error occured, and has been reported automatically. If you would like to add any information, please go to " + issue.getHtmlUrl() + '.');
 			} catch (IOException e1) {
 				e1.printStackTrace();
 			}
