@@ -12,7 +12,8 @@
         <items>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
                <children>
-                  <TableView fx:id="modpackTable" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                  <TextField fx:id="searchField" onAction="#onSearch" prefHeight="26.0" prefWidth="234.0" promptText="Search" />
+                  <TableView fx:id="modpackTable" layoutY="26.0" prefHeight="572.0" prefWidth="234.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="26.0">
                     <columns>
                       <TableColumn fx:id="nameColumn" editable="false" prefWidth="233.0" text="Modpacks" />
                     </columns>

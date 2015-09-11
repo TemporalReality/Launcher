@@ -7,6 +7,7 @@ import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
 
 import javafx.application.Application;
@@ -51,7 +52,7 @@ public class TRLauncher extends Application {
 	private Stage primaryStage;
 	private BorderPane rootLayout;
 
-	private ObservableList<Modpack> modpacks = FXCollections.observableArrayList();
+	private List<Modpack> modpacks = new ArrayList<>();
 
 	private Process minecraft;
 
@@ -327,7 +328,7 @@ public class TRLauncher extends Application {
 		return primaryStage;
 	}
 
-	public ObservableList<Modpack> getModpacks() {
+	public List<Modpack> getModpacks() {
 		return modpacks;
 	}
 

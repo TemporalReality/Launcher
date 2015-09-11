@@ -6,14 +6,10 @@ import java.nio.file.Paths;
 import java.util.Optional;
 
 import javafx.application.Platform;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.Label;
-import javafx.scene.control.MenuButton;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
@@ -30,6 +26,11 @@ import temporalreality.launcher.util.ModpackUtils;
 public class ModpackOverviewController {
 
 	private Stage primaryStage;
+
+	private ObservableList<Modpack> modpackList = FXCollections.observableArrayList();
+
+	@FXML
+	private TextField searchField;
 
 	@FXML
 	private TableView<Modpack> modpackTable;
@@ -81,7 +82,8 @@ public class ModpackOverviewController {
 
 	@FXML
 	private void initialize() {
-		modpackTable.setItems(TRLauncher.getLauncher().getModpacks());
+		modpackList.addAll(TRLauncher.getLauncher().getModpacks());
+		modpackTable.setItems(modpackList);
 
 		nameColumn.setCellValueFactory(cellData ->
 		cellData.getValue().isBeta() ? cellData.getValue().getNameProperty().concat(" (BETA)") : cellData.getValue().getNameProperty()
@@ -94,6 +96,28 @@ public class ModpackOverviewController {
 				));
 
 		version.setOnAction(event -> updateButtons());
+	}
+
+	@FXML
+	private void onSearch() {
+		modpackList.removeAll(TRLauncher.getLauncher().getModpacks());
+
+		String search = searchField.getText().toLowerCase();
+		if (!search.equals("")) {
+			TRLauncher.getLauncher().getModpacks().stream().filter(modpack -> {
+				boolean ret = false;
+				String[] bits = modpack.getDisplayName().split(" ");
+				String[] otherBits = search.split(" ");
+				for (String s : bits) {
+					for (String s2 : otherBits) {
+						ret = ret || s.toLowerCase().startsWith(s2);
+					}
+				}
+				return ret;
+			}).forEach(modpackList::add);
+		} else {
+			modpackList.addAll(TRLauncher.getLauncher().getModpacks());
+		}
 	}
 
 	@FXML
