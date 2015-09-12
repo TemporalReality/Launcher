@@ -235,7 +235,6 @@ public class TRLauncher extends Application {
 			controller.setDialogStage(dialogStage);
 
 			dialogStage.showAndWait();
-			throw null;
 		} catch (IOException e) {
 			TRLauncher.log.error("Couldn't find the specified layout");
 			TRLauncher.log.catching(e);
