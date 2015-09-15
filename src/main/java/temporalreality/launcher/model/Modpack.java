@@ -2,7 +2,6 @@ package temporalreality.launcher.model;
 
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -17,60 +16,38 @@ import javafx.beans.property.StringProperty;
 import javafx.scene.image.Image;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.IOUtils;
 
 import temporalreality.launcher.TRLauncher;
 import temporalreality.launcher.util.Issues;
 import temporalreality.launcher.util.MiscUtils;
-import temporalreality.launcher.util.ModpackDeserializer;
 
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 
 /**
  * @author shadowfacts
  */
 public class Modpack {
 
-	private String name;
+	private String name, displayName, author, description, logoUrl;
 
-	private final StringProperty displayName;
-	private final StringProperty author;
-	private final StringProperty description;
-
-	private String logoUrl;
-
-	private final ArrayList<Version> versions;
+	private ArrayList<Version> versions;
 
 	private Version selectedVersion;
 
 	private boolean beta;
+	private boolean listed = true;
 
 	private transient Image logo;
 
-	public Modpack() {
-		this.name = "";
-
-		this.displayName = new SimpleStringProperty();
-		this.author = new SimpleStringProperty();
-		this.description = new SimpleStringProperty();
-
-		this.versions = new ArrayList<>();
-
-		this.beta = false;
-	}
-
-	public static Modpack get(File f) throws FileNotFoundException {
-		GsonBuilder builder = new GsonBuilder();
-		builder.registerTypeAdapter(Modpack.class, new ModpackDeserializer());
-		Gson gson = builder.create();
-		return gson.fromJson(new FileReader(f), Modpack.class);
+	public static Modpack get(File f) throws IOException {
+		try (FileReader reader = new FileReader(f)) {
+			return get(IOUtils.toString(reader));
+		}
 	}
 
 	public static Modpack get(String json) {
-		GsonBuilder builder = new GsonBuilder();
-		builder.registerTypeAdapter(Modpack.class, new ModpackDeserializer());
-		Gson gson = builder.create();
-		Modpack pack = gson.fromJson(json, Modpack.class);
+		Modpack pack = new Gson().fromJson(json, Modpack.class);
 		pack.getLogo();
 		return pack;
 	}
@@ -103,39 +80,39 @@ public class Modpack {
 	}
 
 	public String getDisplayName() {
-		return displayName.get();
+		return displayName + (listed ? "" : " (Unlisted)");
 	}
 
 	public void setDisplayName(String displayName) {
-		this.displayName.set(displayName);
+		this.displayName = displayName;
 	}
 
 	public StringProperty getNameProperty() {
-		return displayName;
+		return new SimpleStringProperty(getDisplayName());
 	}
 
 	public String getAuthor() {
-		return author.get();
-	}
-
-	public void setAuthor(String author) {
-		this.author.set(author);
-	}
-
-	public StringProperty getAuthorProperty() {
 		return author;
 	}
 
+	public void setAuthor(String author) {
+		this.author = author;
+	}
+
+	public StringProperty getAuthorProperty() {
+		return new SimpleStringProperty(author);
+	}
+
 	public String getDescription() {
-		return description.get();
+		return description;
 	}
 
 	public void setDescription(String description) {
-		this.description.set(description);
+		this.description = description;
 	}
 
 	public StringProperty getDescriptionProperty() {
-		return description;
+		return new SimpleStringProperty(description);
 	}
 
 	public String getLogoUrl() {
@@ -172,6 +149,14 @@ public class Modpack {
 
 	public void setBeta(boolean beta) {
 		this.beta = beta;
+	}
+
+	public void setListed(boolean listed) {
+		this.listed = listed;
+	}
+
+	public boolean isListed() {
+		return listed;
 	}
 
 	public Image getLogo() {

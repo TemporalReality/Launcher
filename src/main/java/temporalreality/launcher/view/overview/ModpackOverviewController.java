@@ -9,7 +9,14 @@ import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.scene.control.*;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.Label;
+import javafx.scene.control.MenuButton;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
@@ -82,7 +89,11 @@ public class ModpackOverviewController {
 
 	@FXML
 	private void initialize() {
-		modpackList.addAll(TRLauncher.getLauncher().getModpacks());
+		TRLauncher.getLauncher().getModpacks().forEach((key, value) -> {
+			if (value.isListed())
+				modpackList.add(value);
+		});
+
 		modpackTable.setItems(modpackList);
 
 		nameColumn.setCellValueFactory(cellData ->
@@ -100,11 +111,15 @@ public class ModpackOverviewController {
 
 	@FXML
 	private void onSearch() {
-		modpackList.removeAll(TRLauncher.getLauncher().getModpacks());
+		modpackList.clear();
 
 		String search = searchField.getText().toLowerCase();
-		if (!search.equals("")) {
-			TRLauncher.getLauncher().getModpacks().stream().filter(modpack -> {
+		if (!search.isEmpty()) {
+			if (TRLauncher.getLauncher().getModpacks().containsKey(searchField.getText()))
+				modpackList.add(TRLauncher.getLauncher().getModpacks().get(searchField.getText()));
+			TRLauncher.getLauncher().getModpacks().values().stream().filter(modpack -> {
+				if (!searchField.getText().equals(modpack.getName()))
+					return false;
 				boolean ret = false;
 				String[] bits = modpack.getDisplayName().split(" ");
 				String[] otherBits = search.split(" ");
@@ -113,10 +128,13 @@ public class ModpackOverviewController {
 						ret = ret || s.toLowerCase().startsWith(s2);
 					}
 				}
-				return ret;
+				return ret && !searchField.getText().equals(modpack.getName());
 			}).forEach(modpackList::add);
 		} else {
-			modpackList.addAll(TRLauncher.getLauncher().getModpacks());
+			TRLauncher.getLauncher().getModpacks().forEach((key, value) -> {
+				if (value.isListed())
+					modpackList.add(value);
+			});
 		}
 	}
 

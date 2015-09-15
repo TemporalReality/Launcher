@@ -14,6 +14,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.FutureTask;
@@ -57,14 +58,19 @@ public class ModpackUtils {
 		return packIndexes;
 	}
 
-	public static void loadModpacks(List<Modpack> modpacks) throws Exception {
+	public static void loadModpacks(Map<String, Modpack> modpacks) throws Exception {
 		for (String s : getPackIndexes()) {
 			TRLauncher.log.info("Loading modpacks from index at " + s);
 			String data = getModpackData(s);
 			String[] packs = data.split("\n");
 			for (String pack : packs) {
 				try {
-					modpacks.add(Modpack.get(new URL(pack)));
+					Modpack modpack = Modpack.get(new URL(pack));
+					if (modpacks.containsKey(modpack.getName())) {
+						TRLauncher.log.warn("Duplicate pack %s!", modpack.getName());
+						continue;
+					}
+					modpacks.put(modpack.getName(), modpack);
 				} catch (Throwable t) {
 					TRLauncher.log.error("Failed to download pack: " + pack);
 					TRLauncher.log.catching(t);

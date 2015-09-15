@@ -7,7 +7,8 @@ import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Properties;
 
 import javafx.application.Application;
@@ -51,7 +52,7 @@ public class TRLauncher extends Application {
 	private Stage primaryStage;
 	private BorderPane rootLayout;
 
-	private List<Modpack> modpacks = new ArrayList<>();
+	private Map<String, Modpack> modpacks = new HashMap<>();
 
 	private Process minecraft;
 
@@ -103,7 +104,7 @@ public class TRLauncher extends Application {
 			if (minecraft != null) minecraft.destroyForcibly();
 		}));
 
-		if (OperatingSystem.getOS() == OperatingSystem.OSX) { //buuuu //What did you expect? It's Mac, ofc it sucks
+		if (OperatingSystem.getOS() == OperatingSystem.OSX) { //buuuu //What did you expect? It's OSX
 			try {
 				OSUtils.setOSXDockIcon(new URL("http://temporal-reality.com/logo/1024.png"));
 			} catch (MalformedURLException ignored) {}
@@ -326,7 +327,7 @@ public class TRLauncher extends Application {
 		return primaryStage;
 	}
 
-	public List<Modpack> getModpacks() {
+	public Map<String, Modpack> getModpacks() {
 		return modpacks;
 	}
 
