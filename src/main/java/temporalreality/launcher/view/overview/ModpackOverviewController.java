@@ -118,7 +118,7 @@ public class ModpackOverviewController {
 			if (TRLauncher.getLauncher().getModpacks().containsKey(searchField.getText()))
 				modpackList.add(TRLauncher.getLauncher().getModpacks().get(searchField.getText()));
 			TRLauncher.getLauncher().getModpacks().values().stream().filter(modpack -> {
-				if (!searchField.getText().equals(modpack.getName()))
+				if (searchField.getText().equals(modpack.getName()))
 					return false;
 				boolean ret = false;
 				String[] bits = modpack.getDisplayName().split(" ");
