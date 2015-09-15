@@ -131,7 +131,7 @@ public class ModpackOverviewController {
 		} catch (IOException e) {
 			TRLauncher.log.catching(e);
 			Modpack active = modpackTable.getSelectionModel().getSelectedItem();
-			Issues.create("Error when clicking download for pack " + active != null ? active.getName() : null, e, null);
+			Issues.create("Error when clicking download for pack " + active != null ? active.getName() : null, e);
 		}
 	}
 

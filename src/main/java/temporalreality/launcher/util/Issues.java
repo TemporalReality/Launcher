@@ -3,6 +3,7 @@ package temporalreality.launcher.util;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -20,7 +21,24 @@ public class Issues {
 
 	private static final GitHub github;
 
-	public static void create(String title, Throwable t, Map<String, String> additionalInfo) {
+	public static void create(String title, Throwable t) {
+		create(title, t, (Map<String, String>) null);
+	}
+
+	public static void create(String title, Throwable t, String... additionalInfo) {
+		Map<String, String> map = new HashMap<String, String>();
+		String key = null;
+		for (String string: additionalInfo)
+			if (key == null)
+				key = string;
+			else {
+				map.put(key, string);
+				key = null;
+			}
+		create(title, t, map);
+	}
+
+	private static void create(String title, Throwable t, Map<String, String> additionalInfo) {
 		try {
 			if (Boolean.parseBoolean(System.getProperty("temporalreality.launcher.errorreporting", "true"))) {
 				title = title != null ? title : calculateHashCode(t) + ": " + t.toString();

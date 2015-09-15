@@ -66,7 +66,7 @@ public class MiscUtils {
 				properties.load(FileUtils.openInputStream(file));
 			} catch (IOException e) {
 				TRLauncher.log.catching(e);
-				Issues.create(null, e, null);
+				Issues.create(null, e);
 			}
 		return properties;
 	}

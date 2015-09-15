@@ -65,7 +65,7 @@ public class TRLauncher extends Application {
 		} catch (FileNotFoundException e) {
 			System.err.println("Could not setup logging library properly.");
 			TRLauncher.log.catching(e);
-			Issues.create(null, e, null);
+			Issues.create(null, e);
 			LogManager.setDefaultContext(LogManager.getContext("Launcher", System.out));
 		}
 		log = LogManager.getLogger("Launcher");
@@ -73,7 +73,7 @@ public class TRLauncher extends Application {
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
-		Thread.setDefaultUncaughtExceptionHandler((t, e) -> Issues.create(null, e, null));
+		Thread.setDefaultUncaughtExceptionHandler((t, e) -> Issues.create(null, e));
 		try {
 			Properties properties = new Properties();
 			try (InputStream in = TRLauncher.class.getResourceAsStream("MANIFEST.MF")) {
@@ -103,7 +103,7 @@ public class TRLauncher extends Application {
 			if (minecraft != null) minecraft.destroyForcibly();
 		}));
 
-		if (OperatingSystem.getOS() == OperatingSystem.OSX) { //buuuu
+		if (OperatingSystem.getOS() == OperatingSystem.OSX) { //buuuu //What did you expect? It's Mac, ofc it sucks
 			try {
 				OSUtils.setOSXDockIcon(new URL("http://temporal-reality.com/logo/1024.png"));
 			} catch (MalformedURLException ignored) {}
@@ -127,7 +127,7 @@ public class TRLauncher extends Application {
 		} catch (IOException e) {
 			TRLauncher.log.error("Couldn't find the specified layout");
 			TRLauncher.log.catching(e);
-			Issues.create(null, e, null);
+			Issues.create(null, e);
 		}
 	}
 
@@ -146,7 +146,7 @@ public class TRLauncher extends Application {
 		} catch (IOException e) {
 			TRLauncher.log.error("Couldn't find the specified layout");
 			TRLauncher.log.catching(e);
-			Issues.create(null, e, null);
+			Issues.create(null, e);
 		}
 	}
 
@@ -176,14 +176,14 @@ public class TRLauncher extends Application {
 				Thread.sleep(4000);
 			} catch (InterruptedException e) {
 				TRLauncher.log.catching(e);
-				Issues.create(null, e, null);
+				Issues.create(null, e);
 			}
 
 			return controller;
 		} catch (IOException e) {
 			TRLauncher.log.error("Couldn't find the specified layout");
 			TRLauncher.log.catching(e);
-			Issues.create(null, e, null);
+			Issues.create(null, e);
 			return null;
 		}
 	}
@@ -212,7 +212,7 @@ public class TRLauncher extends Application {
 		} catch (IOException e) {
 			TRLauncher.log.error("Couldn't find the specified layout");
 			TRLauncher.log.catching(e);
-			Issues.create(null, e, null);
+			Issues.create(null, e);
 			return null;
 		}
 	}
@@ -238,7 +238,7 @@ public class TRLauncher extends Application {
 		} catch (IOException e) {
 			TRLauncher.log.error("Couldn't find the specified layout");
 			TRLauncher.log.catching(e);
-			Issues.create(null, e, null);
+			Issues.create(null, e);
 		}
 	}
 
@@ -260,7 +260,7 @@ public class TRLauncher extends Application {
 		} catch (IOException e) {
 			TRLauncher.log.error("Couldn't find the specified layout");
 			TRLauncher.log.catching(e);
-			Issues.create(null, e, null);
+			Issues.create(null, e);
 		}
 	}
 
@@ -285,7 +285,7 @@ public class TRLauncher extends Application {
 		} catch (IOException e) {
 			TRLauncher.log.error("Couldn't find the specified layout");
 			TRLauncher.log.catching(e);
-			Issues.create(null, e, null);
+			Issues.create(null, e);
 		}
 	}
 
@@ -313,7 +313,7 @@ public class TRLauncher extends Application {
 		} catch (IOException e) {
 			TRLauncher.log.error("Couldn't find the specified layout");
 			TRLauncher.log.catching(e);
-			Issues.create(null, e, null);
+			Issues.create(null, e);
 			return null;
 		}
 	}
@@ -351,7 +351,7 @@ public class TRLauncher extends Application {
 			launch(args);
 		} catch (Throwable t) {
 			log.catching(t);
-			Issues.create(null, t, null);
+			Issues.create(null, t);
 		} finally {
 			System.exit(0);
 		}

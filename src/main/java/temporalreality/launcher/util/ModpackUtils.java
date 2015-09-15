@@ -68,7 +68,7 @@ public class ModpackUtils {
 				} catch (Throwable t) {
 					TRLauncher.log.error("Failed to download pack: " + pack);
 					TRLauncher.log.catching(t);
-					Issues.create("Issue while adding pack " + pack, t, null);
+					Issues.create("Issue while adding pack " + pack, t);
 				}
 			}
 		}
@@ -307,11 +307,11 @@ public class ModpackUtils {
 					} catch (InterruptedException e) {
 						TRLauncher.log.error("The password retrieval was interrupted");
 						TRLauncher.log.catching(e);
-						Issues.create(null, e, null);
+						Issues.create(null, e);
 					} catch (ExecutionException e) {
 						TRLauncher.log.error("There was a problem retrieving the password");
 						TRLauncher.log.catching(e);
-						Issues.create(null, e, null);
+						Issues.create(null, e);
 					}
 					return null;
 				};

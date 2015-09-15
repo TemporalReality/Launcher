@@ -70,7 +70,7 @@ public class ConfigManager {
 			writer.println(data);
 		} catch (FileNotFoundException e) {
 			TRLauncher.log.catching(e);
-			Issues.create(null, e, null);
+			Issues.create(null, e);
 		}
 	}
 

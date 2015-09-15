@@ -184,20 +184,20 @@ public class Modpack {
 					FileUtils.copyURLToFile(new URL(getLogoUrl()), new File(file));
 				} catch (IOException e) {
 					TRLauncher.log.catching(e);
-					Issues.create(null, e, null);
+					Issues.create(null, e);
 				}
 				try (OutputStream out = FileUtils.openOutputStream(MiscUtils.getFile("caches/logos.properties"))) {
 					properties.store(out, null);
 				} catch (IOException e) {
 					TRLauncher.log.catching(e);
-					Issues.create(null, e, null);
+					Issues.create(null, e);
 				}
 			}
 			try (InputStream in = FileUtils.openInputStream(new File(properties.getProperty(getName())))) {
 				logo = new Image(in);
 			} catch (IOException e) {
 				TRLauncher.log.catching(e);
-				Issues.create(null, e, null);
+				Issues.create("Issue while loading logo for pack " + name, e);
 			}
 		}
 		return logo;
