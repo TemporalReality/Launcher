@@ -58,6 +58,12 @@ public class ModpackOverviewController {
 	private Label authors;
 
 	@FXML
+	private Label tagsLabel;
+
+	@FXML
+	private Label tags;
+
+	@FXML
 	private Label mcLabel;
 
 	@FXML
@@ -113,22 +119,22 @@ public class ModpackOverviewController {
 	private void onSearch() {
 		modpackList.clear();
 
-		String search = searchField.getText().toLowerCase();
+		String search = searchField.getText();
 		if (!search.isEmpty()) {
 			if (TRLauncher.getLauncher().getModpacks().containsKey(searchField.getText()))
 				modpackList.add(TRLauncher.getLauncher().getModpacks().get(searchField.getText()));
 			TRLauncher.getLauncher().getModpacks().values().stream().filter(modpack -> {
-				if (searchField.getText().equals(modpack.getName()))
+				if (!modpack.isListed() || searchField.getText().equals(modpack.getName()))
 					return false;
-				boolean ret = false;
+				boolean ret = true;
 				String[] bits = modpack.getDisplayName().split(" ");
 				String[] otherBits = search.split(" ");
 				for (String s : bits) {
 					for (String s2 : otherBits) {
-						ret = ret || s.toLowerCase().startsWith(s2);
+						ret = ((!s2.isEmpty() && s.toLowerCase().startsWith(s2)) && (!s2.startsWith("#") || modpack.getTags().contains(s2.substring(1)))) || (ret && s2.startsWith("#") && modpack.getTags().contains(s2.substring(1)));
 					}
 				}
-				return ret && !searchField.getText().equals(modpack.getName());
+				return ret;
 			}).forEach(modpackList::add);
 		} else {
 			TRLauncher.getLauncher().getModpacks().forEach((key, value) -> {
@@ -147,7 +153,6 @@ public class ModpackOverviewController {
 				TRLauncher.getAnalytics().sendEvent("DownloadModpack:" + active.getName() + ':' + active.getSelectedVersion().toString());
 			}, this);
 		} catch (IOException e) {
-			TRLauncher.log.catching(e);
 			Modpack active = modpackTable.getSelectionModel().getSelectedItem();
 			Issues.create("Error when clicking download for pack " + active != null ? active.getName() : null, e);
 		}
@@ -197,6 +202,8 @@ public class ModpackOverviewController {
 			name.setText(modpack.getDisplayName());
 			authorsLabel.setText("Author(s):");
 			authors.setText(modpack.getAuthor());
+			tags.setText(String.join(", ", modpack.getTags()));
+			tagsLabel.setText("Tags:");
 			mcLabel.setText("Minecraft:");
 			mcVer.setText(modpack.getSelectedVersion().mcVersion);
 			forgeLabel.setText("Forge:");
@@ -234,6 +241,8 @@ public class ModpackOverviewController {
 			//			TODO: Add separator and view changelog item
 		} else {
 			name.setText("");
+			tags.setText("");
+			tagsLabel.setText("");
 			authorsLabel.setText("");
 			authors.setText("");
 			mcLabel.setText("");

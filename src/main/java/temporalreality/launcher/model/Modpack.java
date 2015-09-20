@@ -6,10 +6,10 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.OutputStream;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Properties;
+import java.util.HashSet;
+import java.util.Set;
 
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
@@ -31,12 +31,15 @@ public class Modpack {
 
 	private String name, displayName, author, description, logoUrl;
 
+	private Set<String> tags = new HashSet<>(5);
+
 	private ArrayList<Version> versions;
 
-	private Version selectedVersion;
+	private transient Version selectedVersion;
 
 	private boolean beta;
 	private boolean listed = true;
+	private transient boolean favorite;
 
 	private transient Image logo;
 
@@ -159,29 +162,32 @@ public class Modpack {
 		return listed;
 	}
 
+	public Set<String> getTags() {
+		if (tags.size() > 5)
+			tags.removeIf((label) -> tags.size() > 5 || label.length() > 15);
+		return tags;
+	}
+
+	public boolean isFavorite() {
+		return favorite;
+	}
+
+	public void setFavorite(boolean favorite) {
+		this.favorite = favorite;
+	}
+
 	public Image getLogo() {
-		if (logo == null) {
-			Properties properties = MiscUtils.getLogoProperties();
-			if (!properties.containsKey(getName())) {
-				String file = MiscUtils.getPath("caches/logos/" + getName() + ".logo");
-				properties.setProperty(getName(), file);
+		if (logo == null && getLogoUrl() != null) {
+			File file = new File(MiscUtils.getPath("caches/logos/" + getLogoUrl().hashCode() + ".logo"));
+			if (!file.exists())
 				try {
-					FileUtils.copyURLToFile(new URL(getLogoUrl()), new File(file));
+					FileUtils.copyURLToFile(new URL(getLogoUrl()), file);
 				} catch (IOException e) {
-					TRLauncher.log.catching(e);
-					Issues.create(null, e);
+					Issues.create("Issue while downloading logo for pack " + name, e);
 				}
-				try (OutputStream out = FileUtils.openOutputStream(MiscUtils.getFile("caches/logos.properties"))) {
-					properties.store(out, null);
-				} catch (IOException e) {
-					TRLauncher.log.catching(e);
-					Issues.create(null, e);
-				}
-			}
-			try (InputStream in = FileUtils.openInputStream(new File(properties.getProperty(getName())))) {
+			try (InputStream in = FileUtils.openInputStream(file)) {
 				logo = new Image(in);
 			} catch (IOException e) {
-				TRLauncher.log.catching(e);
 				Issues.create("Issue while loading logo for pack " + name, e);
 			}
 		}

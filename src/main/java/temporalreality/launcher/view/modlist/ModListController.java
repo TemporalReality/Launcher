@@ -30,7 +30,6 @@ public class ModListController {
 	@FXML
 	private TableColumn<Mod, String> authorsColumn;
 
-
 	@FXML
 	private void initialize() {
 		nameColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().name));
@@ -41,7 +40,8 @@ public class ModListController {
 
 		modTable.getSelectionModel().selectedItemProperty().addListener(((observable, oldValue, newValue) -> {
 			try {
-				DesktopUtils.openWebpage(newValue.url);
+				if (modTable.getSelectionModel().getSelectedCells().get(0).getColumn() == 2)
+					DesktopUtils.openWebpage(newValue.url);
 			} catch (URISyntaxException ignored) {
 			}
 		}));
@@ -52,6 +52,4 @@ public class ModListController {
 		this.mods = mods;
 		modTable.setItems(this.mods);
 	}
-
-
 }

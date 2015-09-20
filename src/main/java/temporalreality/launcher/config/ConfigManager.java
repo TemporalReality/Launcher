@@ -8,7 +8,6 @@ import java.io.IOException;
 import java.io.PrintStream;
 
 import net.shadowfacts.shadowlib.util.InternetUtils;
-import temporalreality.launcher.TRLauncher;
 import temporalreality.launcher.util.Issues;
 
 import com.google.gson.Gson;
@@ -33,7 +32,7 @@ public class ConfigManager {
 
 	public void init() throws IOException {
 		String prop = System.getProperty("temporalreality.launcher.config");
-		if (prop != null && !prop.equals("")) {
+		if (prop != null && !prop.isEmpty()) {
 			file = new File(prop);
 		}
 
@@ -65,11 +64,9 @@ public class ConfigManager {
 
 	public void save() {
 		String data = gson.toJson(config);
-
 		try (PrintStream writer = new PrintStream(file)) {
 			writer.println(data);
 		} catch (FileNotFoundException e) {
-			TRLauncher.log.catching(e);
 			Issues.create(null, e);
 		}
 	}
@@ -90,5 +87,4 @@ public class ConfigManager {
 	public static Config getInstanceConfig() {
 		return getInstance().getConfig();
 	}
-
 }

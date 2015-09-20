@@ -72,8 +72,6 @@ public class ModpackUtils {
 					}
 					modpacks.put(modpack.getName(), modpack);
 				} catch (Throwable t) {
-					TRLauncher.log.error("Failed to download pack: " + pack);
-					TRLauncher.log.catching(t);
 					Issues.create("Issue while adding pack " + pack, t);
 				}
 			}
@@ -358,12 +356,15 @@ public class ModpackUtils {
 
 					LaunchSpec spec = launchTask.getSpec();
 
-					if (spec.getJvmArgs() == null) spec.setJvmArgs(new ArrayList<String>());
-					if (spec.getLaunchArgs() == null) spec.setLaunchArgs(new ArrayList<String>());
+					if (spec.getJvmArgs() == null)
+						spec.setJvmArgs(new ArrayList<String>());
+					if (spec.getLaunchArgs() == null)
+						spec.setLaunchArgs(new ArrayList<String>());
 
 					for (String s : ConfigManager.getInstanceConfig().jvmArgs) {
 						if (s != null && !s.equals("")) spec.getJvmArgs().add(s);
 					}
+					spec.getJvmArgs().add("-Dtemporalreality.launcher.modpack=" + modpack.getName());
 					spec.getLaunchArgs().add("--width=" + ConfigManager.getInstanceConfig().mcWidth);
 					spec.getLaunchArgs().add("--height=" + ConfigManager.getInstanceConfig().mcHeight);
 

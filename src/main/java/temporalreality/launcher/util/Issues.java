@@ -41,7 +41,7 @@ public class Issues {
 	private static void create(String title, Throwable t, Map<String, String> additionalInfo) {
 		try {
 			if (Boolean.parseBoolean(System.getProperty("temporalreality.launcher.errorreporting", "true"))) {
-				title = title != null ? title : calculateHashCode(t) + ": " + t.toString();
+				title = title != null ? title : t.toString();
 				GHRepository repo = github.getUser("TemporalReality").getRepository("Automatic-Issue-Reporting");
 				GHIssue issue = getIssue(title, repo);
 				StringWriter w = new StringWriter();
@@ -74,9 +74,10 @@ public class Issues {
 					}
 				w.write("```");
 				if (issue == null)
-					issue = repo.createIssue(title).body(w.toString()).create();
+					issue = repo.createIssue(title.replace(System.getProperty("user.name"), "user")).body(w.toString().replace(System.getProperty("user.name"), "user")).create();
 				else
 					issue.comment(w.toString());
+				TRLauncher.log.catching(t);
 				TRLauncher.log.error("An error occured, and has been reported automatically. If you would like to add any information, please go to "
 						+ issue.getHtmlUrl()
 						+ '.');
@@ -92,17 +93,6 @@ public class Issues {
 				return issue;
 			}
 		return null;
-	}
-
-	private static int calculateHashCode(Throwable t) {
-		int result = 1;
-		while (t != null) {
-			result += result * 31 * t.getClass().getName().hashCode();
-			for (StackTraceElement e: t.getStackTrace())
-				result += result * 31 * (e.getLineNumber() + 1) * e.getClassName().toString().hashCode();
-			t = t.getCause();
-		}
-		return result;
 	}
 
 	static {

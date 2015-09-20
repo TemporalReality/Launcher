@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.*?>
 <?import javafx.scene.text.*?>
 <?import javafx.scene.image.*?>
 <?import javafx.scene.control.*?>
@@ -51,7 +53,7 @@
                                     <Font size="16.0" />
                                  </font>
                               </Label>
-                              <Text fx:id="description" lineSpacing="4.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque eu diam scelerisque, sagittis quam sit amet, cursus tellus. Aenean leo metus, posuere non odio maximus, euismod dignissim quam. Donec tristique mauris quis ex blandit ornare. Aliquam in mi quis felis volutpat fringilla. Etiam sagittis feugiat est non pharetra. Integer eu ex nulla. Donec dictum cursus aliquam. Ut dapibus augue accumsan venenatis maximus. Praesent porttitor, odio at convallis sodales, magna orci porttitor libero, eget mollis nisl nulla sit amet arcu. Suspendisse non lorem volutpat, viverra sapien vel, finibus velit. Ut tincidunt ligula enim, tempus euismod nisl fringilla viverra. Aliquam erat volutpat." wrappingWidth="525.6829261779785" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="300.0">
+                              <Text fx:id="description" layoutX="12.0" layoutY="350.0" lineSpacing="4.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque eu diam scelerisque, sagittis quam sit amet, cursus tellus. Aenean leo metus, posuere non odio maximus, euismod dignissim quam. Donec tristique mauris quis ex blandit ornare. Aliquam in mi quis felis volutpat fringilla. Etiam sagittis feugiat est non pharetra. Integer eu ex nulla. Donec dictum cursus aliquam. Ut dapibus augue accumsan venenatis maximus. Praesent porttitor, odio at convallis sodales, magna orci porttitor libero, eget mollis nisl nulla sit amet arcu. Suspendisse non lorem volutpat, viverra sapien vel, finibus velit. Ut tincidunt ligula enim, tempus euismod nisl fringilla viverra. Aliquam erat volutpat." wrappingWidth="525.6829261779785" AnchorPane.bottomAnchor="15.517578125" AnchorPane.leftAnchor="12.0" AnchorPane.rightAnchor="12.317073822021484" AnchorPane.topAnchor="334.892578125">
                                  <font>
                                     <Font size="14.0" />
                                  </font>
@@ -69,6 +71,16 @@
                               <Label fx:id="name" layoutX="14.0" layoutY="228.0" text="Modpack Name" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="220.0">
                                  <font>
                                     <Font size="24.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="tagsLabel" layoutX="15.0" layoutY="300.0" text="Tags:">
+                                 <font>
+                                    <Font size="16.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="tags" layoutX="74.0" layoutY="300.0" text="Label">
+                                 <font>
+                                    <Font size="16.0" />
                                  </font>
                               </Label>
                            </children>
