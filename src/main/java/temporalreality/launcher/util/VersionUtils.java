@@ -10,7 +10,7 @@ public class VersionUtils {
 
 	public static Version getVersionFromString(Modpack modpack, String version) {
 		for (Version v : modpack.getVersions()) {
-			if (v.version.equals(version)) {
+			if (v.getVersion().equals(version)) {
 				return v;
 			}
 		}

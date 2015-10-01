@@ -52,7 +52,7 @@ public class ModpackUtils {
 		for (String s: System.getProperty("temporalreality.launcher.packIndexes", "").split(","))
 			if (!s.isEmpty())
 				packIndexes.add(s);
-		for (String s: ConfigManager.getInstanceConfig().packIndexes)
+		for (String s: ConfigManager.getInstanceConfig().getPackIndexes())
 			if (s != null && !s.isEmpty())
 				packIndexes.add(s);
 		return packIndexes;
@@ -124,7 +124,7 @@ public class ModpackUtils {
 			Task<Void> downloadTask = new Task<Void>() {
 				@Override
 				protected Void call() throws Exception {
-					int taskCount = modpack.getSelectedVersion().mods.size() + 5;
+					int taskCount = modpack.getSelectedVersion().getMods().size() + 5;
 
 					//					Create modpack dir
 					if (!packDir.exists() && !isCancelled()) {
@@ -153,13 +153,13 @@ public class ModpackUtils {
 					}
 
 					//					Download override zip
-					if (modpack.getSelectedVersion().overrideUrl != null && !modpack.getSelectedVersion().overrideUrl.equals("")) {
+					if (modpack.getSelectedVersion().getOverrideUrl() != null && !modpack.getSelectedVersion().getOverrideUrl().equals("")) {
 						if (!isCancelled()) {
 							TRLauncher.log.info("Downloading override zip to temp/" + modpack.getName() + ".zip");
 							updateMessage("Downloading override zip");
 							updateProgress(2, taskCount);
 
-							HttpURLConnection connection = (HttpURLConnection) new URL(modpack.getSelectedVersion().overrideUrl).openConnection();
+							HttpURLConnection connection = (HttpURLConnection) new URL(modpack.getSelectedVersion().getOverrideUrl()).openConnection();
 							connection.setRequestMethod("GET");
 							connection.setAllowUserInteraction(false);
 							connection.setDoInput(true);
@@ -194,24 +194,24 @@ public class ModpackUtils {
 
 					//					Download mods
 					if (!isCancelled()) {
-						for (int i = 0; i < modpack.getSelectedVersion().mods.size(); i++) {
+						for (int i = 0; i < modpack.getSelectedVersion().getMods().size(); i++) {
 							if (!isCancelled()) {
-								Mod mod = modpack.getSelectedVersion().mods.get(i);
+								Mod mod = modpack.getSelectedVersion().getMods().get(i);
 
-								if (mod.downloadUrl != null && !mod.downloadUrl.equals("") && mod.side != Side.SERVER) {
-									if (mod.fileName == null || mod.fileName.isEmpty())
+								if (mod.getDownloadUrl() != null && !mod.getDownloadUrl().equals("") && mod.getSide() != Side.SERVER) {
+									if (mod.getFileName() == null || mod.getFileName().isEmpty())
 										//mod.fileName = mod.name + mod.downloadUrl.hashCode() + ".jar";
 										continue;
-									TRLauncher.log.info("Downloading mod " + mod.name);
-									updateMessage("Downloading mod " + mod.name);
+									TRLauncher.log.info("Downloading mod " + mod.getName());
+									updateMessage("Downloading mod " + mod.getName());
 									updateProgress(i + 5, taskCount);
-									HttpURLConnection connection = (HttpURLConnection) new URL(mod.downloadUrl).openConnection();
+									HttpURLConnection connection = (HttpURLConnection) new URL(mod.getDownloadUrl()).openConnection();
 									connection.setRequestMethod("GET");
 									connection.setAllowUserInteraction(false);
 									connection.setDoInput(true);
 									connection.setDoOutput(true);
 									connection.connect();
-									File f = MiscUtils.getFile("modpacks/" + modpack.getName() + "/mods/" + mod.fileName);
+									File f = MiscUtils.getFile("modpacks/" + modpack.getName() + "/mods/" + mod.getFileName());
 									if (!f.getParentFile().exists()) f.getParentFile().mkdirs();
 									if (!f.exists()) f.createNewFile();
 									try (InputStream in = connection.getInputStream(); OutputStream out = new FileOutputStream(f)) {
@@ -234,7 +234,7 @@ public class ModpackUtils {
 						}
 
 						PrintWriter writer = new PrintWriter(MiscUtils.getPath("modpacks/" + modpack.getName() + "/version.txt"));
-						writer.println(modpack.getSelectedVersion().version);
+						writer.println(modpack.getSelectedVersion().getVersion());
 						writer.close();
 					}
 
@@ -276,13 +276,13 @@ public class ModpackUtils {
 		} catch (IOException e) {
 
 		}
-		return !modpack.getSelectedVersion().version.equals(saved);
+		return !modpack.getSelectedVersion().getVersion().equals(saved);
 	}
 
 	public static void launch(Modpack modpack, boolean offline) {
 		if (isModpackInstalled(modpack)) {
 
-			if (ConfigManager.getInstanceConfig().username == null || ConfigManager.getInstanceConfig().username.equals("")) {
+			if (ConfigManager.getInstanceConfig().getUsername() == null || ConfigManager.getInstanceConfig().getUsername().equals("")) {
 				Alert alert = new Alert(Alert.AlertType.ERROR);
 				alert.setTitle("Login!");
 				alert.setHeaderText("You must have a username selected");
@@ -294,7 +294,7 @@ public class ModpackUtils {
 
 			PasswordSupplier passwordSupplier = null;
 
-			final String selectedUsername = ConfigManager.getInstanceConfig().username;
+			final String selectedUsername = ConfigManager.getInstanceConfig().getUsername();
 			String theUsername = null;
 
 			if (selectedUsername != null && !selectedUsername.equals("")) {
@@ -327,16 +327,16 @@ public class ModpackUtils {
 			//					.setForgeVersion(modpack.getSelectedVersion().mcVersion, modpack.getSelectedVersion().forgeVersion)
 			.setPasswordSupplier(passwordSupplier);
 
-			if (modpack.getSelectedVersion().forgeVersion != null && !modpack.getSelectedVersion().forgeVersion.equals("")) {
-				builder = builder.setForgeVersion(modpack.getSelectedVersion().mcVersion, modpack.getSelectedVersion().forgeVersion);
+			if (modpack.getSelectedVersion().getForgeVersion() != null && !modpack.getSelectedVersion().getForgeVersion().equals("")) {
+				builder = builder.setForgeVersion(modpack.getSelectedVersion().getMcVersion(), modpack.getSelectedVersion().getForgeVersion());
 			} else {
-				builder = builder.setMinecraftVersion(modpack.getSelectedVersion().mcVersion);
+				builder = builder.setMinecraftVersion(modpack.getSelectedVersion().getMcVersion());
 			}
 
 			final LaunchTaskBuilder theBuilder;
 
-			if (ConfigManager.getInstanceConfig().username != null && !ConfigManager.getInstanceConfig().username.equals("")) {
-				theUsername = ConfigManager.getInstanceConfig().username;
+			if (ConfigManager.getInstanceConfig().getUsername() != null && !ConfigManager.getInstanceConfig().getUsername().equals("")) {
+				theUsername = ConfigManager.getInstanceConfig().getUsername();
 			} else {
 				theUsername = "TRGuest" + new Random().nextInt(1000);
 			}
@@ -361,14 +361,14 @@ public class ModpackUtils {
 					if (spec.getLaunchArgs() == null)
 						spec.setLaunchArgs(new ArrayList<String>());
 
-					for (String s : ConfigManager.getInstanceConfig().jvmArgs) {
+					for (String s : ConfigManager.getInstanceConfig().getJvmArgs()) {
 						if (s != null && !s.equals("")) spec.getJvmArgs().add(s);
 					}
 					spec.getJvmArgs().add("-Dtemporalreality.launcher.modpack=" + modpack.getName());
-					spec.getLaunchArgs().add("--width=" + ConfigManager.getInstanceConfig().mcWidth);
-					spec.getLaunchArgs().add("--height=" + ConfigManager.getInstanceConfig().mcHeight);
+					spec.getLaunchArgs().add("--width=" + ConfigManager.getInstanceConfig().getMcWidth());
+					spec.getLaunchArgs().add("--height=" + ConfigManager.getInstanceConfig().getMcHeight());
 
-					Process process = spec.run(Paths.get(ConfigManager.getInstanceConfig().javaPath));
+					Process process = spec.run(Paths.get(ConfigManager.getInstanceConfig().getJavaPath()));
 					StreamRedirect output = new StreamRedirect(process.getInputStream(), new Logger("MC", true), LogLevel.INFO);
 					StreamRedirect error = new StreamRedirect(process.getErrorStream(), new Logger("MC", true), LogLevel.ERROR);
 					output.start();

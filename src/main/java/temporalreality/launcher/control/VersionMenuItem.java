@@ -13,7 +13,7 @@ public class VersionMenuItem extends MenuItem {
 	private Version version;
 
 	public VersionMenuItem(Version version) {
-		super(version.version);
+		super(version.getVersion());
 		this.version = version;
 	}
 

@@ -1,18 +1,23 @@
 package temporalreality.launcher.model;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import java.util.ArrayList;
 
 /**
  * @author shadowfacts
  */
+@Getter
+@Setter
 public class Mod {
 
-	public String name;
-	public ArrayList<String> authors = new ArrayList<>();
-	public String url;
-	public String downloadUrl;
-	public String fileName;
-	public Side side = Side.BOTH;
+	private String name;
+	private ArrayList<String> authors = new ArrayList<>();
+	private String url;
+	private String downloadUrl;
+	private String fileName;
+	private Side side = Side.BOTH;
 
 	@Override
 	public String toString() {

@@ -190,11 +190,11 @@ public class ModpackOverviewController {
 
 	@FXML
 	private void modListPressed() {
-		TRLauncher.getLauncher().showModListDialog(modpackTable.getSelectionModel().getSelectedItem().getSelectedVersion().mods);
+		TRLauncher.getLauncher().showModListDialog(modpackTable.getSelectionModel().getSelectedItem().getSelectedVersion().getMods());
 	}
 
 	private void setSelectedVersion(Version v) {
-		version.setText(v.version);
+		version.setText(v.getVersion());
 		modpackTable.getSelectionModel().getSelectedItem().setSelectedVersion(v);
 	}
 
@@ -206,9 +206,9 @@ public class ModpackOverviewController {
 			tags.setText(String.join(", ", modpack.getTags()));
 			tagsLabel.setText("Tags:");
 			mcLabel.setText("Minecraft:");
-			mcVer.setText(modpack.getSelectedVersion().mcVersion);
+			mcVer.setText(modpack.getSelectedVersion().getMcVersion());
 			forgeLabel.setText("Forge:");
-			forgeVer.setText(modpack.getSelectedVersion().forgeVersion);
+			forgeVer.setText(modpack.getSelectedVersion().getForgeVersion());
 			description.setText(modpack.getDescription());
 
 			Thread logoThread = new Thread(() -> {
@@ -232,7 +232,7 @@ public class ModpackOverviewController {
 
 			if (versionFile != null) {
 				for (Version v : modpack.getVersions()) {
-					if (v.version.equals(versionFile)) {
+					if (v.getVersion().equals(versionFile)) {
 						setSelectedVersion(v);
 					}
 				}
@@ -279,7 +279,7 @@ public class ModpackOverviewController {
 				version.setDisable(false);
 				mods.setDisable(false);
 
-				version.setText(modpack.getSelectedVersion().version);
+				version.setText(modpack.getSelectedVersion().getVersion());
 			}
 		} else {
 			download.setDisable(true);

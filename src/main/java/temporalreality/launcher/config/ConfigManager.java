@@ -51,11 +51,11 @@ public class ConfigManager {
 		config = gson.fromJson(new FileReader(file), Config.class);
 
 		if (flag) {
-			config.javaPath = System.getProperty("java.home") + "/bin/";
+			config.setJavaPath(System.getProperty("java.home") + "/bin/");
 			if (System.getProperty("os.name").startsWith("Win")) {
-				config.javaPath += "java.exe";
+				config.setJavaPath(config.getJavaPath() + "java.exe");
 			} else {
-				config.javaPath += "java";
+				config.setJavaPath(config.getJavaPath() + "java");
 			}
 			save();
 		}
@@ -72,7 +72,7 @@ public class ConfigManager {
 	}
 
 	public boolean signedIn() {
-		return getConfig().username != null && !getConfig().username.equals("");
+		return getConfig().getUsername() != null && !getConfig().getUsername().equals("");
 	}
 
 	public Config getConfig() {

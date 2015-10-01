@@ -1,13 +1,14 @@
 package temporalreality.launcher.accounts;
 
 import javafx.scene.control.CheckMenuItem;
+import lombok.Getter;
 
 /**
  * @author shadowfacts
  */
 public class AccountMenuItem extends CheckMenuItem {
 
-	private Account account;
+	@Getter  private Account account;
 
 	public AccountMenuItem(Account account) {
 		this.account = account;
@@ -15,7 +16,4 @@ public class AccountMenuItem extends CheckMenuItem {
 		setText(account.getUsername());
 	}
 
-	public Account getAccount() {
-		return account;
-	}
 }

@@ -25,6 +25,7 @@ dependencies {
 	compile group: 'coolsquid', name: 'SquidLogging', version: '1.0.0'
 	compile group: 'de.npe', name: 'GameAnalyticsAPI', version: '0.1.1-shadowfacts'
 	compile group: 'org.kohsuke', name: 'github-api', version: '1.70'
+	compile group: 'org.projectlombok', name: 'lombok', version: '1.16.6'
 }
 
 jar {

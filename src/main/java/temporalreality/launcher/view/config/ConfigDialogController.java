@@ -37,13 +37,13 @@ public class ConfigDialogController {
 	private void initialize() {
 		Config config = ConfigManager.getInstanceConfig();
 
-		javaPathField.setText(config.javaPath);
-		for (String s : config.jvmArgs) {
+		javaPathField.setText(config.getJavaPath());
+		for (String s : config.getJvmArgs()) {
 			jvmArgumentsField.setText(jvmArgumentsField.getText() + " " + s);
 		}
-		widthField.setText(Integer.toString(config.mcWidth));
-		heightField.setText(Integer.toString(config.mcHeight));
-		launcherDirField.setText(config.launcherDir);
+		widthField.setText(Integer.toString(config.getMcWidth()));
+		heightField.setText(Integer.toString(config.getMcHeight()));
+		launcherDirField.setText(config.getLauncherDir());
 	}
 
 	@FXML
@@ -70,11 +70,11 @@ public class ConfigDialogController {
 	private void okPressed() {
 		Config config = ConfigManager.getInstanceConfig();
 
-		config.javaPath = javaPathField.getText();
-		config.jvmArgs = jvmArgumentsField.getText().split(" ");
-		config.mcWidth = Integer.parseInt(widthField.getText());
-		config.mcHeight = Integer.parseInt(heightField.getText());
-		config.launcherDir = launcherDirField.getText();
+		config.setJavaPath(javaPathField.getText());
+		config.setJvmArgs(jvmArgumentsField.getText().split(" "));
+		config.setMcWidth(Integer.parseInt(widthField.getText()));
+		config.setMcHeight(Integer.parseInt(heightField.getText()));
+		config.setLauncherDir(launcherDirField.getText());
 
 		ConfigManager.getInstance().save();
 

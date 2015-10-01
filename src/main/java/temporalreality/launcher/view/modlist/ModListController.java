@@ -32,16 +32,16 @@ public class ModListController {
 
 	@FXML
 	private void initialize() {
-		nameColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().name));
+		nameColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getName()));
 
-		urlColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().url));
+		urlColumn.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getUrl()));
 
-		authorsColumn.setCellValueFactory(cellData -> new SimpleStringProperty(StringUtils.join(cellData.getValue().authors, ", ")));
+		authorsColumn.setCellValueFactory(cellData -> new SimpleStringProperty(StringUtils.join(cellData.getValue().getAuthors(), ", ")));
 
 		modTable.getSelectionModel().selectedItemProperty().addListener(((observable, oldValue, newValue) -> {
 			try {
 				if (modTable.getSelectionModel().getSelectedCells().get(0).getColumn() == 2)
-					DesktopUtils.openWebpage(newValue.url);
+					DesktopUtils.openWebpage(newValue.getUrl());
 			} catch (URISyntaxException ignored) {
 			}
 		}));

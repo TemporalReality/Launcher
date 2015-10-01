@@ -21,7 +21,7 @@ public class MiscUtils {
 			if (prop != null && !prop.equals("")) {
 				launcherDir = prop;
 			} else {
-				launcherDir = ConfigManager.getInstanceConfig().launcherDir;
+				launcherDir = ConfigManager.getInstanceConfig().getLauncherDir();
 			}
 		}
 

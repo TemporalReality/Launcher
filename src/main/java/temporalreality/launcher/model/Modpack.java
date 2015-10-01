@@ -15,6 +15,8 @@ import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import javafx.scene.image.Image;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 
@@ -29,17 +31,21 @@ import com.google.gson.Gson;
  */
 public class Modpack {
 
-	private String name, displayName, author, description, logoUrl;
+	@Getter @Setter private String name;
+	@Setter private String displayName;
+	@Getter @Setter private String author;
+	@Getter @Setter private String description;
+	@Getter @Setter private String logoUrl;
 
 	private Set<String> tags = new HashSet<>(5);
 
-	private ArrayList<Version> versions;
+	@Getter  private ArrayList<Version> versions;
 
-	private transient Version selectedVersion;
+	@Setter private transient Version selectedVersion;
 
-	private boolean beta;
-	private boolean listed = true;
-	private transient boolean favorite;
+	@Getter @Setter private boolean beta;
+	@Getter @Setter private boolean listed = true;
+	@Getter @Setter private transient boolean favorite;
 
 	private transient Image logo;
 
@@ -74,60 +80,20 @@ public class Modpack {
 		}
 	}
 
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
 	public String getDisplayName() {
 		return displayName + (listed ? "" : " (Unlisted)");
-	}
-
-	public void setDisplayName(String displayName) {
-		this.displayName = displayName;
 	}
 
 	public StringProperty getNameProperty() {
 		return new SimpleStringProperty(getDisplayName());
 	}
 
-	public String getAuthor() {
-		return author;
-	}
-
-	public void setAuthor(String author) {
-		this.author = author;
-	}
-
 	public StringProperty getAuthorProperty() {
 		return new SimpleStringProperty(author);
 	}
 
-	public String getDescription() {
-		return description;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
-	}
-
 	public StringProperty getDescriptionProperty() {
 		return new SimpleStringProperty(description);
-	}
-
-	public String getLogoUrl() {
-		return logoUrl;
-	}
-
-	public void setLogoUrl(String logoUrl) {
-		this.logoUrl = logoUrl;
-	}
-
-	public ArrayList<Version> getVersions() {
-		return versions;
 	}
 
 	public void addVersion(Version version) {
@@ -137,43 +103,15 @@ public class Modpack {
 	public Version getSelectedVersion() {
 		if (selectedVersion != null) {
 			return selectedVersion;
-		}else {
+		} else {
 			return versions.get(0);
 		}
-	}
-
-	public void setSelectedVersion(Version selectedVersion) {
-		this.selectedVersion = selectedVersion;
-	}
-
-	public boolean isBeta() {
-		return beta;
-	}
-
-	public void setBeta(boolean beta) {
-		this.beta = beta;
-	}
-
-	public void setListed(boolean listed) {
-		this.listed = listed;
-	}
-
-	public boolean isListed() {
-		return listed;
 	}
 
 	public Set<String> getTags() {
 		if (tags.size() > 5)
 			tags.removeIf((label) -> tags.size() > 5 || label.length() > 15);
 		return tags;
-	}
-
-	public boolean isFavorite() {
-		return favorite;
-	}
-
-	public void setFavorite(boolean favorite) {
-		this.favorite = favorite;
 	}
 
 	public Image getLogo() {

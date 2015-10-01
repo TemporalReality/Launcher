@@ -52,7 +52,7 @@ public class RootController {
 
 		Menu accountsMenu = new Menu("Accounts");
 		menuBar.getMenus().add(2, accountsMenu);
-		MenuItem account = new MenuItem(ConfigManager.getInstanceConfig().username);
+		MenuItem account = new MenuItem(ConfigManager.getInstanceConfig().getUsername());
 
 //		CheckMenuItem offline = new CheckMenuItem("Offline");
 //		offline.setSelected(ConfigManager.getInstanceConfig().offline);
@@ -65,7 +65,7 @@ public class RootController {
 		set.setOnAction(event -> {
 			String username = TRLauncher.getLauncher().showSetUsernameDialog();
 			if (username != null && !username.equals("")) {
-				ConfigManager.getInstanceConfig().username = username;
+				ConfigManager.getInstanceConfig().setUsername(username);
 				ConfigManager.getInstance().save();
 				account.setText(username);
 			}

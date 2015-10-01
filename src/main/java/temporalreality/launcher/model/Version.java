@@ -1,18 +1,23 @@
 package temporalreality.launcher.model;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import java.util.ArrayList;
 
 /**
  * @author shadowfacts
  */
+@Getter
+@Setter
 public class Version {
 
-	public String version;
-	public String changelogUrl;
-	public String mcVersion;
-	public String forgeVersion;
-	public String overrideUrl;
-	public ArrayList<Mod> mods = new ArrayList<>();
+	private String version;
+	private String changelogUrl;
+	private String mcVersion;
+	private String forgeVersion;
+	private String overrideUrl;
+	private ArrayList<Mod> mods = new ArrayList<>();
 
 	public void addMod(Mod mod) {
 		mods.add(mod);

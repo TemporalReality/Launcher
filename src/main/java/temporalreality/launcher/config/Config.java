@@ -1,17 +1,22 @@
 package temporalreality.launcher.config;
 
+import lombok.Getter;
+import lombok.Setter;
+
 /**
  * @author shadowfacts
  */
+@Getter
+@Setter
 public class Config {
 
-	public String javaPath;
-	public String[] jvmArgs;
-	public String launcherDir;
-	public String[] packIndexes;
-	public String username;
-	public int mcWidth;
-	public int mcHeight;
-	public boolean offline = false;
-	public boolean enableAnalytics = true;
+	private String javaPath;
+	private String[] jvmArgs;
+	private String launcherDir;
+	private String[] packIndexes;
+	private String username;
+	private int mcWidth;
+	private int mcHeight;
+	private boolean offline = false;
+	private boolean enableAnalytics = true;
 }

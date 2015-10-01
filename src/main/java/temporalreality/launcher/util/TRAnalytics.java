@@ -20,6 +20,6 @@ public class TRAnalytics {
 	}
 
 	public boolean isEnabled() {
-		return analytics != null && analytics.isActive() && (ConfigManager.getInstanceConfig() == null || ConfigManager.getInstanceConfig().enableAnalytics) && false; //temp disabled, waiting for privacy policy
+		return analytics != null && analytics.isActive() && (ConfigManager.getInstanceConfig() == null || ConfigManager.getInstanceConfig().isEnableAnalytics()) && false; //temp disabled, waiting for privacy policy
 	}
 }
