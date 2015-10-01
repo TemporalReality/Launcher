@@ -30,6 +30,7 @@ import temporalreality.launcher.util.ModpackUtils;
 /**
  * @author shadowfacts
  */
+@SuppressWarnings("unused")
 public class ModpackOverviewController {
 
 	private Stage primaryStage;
@@ -154,7 +155,7 @@ public class ModpackOverviewController {
 			}, this);
 		} catch (IOException e) {
 			Modpack active = modpackTable.getSelectionModel().getSelectedItem();
-			Issues.create("Error when clicking download for pack " + active != null ? active.getName() : null, e);
+			Issues.create("Error when clicking download for pack " + (active != null ? active.getName() : null), e);
 		}
 	}
 
