@@ -274,7 +274,9 @@ public class ModpackUtils {
 		try {
 			saved = Files.readAllLines(Paths.get(MiscUtils.getPath("modpacks/" + modpack.getName() + "/version.txt"))).get(0);
 		} catch (IOException e) {
-
+			TRLauncher.log.error("There was a problem reading version file for modpack: " + modpack);
+			e.printStackTrace();
+			Issues.create("Couldn't read version file for " + modpack, e);
 		}
 		return !modpack.getSelectedVersion().getVersion().equals(saved);
 	}
