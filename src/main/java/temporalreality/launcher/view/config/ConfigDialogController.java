@@ -5,6 +5,8 @@ import javafx.scene.control.TextField;
 import javafx.stage.DirectoryChooser;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import lombok.Getter;
+import lombok.Setter;
 import temporalreality.launcher.config.Config;
 import temporalreality.launcher.config.ConfigManager;
 
@@ -16,7 +18,7 @@ import java.io.File;
  */
 public class ConfigDialogController {
 
-	private Stage dialogStage;
+	@Getter @Setter private Stage dialogStage;
 
 	@FXML
 	private TextField javaPathField;
@@ -86,11 +88,4 @@ public class ConfigDialogController {
 		dialogStage.close();
 	}
 
-	public Stage getDialogStage() {
-		return dialogStage;
-	}
-
-	public void setDialogStage(Stage dialogStage) {
-		this.dialogStage = dialogStage;
-	}
 }

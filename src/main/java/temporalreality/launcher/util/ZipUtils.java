@@ -29,8 +29,7 @@ public class ZipUtils {
 		}
 	}
 
-	private static void processFolder(final File folder, final ZipOutputStream zipOutputStream, final int prefixLength)
-			throws IOException {
+	private static void processFolder(final File folder, final ZipOutputStream zipOutputStream, final int prefixLength) throws IOException {
 		for (final File file : folder.listFiles()) {
 			if (file.isFile()) {
 				final ZipEntry zipEntry = new ZipEntry(file.getPath().substring(prefixLength));

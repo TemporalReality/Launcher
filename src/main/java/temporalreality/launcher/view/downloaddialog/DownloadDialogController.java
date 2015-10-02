@@ -5,29 +5,29 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
 import javafx.stage.Stage;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import temporalreality.launcher.model.Modpack;
 
 /**
  * @author shadowfacts
  */
+@NoArgsConstructor
 public class DownloadDialogController {
 
-	private Modpack modpack;
-	private Stage dialogStage;
-	private Task<?> task;
+	@Getter @Setter private Modpack modpack;
+	@Getter @Setter private Stage dialogStage;
+	@Getter private Task<?> task;
 
 	@FXML
-	private Label downloadingLabel;
+	@Getter private Label downloadingLabel;
 
 	@FXML
-	private ProgressBar progressBar;
+	@Getter private ProgressBar progressBar;
 
 	@FXML
-	private Label currentItemLabel;
-
-	public DownloadDialogController() {
-
-	}
+	@Getter private Label currentItemLabel;
 
 	@FXML
 	private void initialize() {
@@ -44,31 +44,9 @@ public class DownloadDialogController {
 		getDialogStage().close();
 	}
 
-	public Modpack getModpack() {
-		return modpack;
-	}
-
-	public void setModpack(Modpack modpack) {
-		this.modpack = modpack;
-	}
-
-	public Stage getDialogStage() {
-		return dialogStage;
-	}
-
-	public void setDialogStage(Stage dialogStage) {
-		this.dialogStage = dialogStage;
-	}
-
-	public Task<?> getTask() {
-		return task;
-	}
-
 	public void setTask(Task<?> task) {
 		this.task = task;
-		task.setOnSucceeded(event -> {
-			close();
-		});
+		task.setOnSucceeded(event -> close());
 	}
 
 	public String getDownloadingLabelText() {
@@ -79,10 +57,6 @@ public class DownloadDialogController {
 		downloadingLabel.setText(text);
 	}
 
-	public Label getDownloadingLabel() {
-		return downloadingLabel;
-	}
-
 	public double getProgress() {
 		return progressBar.getProgress();
 	}
@@ -91,19 +65,11 @@ public class DownloadDialogController {
 		progressBar.setProgress(progress);
 	}
 
-	public ProgressBar getProgressBar() {
-		return progressBar;
-	}
-
 	public String getLabelText() {
 		return currentItemLabel.getText();
 	}
 
 	public void setLabelText(String text) {
 		currentItemLabel.setText(text);
-	}
-
-	public Label getCurrentItemLabel() {
-		return currentItemLabel;
 	}
 }

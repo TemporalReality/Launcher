@@ -4,19 +4,21 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * @author shadowfacts
  */
 public class PasswordDialogController {
 
-	private Stage dialogStage;
+	@Getter @Setter private Stage dialogStage;
 
-	private String username;
-	private String password;
+	@Getter  private String username;
+	@Getter private String password;
 
-	private boolean loggedIn;
-	private boolean offline;
+	@Getter private boolean loggedIn;
+	@Getter private boolean offline;
 
 	@FXML
 	private Label label;
@@ -45,28 +47,9 @@ public class PasswordDialogController {
 		dialogStage.close();
 	}
 
-	public String getUsername() {
-		return username;
-	}
-
 	public void setUsername(String username) {
 		this.username = username;
 		initialize();
 	}
 
-	public String getPassword() {
-		return password;
-	}
-
-	public void setDialogStage(Stage dialogStage) {
-		this.dialogStage = dialogStage;
-	}
-
-	public boolean isLoggedIn() {
-		return loggedIn;
-	}
-
-	public boolean isOffline() {
-		return offline;
-	}
 }

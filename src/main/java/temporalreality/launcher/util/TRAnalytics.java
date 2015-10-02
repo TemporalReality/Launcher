@@ -1,18 +1,16 @@
 package temporalreality.launcher.util;
 
+import lombok.AllArgsConstructor;
 import temporalreality.launcher.config.ConfigManager;
 import de.npe.gameanalytics.Analytics;
 
 /**
  * @author CoolSquid
  */
+@AllArgsConstructor
 public class TRAnalytics {
 
 	private final Analytics analytics;
-
-	public TRAnalytics(Analytics analytics) {
-		this.analytics = analytics;
-	}
 
 	public void sendEvent(String eventID) {
 		if (isEnabled())

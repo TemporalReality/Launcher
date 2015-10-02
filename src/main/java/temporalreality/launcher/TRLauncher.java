@@ -19,6 +19,8 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import lombok.Getter;
+import lombok.Setter;
 import net.shadowfacts.shadowlib.util.os.OSUtils;
 import net.shadowfacts.shadowlib.util.os.OperatingSystem;
 import temporalreality.launcher.config.ConfigManager;
@@ -45,16 +47,16 @@ public class TRLauncher extends Application {
 
 	public static Logger log;
 
-	private static TRLauncher launcher;
-	private static TRAnalytics analytics;
-	private static String version;
+	@Getter private static TRLauncher launcher;
+	@Getter private static TRAnalytics analytics;
+	@Getter private static String version;
 
-	private Stage primaryStage;
+	@Getter private Stage primaryStage;
 	private BorderPane rootLayout;
 
-	private Map<String, Modpack> modpacks = new HashMap<>();
+	@Getter private Map<String, Modpack> modpacks = new HashMap<>();
 
-	private Process minecraft;
+	@Getter @Setter private Process minecraft;
 
 	public TRLauncher() throws Exception {
 		launcher = this;
@@ -316,34 +318,6 @@ public class TRLauncher extends Application {
 			Issues.create(null, e);
 			return null;
 		}
-	}
-
-	public static TRLauncher getLauncher() {
-		return launcher;
-	}
-
-	public Stage getPrimaryStage() {
-		return primaryStage;
-	}
-
-	public Map<String, Modpack> getModpacks() {
-		return modpacks;
-	}
-
-	public Process getMinecraft() {
-		return minecraft;
-	}
-
-	public void setMinecraft(Process minecraft) {
-		this.minecraft = minecraft;
-	}
-
-	public static String getVersion() {
-		return version;
-	}
-
-	public static TRAnalytics getAnalytics() {
-		return analytics;
 	}
 
 	public static void main(String[] args) {

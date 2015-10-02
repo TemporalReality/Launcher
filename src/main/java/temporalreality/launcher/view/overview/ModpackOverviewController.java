@@ -20,6 +20,8 @@ import javafx.scene.control.TextField;
 import javafx.scene.image.ImageView;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import lombok.Getter;
+import lombok.Setter;
 import temporalreality.launcher.TRLauncher;
 import temporalreality.launcher.control.VersionMenuItem;
 import temporalreality.launcher.model.Modpack;
@@ -33,7 +35,7 @@ import temporalreality.launcher.util.ModpackUtils;
 @SuppressWarnings("unused")
 public class ModpackOverviewController {
 
-	private Stage primaryStage;
+	@Getter @Setter private Stage primaryStage;
 
 	private ObservableList<Modpack> modpackList = FXCollections.observableArrayList();
 
@@ -290,11 +292,4 @@ public class ModpackOverviewController {
 		}
 	}
 
-	public Stage getPrimaryStage() {
-		return primaryStage;
-	}
-
-	public void setPrimaryStage(Stage primaryStage) {
-		this.primaryStage = primaryStage;
-	}
 }

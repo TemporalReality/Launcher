@@ -3,15 +3,17 @@ package temporalreality.launcher.view.account;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * @author shadowfacts
  */
 public class SetUsernameController {
 
-	private Stage dialogStage;
+	@Getter @Setter private Stage dialogStage;
 
-	private String username = "";
+	@Getter private String username = "";
 
 	@FXML
 	private TextField usernameField;
@@ -27,15 +29,4 @@ public class SetUsernameController {
 		dialogStage.close();
 	}
 
-	public String getUsername() {
-		return username;
-	}
-
-	public Stage getDialogStage() {
-		return dialogStage;
-	}
-
-	public void setDialogStage(Stage dialogStage) {
-		this.dialogStage = dialogStage;
-	}
 }
