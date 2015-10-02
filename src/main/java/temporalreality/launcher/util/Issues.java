@@ -40,7 +40,7 @@ public class Issues {
 		create(title, t, map);
 	}
 
-	private static void create(String title, Throwable t, Map<String, String> additionalInfo) {
+	public static void create(String title, Throwable t, Map<String, String> additionalInfo) {
 		new Thread(() -> {
 			try {
 				if (Boolean.parseBoolean(System.getProperty("temporalreality.launcher.errorreporting", "true"))) {
