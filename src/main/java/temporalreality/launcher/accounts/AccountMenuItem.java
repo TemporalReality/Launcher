@@ -8,7 +8,7 @@ import lombok.Getter;
  */
 public class AccountMenuItem extends CheckMenuItem {
 
-	@Getter  private Account account;
+	@Getter private Account account;
 
 	public AccountMenuItem(Account account) {
 		this.account = account;

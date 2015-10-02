@@ -10,7 +10,7 @@ import java.util.ArrayList;
  */
 public class AccountManager {
 
-	private static AccountManager instance = new AccountManager();
+	@Getter private static AccountManager instance = new AccountManager();
 
 	@Getter private ArrayList<Account> accounts = new ArrayList<>();
 	@Getter @Setter private Account selectedAccount = null;
@@ -21,7 +21,4 @@ public class AccountManager {
 		getAccounts().add(account);
 	}
 
-	public static AccountManager getInstance() {
-		return instance;
-	}
 }

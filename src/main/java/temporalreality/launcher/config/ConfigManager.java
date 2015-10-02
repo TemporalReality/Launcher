@@ -7,6 +7,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.PrintStream;
 
+import lombok.Getter;
 import net.shadowfacts.shadowlib.util.InternetUtils;
 import temporalreality.launcher.util.Issues;
 
@@ -18,11 +19,11 @@ import com.google.gson.GsonBuilder;
  */
 public class ConfigManager {
 
-	private static ConfigManager instance = new ConfigManager();
+	@Getter private static ConfigManager instance = new ConfigManager();
 
 	private File file = new File(System.getProperty("user.home") + "/.temporalreality/launcher-config.json");
 
-	private Config config;
+	@Getter private Config config;
 
 	private Gson gson;
 
@@ -73,15 +74,6 @@ public class ConfigManager {
 
 	public boolean signedIn() {
 		return getConfig().getUsername() != null && !getConfig().getUsername().equals("");
-	}
-
-	public Config getConfig() {
-		return config;
-	}
-
-
-	public static ConfigManager getInstance() {
-		return instance;
 	}
 
 	public static Config getInstanceConfig() {
