@@ -26,15 +26,16 @@ public class Issues {
 	}
 
 	public static void create(String title, Throwable t, String... additionalInfo) {
-		Map<String, String> map = new HashMap<String, String>();
+		Map<String, String> map = new HashMap<>();
 		String key = null;
-		for (String string: additionalInfo)
-			if (key == null)
+		for (String string: additionalInfo) {
+			if (key == null) {
 				key = string;
-			else {
+			} else {
 				map.put(key, string);
 				key = null;
 			}
+		}
 		create(title, t, map);
 	}
 
@@ -88,10 +89,11 @@ public class Issues {
 	}
 
 	private static GHIssue getIssue(String title, GHRepository repo) throws IOException {
-		for (GHIssue issue: repo.getIssues(GHIssueState.OPEN))
+		for (GHIssue issue: repo.getIssues(GHIssueState.OPEN)) {
 			if (issue.getTitle().equals(title)) {
 				return issue;
 			}
+		}
 		return null;
 	}
 
