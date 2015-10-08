@@ -9,7 +9,7 @@ import net.shadowfacts.shadowlib.util.DesktopUtils;
  * @author shadowfacts
  */
 public class AboutDialogController {
-
+	MiscUtils.addIcons(this.primaryStage);
 	@FXML
 	private void temporalRealityPressed() {
 		DesktopUtils.openWebpage(URI.create("http://temporal-reality.com"));
