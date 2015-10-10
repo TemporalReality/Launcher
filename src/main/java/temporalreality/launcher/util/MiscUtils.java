@@ -36,14 +36,15 @@ public class MiscUtils {
 		return new File(getPath(s));
 	}
 
-	public static void addIcons(Stage stage) {
+	public static Stage addIcons(Stage stage) {
 		stage.getIcons().addAll(
 				new Image("http://temporal-reality.com/logo/1024.png"),
 				new Image("http://temporal-reality.com/logo/512.png"),
 				new Image("http://temporal-reality.com/logo/256.png"),
 				new Image("http://temporal-reality.com/logo/128.png"),
 				new Image("http://temporal-reality.com/logo/64.png")
-				);
+		);
+		return stage;
 	}
 
 	public static String toString(Throwable t) {

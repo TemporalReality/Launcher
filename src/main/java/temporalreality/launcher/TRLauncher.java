@@ -99,9 +99,8 @@ public class TRLauncher extends Application {
 
 		ModpackUtils.loadModpacks(modpacks);
 
-		this.primaryStage = primaryStage;
+		this.primaryStage = MiscUtils.addIcons(primaryStage);
 		this.primaryStage.setTitle("Temporal Reality");
-		MiscUtils.addIcons(this.primaryStage);
 		Runtime.getRuntime().addShutdownHook(new Thread(() -> {
 			if (minecraft != null) minecraft.destroyForcibly();
 		}));
@@ -159,7 +158,7 @@ public class TRLauncher extends Application {
 
 			AnchorPane pane = loader.load();
 
-			Stage dialogStage = new Stage();
+			Stage dialogStage = MiscUtils.addIcons(new Stage());
 			dialogStage.setTitle("Downloading Modpack");
 			dialogStage.initModality(Modality.WINDOW_MODAL);
 			dialogStage.initOwner(primaryStage);
@@ -197,7 +196,7 @@ public class TRLauncher extends Application {
 
 			AnchorPane pane = loader.load();
 
-			Stage dialogStage = new Stage();
+			Stage dialogStage = MiscUtils.addIcons(new Stage());
 			dialogStage.setTitle("Login");
 			dialogStage.initModality(Modality.WINDOW_MODAL);
 			dialogStage.initOwner(primaryStage);
@@ -226,7 +225,7 @@ public class TRLauncher extends Application {
 
 			AnchorPane pane = loader.load();
 
-			Stage dialogStage = new Stage();
+			Stage dialogStage = MiscUtils.addIcons(new Stage());
 			dialogStage.setTitle("Config");
 			dialogStage.initModality(Modality.WINDOW_MODAL);
 			dialogStage.initOwner(primaryStage);
@@ -251,7 +250,7 @@ public class TRLauncher extends Application {
 
 			AnchorPane pane = loader.load();
 
-			Stage dialogStage = new Stage();
+			Stage dialogStage = MiscUtils.addIcons(new Stage());
 			dialogStage.setTitle("About");
 			dialogStage.initModality(Modality.WINDOW_MODAL);
 			dialogStage.initOwner(primaryStage);
@@ -273,7 +272,7 @@ public class TRLauncher extends Application {
 
 			AnchorPane pane = loader.load();
 
-			Stage dialogStage = new Stage();
+			Stage dialogStage = MiscUtils.addIcons(new Stage());
 			dialogStage.setTitle("Mod List");
 			dialogStage.initModality(Modality.WINDOW_MODAL);
 			dialogStage.initOwner(primaryStage);
@@ -298,7 +297,7 @@ public class TRLauncher extends Application {
 
 			AnchorPane pane = loader.load();
 
-			Stage dialogStage = new Stage();
+			Stage dialogStage = MiscUtils.addIcons(new Stage());
 			dialogStage.setTitle("Add Account");
 			dialogStage.initModality(Modality.WINDOW_MODAL);
 			dialogStage.initOwner(primaryStage);
