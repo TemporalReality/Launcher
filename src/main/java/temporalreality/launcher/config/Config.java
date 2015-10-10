@@ -3,6 +3,8 @@ package temporalreality.launcher.config;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.List;
+
 /**
  * @author shadowfacts
  */
@@ -11,9 +13,9 @@ import lombok.Setter;
 public class Config {
 
 	private String javaPath;
-	private String[] jvmArgs;
+	private List<String> jvmArgs;
 	private String launcherDir;
-	private String[] packIndexes;
+	private List<String> packIndexes;
 	private String username;
 	private int mcWidth;
 	private int mcHeight;

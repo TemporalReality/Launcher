@@ -11,6 +11,7 @@ import temporalreality.launcher.config.Config;
 import temporalreality.launcher.config.ConfigManager;
 
 import java.io.File;
+import java.util.Arrays;
 
 
 /**
@@ -73,7 +74,7 @@ public class ConfigDialogController {
 		Config config = ConfigManager.getInstanceConfig();
 
 		config.setJavaPath(javaPathField.getText());
-		config.setJvmArgs(jvmArgumentsField.getText().split(" "));
+		config.setJvmArgs(Arrays.asList(jvmArgumentsField.getText().split(" ")));
 		config.setMcWidth(Integer.parseInt(widthField.getText()));
 		config.setMcHeight(Integer.parseInt(heightField.getText()));
 		config.setLauncherDir(launcherDirField.getText());

@@ -61,6 +61,11 @@ public class ConfigManager {
 			save();
 		}
 
+		if (!config.getPackIndexes().contains("https://raw.githubusercontent.com/TemporalReality/3rd-Party-Modpacks/master/index.txt")) {
+			config.getPackIndexes().add("https://raw.githubusercontent.com/TemporalReality/3rd-Party-Modpacks/master/index.txt");
+			save();
+		}
+
 	}
 
 	public void save() {
