@@ -8,27 +8,30 @@
 <?import java.lang.*?>
 <?import javafx.scene.layout.*?>
 
-<AnchorPane maxWidth="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="temporalreality.launcher.view.overview.ModpackOverviewController">
+<AnchorPane maxWidth="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.40" xmlns:fx="http://javafx.com/fxml/1" fx:controller="temporalreality.launcher.view.overview.ModpackOverviewController">
    <children>
-      <SplitPane dividerPositions="0.29797979797979796" prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <SplitPane dividerPositions="0.29797979797979796" prefHeight="600.0" prefWidth="800.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <items>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
                <children>
-                  <TextField fx:id="searchField" onAction="#onSearch" onKeyReleased="#onSearch" prefHeight="26.0" prefWidth="234.0" promptText="Search" />
                   <TableView fx:id="modpackTable" layoutY="26.0" prefHeight="572.0" prefWidth="234.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="26.0">
                     <columns>
                       <TableColumn fx:id="nameColumn" editable="false" prefWidth="233.0" text="Modpacks" />
                     </columns>
+                     <columnResizePolicy>
+                        <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                     </columnResizePolicy>
                   </TableView>
+                  <TextField fx:id="searchField" layoutY="1.0" onAction="#onSearch" onKeyReleased="#onSearch" prefHeight="26.0" prefWidth="235.0" promptText="Search" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" />
                </children>
             </AnchorPane>
           <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
                <children>
-                  <ScrollPane prefHeight="553.0" prefWidth="556.0" AnchorPane.topAnchor="0.0">
+                  <ScrollPane prefHeight="598.0" prefWidth="674.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="-117.0" AnchorPane.topAnchor="0.0">
                     <content>
                       <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="550.0" prefWidth="550.0">
                            <children>
-                              <HBox alignment="TOP_CENTER" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="200.0" prefWidth="556.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="-6.0" AnchorPane.topAnchor="15.0">
+                              <HBox alignment="TOP_CENTER" prefHeight="550.0" prefWidth="550.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                                  <children>
                                     <ImageView fx:id="image" fitHeight="200.0" fitWidth="420.0" pickOnBounds="true" preserveRatio="true" />
                                  </children>
@@ -53,11 +56,15 @@
                                     <Font size="16.0" />
                                  </font>
                               </Label>
-                              <Text fx:id="description" layoutX="12.0" layoutY="350.0" lineSpacing="4.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque eu diam scelerisque, sagittis quam sit amet, cursus tellus. Aenean leo metus, posuere non odio maximus, euismod dignissim quam. Donec tristique mauris quis ex blandit ornare. Aliquam in mi quis felis volutpat fringilla. Etiam sagittis feugiat est non pharetra. Integer eu ex nulla. Donec dictum cursus aliquam. Ut dapibus augue accumsan venenatis maximus. Praesent porttitor, odio at convallis sodales, magna orci porttitor libero, eget mollis nisl nulla sit amet arcu. Suspendisse non lorem volutpat, viverra sapien vel, finibus velit. Ut tincidunt ligula enim, tempus euismod nisl fringilla viverra. Aliquam erat volutpat." wrappingWidth="525.6829261779785" AnchorPane.bottomAnchor="15.517578125" AnchorPane.leftAnchor="12.0" AnchorPane.rightAnchor="12.317073822021484" AnchorPane.topAnchor="334.892578125">
-                                 <font>
-                                    <Font size="14.0" />
-                                 </font>
-                              </Text>
+                              <VBox layoutX="12.0" layoutY="334.892578125" prefHeight="550.0" prefWidth="550.0" AnchorPane.bottomAnchor="10.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="330.0">
+                                 <children>
+                                    <Text fx:id="description" lineSpacing="4.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque eu diam scelerisque, sagittis quam sit amet, cursus tellus. Aenean leo metus, posuere non odio maximus, euismod dignissim quam. Donec tristique mauris quis ex blandit ornare. Aliquam in mi quis felis volutpat fringilla. Etiam sagittis feugiat est non pharetra. Integer eu ex nulla. Donec dictum cursus aliquam. Ut dapibus augue accumsan venenatis maximus. Praesent porttitor, odio at convallis sodales, magna orci porttitor libero, eget mollis nisl nulla sit amet arcu. Suspendisse non lorem volutpat, viverra sapien vel, finibus velit. Ut tincidunt ligula enim, tempus euismod nisl fringilla viverra. Aliquam erat volutpat." wrappingWidth="525.6829261779785">
+                                       <font>
+                                          <Font size="14.0" />
+                                       </font>
+                                    </Text>
+                                 </children>
+                              </VBox>
                               <Label fx:id="authorsLabel" layoutX="14.0" layoutY="259.0" text="Author(s):" AnchorPane.leftAnchor="15.0" AnchorPane.topAnchor="250.0">
                                  <font>
                                     <Font size="18.0" />
