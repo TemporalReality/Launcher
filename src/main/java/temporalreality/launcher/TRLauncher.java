@@ -39,6 +39,7 @@ import temporalreality.launcher.view.passworddialog.PasswordDialogController;
 import coolsquid.logging.LogManager;
 import coolsquid.logging.Logger;
 import de.npe.gameanalytics.SimpleAnalytics;
+import temporalreality.launcher.view.passworddialog.retry.PasswordRetryDialogController;
 
 /**
  * @author shadowfacts
@@ -210,6 +211,37 @@ public class TRLauncher extends Application {
 			dialogStage.showAndWait();
 
 			return controller;
+		} catch (IOException e) {
+			TRLauncher.log.error("Couldn't find the specified layout");
+			TRLauncher.log.catching(e);
+			Issues.create(null, e);
+			return null;
+		}
+	}
+
+	public PasswordRetryDialogController showPasswordDialog(String username, String failureMessage) {
+		try {
+			FXMLLoader loader = new FXMLLoader();
+			loader.setLocation(TRLauncher.class.getResource("view/passworddialog/retry/PasswordRetryDialog.fxml"));
+
+			AnchorPane pane = loader.load();
+
+			Stage dialogStage = MiscUtils.addIcons(new Stage());
+			dialogStage.setTitle("Login (Retry)");
+			dialogStage.initModality(Modality.WINDOW_MODAL);
+			dialogStage.initOwner(primaryStage);
+			Scene scene = new Scene(pane);
+			dialogStage.setScene(scene);
+
+			PasswordRetryDialogController controller = loader.getController();
+			controller.setDialogStage(dialogStage);
+			controller.setUsername(username);
+			controller.setFailureMessage(failureMessage);
+
+			dialogStage.showAndWait();
+
+			return controller;
+
 		} catch (IOException e) {
 			TRLauncher.log.error("Couldn't find the specified layout");
 			TRLauncher.log.catching(e);

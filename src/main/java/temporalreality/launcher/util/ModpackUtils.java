@@ -297,16 +297,21 @@ public class ModpackUtils {
 			PasswordSupplier passwordSupplier = null;
 
 			final String selectedUsername = ConfigManager.getInstanceConfig().getUsername();
-			String theUsername = null;
+			String theUsername;
 
 			if (selectedUsername != null && !selectedUsername.equals("")) {
 
-				FutureTask<String> passwordTask = new FutureTask<>(() ->
-				TRLauncher.getLauncher().showPasswordDialog(selectedUsername).getPassword()
-						);
+				passwordSupplier = (username, retry, failureMessage) -> {
+					FutureTask<String> passwordTask;
+
+					if (!retry) {
+						passwordTask = new FutureTask<>(() -> TRLauncher.getLauncher().showPasswordDialog(selectedUsername).getPassword());
+					} else {
+						passwordTask = new FutureTask<>(() -> TRLauncher.getLauncher().showPasswordDialog(selectedUsername, failureMessage).getPassword());
+					}
 
 
-				passwordSupplier = (String username) -> {
+
 					try {
 						Platform.runLater(passwordTask);
 						return passwordTask.get();
@@ -324,9 +329,9 @@ public class ModpackUtils {
 			}
 
 			LaunchTaskBuilder builder = new LaunchTaskBuilder()
-			.setCachesDir(MiscUtils.getPath("caches/"))
-			.setInstanceDir(MiscUtils.getPath("modpacks/" + modpack.getName() + "/"))
-			.setPasswordSupplier(passwordSupplier);
+					.setCachesDir(MiscUtils.getPath("caches/"))
+					.setInstanceDir(MiscUtils.getPath("modpacks/" + modpack.getName() + "/"))
+					.setPasswordSupplier(passwordSupplier);
 
 			if (modpack.getSelectedVersion().getForgeVersion() != null && !modpack.getSelectedVersion().getForgeVersion().equals("")) {
 				builder = builder.setForgeVersion(modpack.getSelectedVersion().getMcVersion(), modpack.getSelectedVersion().getForgeVersion());
@@ -344,41 +349,34 @@ public class ModpackUtils {
 
 			theBuilder = builder.setUsername(theUsername).setOffline(offline);
 
+			Runnable task = () -> {
+				LaunchTask launchTask = theBuilder.build();
 
-			Task<Void> task = new Task<Void>() {
-				@Override
-				protected Void call() throws Exception {
+				//			TODO: Progress dialog
 
-					LaunchTask launchTask = theBuilder.build();
+				launchTask.start();
 
-					//			TODO: Progress dialog
+				LaunchSpec spec = launchTask.getSpec();
 
-					launchTask.start();
+				if (spec.getJvmArgs() == null)
+					spec.setJvmArgs(new ArrayList<String>());
+				if (spec.getLaunchArgs() == null)
+					spec.setLaunchArgs(new ArrayList<String>());
 
-					LaunchSpec spec = launchTask.getSpec();
-
-					if (spec.getJvmArgs() == null)
-						spec.setJvmArgs(new ArrayList<String>());
-					if (spec.getLaunchArgs() == null)
-						spec.setLaunchArgs(new ArrayList<String>());
-
-					for (String s : ConfigManager.getInstanceConfig().getJvmArgs()) {
-						if (s != null && !s.equals("")) spec.getJvmArgs().add(s);
-					}
-					spec.getJvmArgs().add("-Dtemporalreality.launcher.modpack=" + modpack.getName());
-					spec.getLaunchArgs().add("--width=" + ConfigManager.getInstanceConfig().getMcWidth());
-					spec.getLaunchArgs().add("--height=" + ConfigManager.getInstanceConfig().getMcHeight());
-
-					Process process = spec.run(Paths.get(ConfigManager.getInstanceConfig().getJavaPath()));
-					StreamRedirect output = new StreamRedirect(process.getInputStream(), new Logger("MC", true), LogLevel.INFO);
-					StreamRedirect error = new StreamRedirect(process.getErrorStream(), new Logger("MC", true), LogLevel.ERROR);
-					output.start();
-					error.start();
-
-					TRLauncher.getLauncher().setMinecraft(process);
-
-					return null;
+				for (String s : ConfigManager.getInstanceConfig().getJvmArgs()) {
+					if (s != null && !s.equals("")) spec.getJvmArgs().add(s);
 				}
+				spec.getJvmArgs().add("-Dtemporalreality.launcher.modpack=" + modpack.getName());
+				spec.getLaunchArgs().add("--width=" + ConfigManager.getInstanceConfig().getMcWidth());
+				spec.getLaunchArgs().add("--height=" + ConfigManager.getInstanceConfig().getMcHeight());
+
+				Process process = spec.run(Paths.get(ConfigManager.getInstanceConfig().getJavaPath()));
+				StreamRedirect output = new StreamRedirect(process.getInputStream(), new Logger("MC", true), LogLevel.INFO);
+				StreamRedirect error = new StreamRedirect(process.getErrorStream(), new Logger("MC", true), LogLevel.ERROR);
+				output.start();
+				error.start();
+
+				TRLauncher.getLauncher().setMinecraft(process);
 			};
 
 			TRLauncher.getAnalytics().sendEvent("LaunchModpack:" + modpack.getName() + ':' + modpack.getSelectedVersion().toString());

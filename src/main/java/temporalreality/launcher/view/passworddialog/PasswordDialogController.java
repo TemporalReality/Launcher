@@ -27,7 +27,7 @@ public class PasswordDialogController {
 	private TextField textField;
 
 	@FXML
-	private void initialize() {
+	protected void initialize() {
 		label.setText("Please enter the password for " + username);
 	}
 
